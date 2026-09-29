@@ -1,5 +1,7 @@
 # Wawa.hz — WordPress Theme
 
+> **公開URL**: https://wawa-nk-44.moo.jp/blog/
+
 **Wawa.hz** は、Material 3 Expressive デザインシステムで構築した WordPress ブログ / 作品アーカイブ用のオリジナルテーマです。
 モバイル 412dp とデスクトップ 1280dp の 2 レイアウトを 1 つのテーマで切り替え、音楽（Now Playing）・作品ギャラリー・ミニゲームまでを一体で扱えます。
 
