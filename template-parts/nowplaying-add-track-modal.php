@@ -1,12 +1,9 @@
 <?php
 /**
  * template-parts/nowplaying-add-track-modal.php
- * Now Playing 専用の楽曲追加モーダル。編集権限を持つユーザーにのみ描画する。
- * 送信は admin-ajax.php (wp_ajax_wawahz_add_track) が処理する。
+ * Now Playing 専用の楽曲追加モーダル。表示は誰にでも行い、
+ * 実際の追加は admin-ajax.php (wp_ajax_wawahz_add_track) の権限チェックで制御する。
  */
-if (!wawahz_can_add_track()) {
-  return;
-}
 // ブロックやショートコードで複数回描画されても ID が重複しないようにする。
 if (!empty($GLOBALS['wawahz_add_track_modal_rendered'])) {
   return;

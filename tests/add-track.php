@@ -94,6 +94,7 @@ foreach (array('invalid_request', 'forbidden', 'title_required', 'youtube_invali
 }
 np_check(wawahz_add_track_error_message('no_such_code') !== '', 'Unknown code falls back to a generic message');
 np_check(has_action('wp_ajax_wawahz_add_track', 'wawahz_handle_add_track') !== false, 'AJAX handler is registered');
+np_check(has_action('wp_ajax_nopriv_wawahz_add_track', 'wawahz_handle_add_track_nopriv') !== false, 'Anonymous AJAX handler is registered');
 
 // 4. 権限（CLI では未ログイン → 追加不可）
 $original_user = get_current_user_id();
@@ -216,7 +217,7 @@ np_check(substr_count($second_block, 'id="dialog-nowplaying-add-track"') === 0, 
 
 wp_set_current_user(0);
 $public_html = wawahz_render_nowplaying_block(array('limit' => 1, 'showHeader' => true));
-np_check(strpos($public_html, 'dialog-nowplaying-add-track') === false, 'Anonymous visitors see no add-track UI');
+np_check(strpos($public_html, 'data-open-dialog="dialog-nowplaying-add-track"') !== false, 'Anonymous visitors see the add-track button');
 np_check(strpos($public_html, 'nowplaying-card') !== false, 'Anonymous visitors still see the tracks');
 
 wp_set_current_user($original_user);

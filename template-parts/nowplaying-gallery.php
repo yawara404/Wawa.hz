@@ -21,28 +21,23 @@ $heading = !empty($args['standalone']) ? 'h1' : 'h2';
             <?php esc_html_e('最近聴いている音楽とアンビエント和音スケッチ（タップして公式プレイヤーで再生）', 'wawahz'); ?>
           </p>
         </div>
-        <?php if (wawahz_can_add_track()) : ?>
-          <a href="<?php echo esc_url(admin_url('post-new.php')); ?>" class="m3-btn m3-btn-filled" id="nowplaying-add-track-open" data-open-dialog="dialog-nowplaying-add-track" style="height: 48px; padding: 0 16px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-            <span class="material-symbols-rounded" aria-hidden="true">library_music</span>
-            <span><?php esc_html_e('曲を追加', 'wawahz'); ?></span>
-          </a>
-        <?php endif; ?>
+        <?php /* 追加ボタンは誰にでも表示する (実際の追加は AJAX 側で権限チェック)。 */ ?>
+        <a href="<?php echo esc_url(admin_url('post-new.php')); ?>" class="m3-btn m3-btn-filled" id="nowplaying-add-track-open" data-open-dialog="dialog-nowplaying-add-track" style="height: 48px; padding: 0 16px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <span class="material-symbols-rounded" aria-hidden="true">library_music</span>
+          <span><?php esc_html_e('曲を追加', 'wawahz'); ?></span>
+        </a>
       </div>
     <?php endif; ?>
 
-    <?php if (wawahz_can_add_track()) : ?>
-      <p class="nowplaying-add-track-toast" id="nowplaying-add-track-toast" role="status" aria-live="polite" hidden></p>
-    <?php endif; ?>
+    <p class="nowplaying-add-track-toast" id="nowplaying-add-track-toast" role="status" aria-live="polite" hidden></p>
 
     <?php if (!$tracks) : ?>
       <div class="nowplaying-empty" style="text-align: center; padding: 48px 16px; background: var(--md-sys-color-surface-container-low); border-radius: 24px;">
         <span class="material-symbols-rounded" style="font-size: 48px; color: var(--md-sys-color-outline); margin-bottom: 12px;">music_off</span>
         <p class="title-medium" style="font-weight: 600;"><?php esc_html_e('楽曲はまだ登録されていません。', 'wawahz'); ?></p>
-        <?php if (wawahz_can_add_track()) : ?>
-          <p class="body-medium" style="color: var(--md-sys-color-on-surface-variant); margin-top: 8px;">
-            <?php esc_html_e('「曲を追加」から YouTube のURLを登録すると、このギャラリーに表示されます。投稿編集画面の「🎵 Now Playing 楽曲設定（音声・動画・YouTube）」からも設定できます。', 'wawahz'); ?>
-          </p>
-        <?php endif; ?>
+        <p class="body-medium" style="color: var(--md-sys-color-on-surface-variant); margin-top: 8px;">
+          <?php esc_html_e('「曲を追加」から YouTube のURLを登録すると、このギャラリーに表示されます。投稿編集画面の「🎵 Now Playing 楽曲設定（音声・動画・YouTube）」からも設定できます。', 'wawahz'); ?>
+        </p>
       </div>
     <?php else : ?>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;" id="gallery-cards-container">
@@ -54,5 +49,5 @@ $heading = !empty($args['standalone']) ? 'h1' : 'h2';
   </div>
 </section>
 
-<?php /* 専用モーダル (編集権限がある場合のみ描画) */ ?>
+<?php /* 専用モーダル (誰にでも描画。追加は AJAX 側で権限チェック) */ ?>
 <?php get_template_part('template-parts/nowplaying-add-track-modal'); ?>

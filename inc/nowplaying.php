@@ -414,3 +414,16 @@ function wawahz_handle_add_track()
   );
 }
 add_action('wp_ajax_wawahz_add_track', 'wawahz_handle_add_track');
+
+/** AJAX (未ログイン): 追加ボタンは誰にでも表示するため、権限がない旨を返す。 */
+function wawahz_handle_add_track_nopriv()
+{
+  wp_send_json_error(
+    array(
+      'code'    => 'forbidden',
+      'message' => wawahz_add_track_error_message('forbidden'),
+    ),
+    403
+  );
+}
+add_action('wp_ajax_nopriv_wawahz_add_track', 'wawahz_handle_add_track_nopriv');
