@@ -11,9 +11,6 @@ if (!empty($GLOBALS['wawahz_add_track_modal_rendered'])) {
 $GLOBALS['wawahz_add_track_modal_rendered'] = true;
 
 $statuses = wawahz_add_track_statuses();
-$categories = get_categories(array('hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC'));
-$default_category = get_category_by_slug('music');
-$default_category_id = $default_category ? (int) $default_category->term_id : 0;
 ?>
 <div class="m3-dialog-backdrop" id="dialog-nowplaying-add-track" role="dialog" aria-modal="true" aria-labelledby="nowplaying-add-track-dialog-title">
   <div class="m3-dialog nowplaying-add-track-dialog">
@@ -76,17 +73,6 @@ $default_category_id = $default_category ? (int) $default_category->term_id : 0;
       </div>
 
       <div class="nowplaying-add-track-grid">
-        <div class="m3-text-field">
-          <label for="nowplaying-add-track-category"><?php esc_html_e('カテゴリー', 'wawahz'); ?></label>
-          <select id="nowplaying-add-track-category" name="category">
-            <option value="0"><?php esc_html_e('未設定', 'wawahz'); ?></option>
-            <?php foreach ($categories as $category) : ?>
-              <option value="<?php echo esc_attr($category->term_id); ?>" <?php selected($default_category_id, (int) $category->term_id); ?>>
-                <?php echo esc_html($category->name); ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
         <div class="m3-text-field">
           <label for="nowplaying-add-track-status"><?php esc_html_e('公開状態', 'wawahz'); ?></label>
           <select id="nowplaying-add-track-status" name="status">

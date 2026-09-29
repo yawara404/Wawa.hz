@@ -39,19 +39,24 @@ $valid_input = array(
   'status'      => 'draft',
 );
 
+// 追加は常に楽曲カテゴリ (music) だけに所属する
+$music_term = wawahz_music_category();
+$music_category_id = $music_term ? (int) $music_term->term_id : 0;
+
 // 1. 入力検証（データベースに触れない純粋処理）
 $data = wawahz_add_track_validate($valid_input);
 np_check(is_array($data), 'Valid input is accepted');
 np_check($data['youtube_id'] === $video_id, 'Video ID is extracted');
 np_check($data['youtube_url'] === $youtube_url, 'YouTube URL is normalized');
-np_check($data['status'] === 'draft' && $data['category'] === 0, 'Status and empty category are preserved');
+np_check($data['status'] === 'draft' && $data['category'] === $music_category_id, 'Status is kept and the music category is applied');
 np_check($data['title'] === 'Rain & Resonator' && $data['mood'] === 'Ambient & Chill', 'Text values are kept');
 
 np_expect_error(wawahz_add_track_validate(array('youtube_url' => $youtube_url)), 'title_required', 'Title is required');
 np_expect_error(wawahz_add_track_validate(array('title' => '   ', 'youtube_url' => $youtube_url)), 'title_required', 'Blank title is rejected');
 np_expect_error(wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => 'https://evil.test/watch?v=' . $video_id)), 'youtube_invalid', 'Foreign host is rejected');
 np_expect_error(wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => 'abcdefghij')), 'youtube_invalid', 'Short video ID is rejected');
-np_expect_error(wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => $youtube_url, 'category' => '99999999')), 'category_invalid', 'Unknown category is rejected');
+$ignored_category = wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => $youtube_url, 'category' => '99999999'));
+np_check(is_array($ignored_category) && $ignored_category['category'] === $music_category_id, 'A submitted category is ignored (always the music category)');
 
 foreach (array('https://youtu.be/' . $video_id, 'https://www.youtube.com/watch?v=' . $video_id . '&t=40', 'https://youtube.com/shorts/' . $video_id, 'https://youtube.com/live/' . $video_id, $video_id) as $url) {
   $parsed = wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => $url));
@@ -69,11 +74,7 @@ np_check(strpos($escaped['title'], '<') === false, 'Markup is stripped from the 
 np_check($escaped['commentary'] === "Line1\nLine2", 'Commentary keeps line breaks');
 $slashed = wawahz_add_track_validate(array('title' => "It\\'s fine", 'youtube_url' => $youtube_url));
 np_check($slashed['title'] === "It's fine", 'Slashed input is unslashed');
-$music = get_category_by_slug('music');
-if ($music) {
-  $categorized = wawahz_add_track_validate(array('title' => 'A', 'youtube_url' => $youtube_url, 'category' => (string) $music->term_id));
-  np_check($categorized['category'] === (int) $music->term_id, 'Existing category is accepted');
-}
+np_check($music_term !== null && $music_category_id > 0, 'The music category exists (created on demand)');
 
 // 2. 投稿本文（ギャラリーが再生対象として検出するブロック）
 $content = wawahz_add_track_content($youtube_url, '紹介文のテスト');
@@ -88,7 +89,7 @@ np_check(is_array($media) && $media['type'] === 'youtube' && $media['youtube_id'
 
 // 3. 文言と公開状態
 np_check(array_keys(wawahz_add_track_statuses()) === array('publish', 'draft'), 'Only publish and draft are offered');
-foreach (array('invalid_request', 'forbidden', 'title_required', 'youtube_invalid', 'category_invalid', 'create_failed') as $code) {
+foreach (array('invalid_request', 'forbidden', 'title_required', 'youtube_invalid', 'create_failed') as $code) {
   $message = wawahz_add_track_error_message($code);
   np_check($message !== '' && strpos($message, $code) === false, 'Error message exists: ' . $code);
 }
@@ -158,6 +159,7 @@ try {
   np_check(get_post_meta($created_id, 'wawahz_artist', true) === $valid_input['artist'], 'Artist meta is stored');
   np_check(get_post_meta($created_id, 'wawahz_album', true) === $valid_input['album'], 'Album meta is stored');
   np_check(get_post_meta($created_id, 'wawahz_mood', true) === $valid_input['mood'], 'Mood meta is stored');
+  np_check($music_category_id > 0 && in_array($music_category_id, wp_get_post_categories($created_id)), 'Created track is filed under the music category');
 
   $created_media = wawahz_post_media($created);
   np_check($created_media['type'] === 'youtube' && $created_media['youtube_id'] === $video_id, 'Created post is playable as a YouTube track');

@@ -238,10 +238,26 @@ function wawahz_add_track_error_message($code)
     'forbidden'        => __('楽曲を追加する権限がありません。', 'wawahz'),
     'title_required'   => __('曲名を入力してください。', 'wawahz'),
     'youtube_invalid'  => __('YouTubeのURLまたは動画IDを正しく入力してください。', 'wawahz'),
-    'category_invalid' => __('選択したカテゴリーが見つかりません。', 'wawahz'),
     'create_failed'    => __('楽曲を保存できませんでした。時間をおいてもう一度お試しください。', 'wawahz'),
   );
   return isset($messages[$code]) ? $messages[$code] : __('楽曲を追加できませんでした。', 'wawahz');
+}
+
+/**
+ * Now Playing の楽曲カテゴリ (スラッグ music)。無ければ作成して返す。
+ * 追加された楽曲は常にこのカテゴリだけに所属させる。
+ */
+function wawahz_music_category()
+{
+  $term = get_category_by_slug('music');
+  if ($term && !is_wp_error($term)) {
+    return $term;
+  }
+  $created = wp_insert_term('Music', 'category', array('slug' => 'music'));
+  if (is_wp_error($created) || empty($created['term_id'])) {
+    return null;
+  }
+  return get_category((int) $created['term_id']);
 }
 
 /**
@@ -265,15 +281,9 @@ function wawahz_add_track_validate($input)
     return new WP_Error('youtube_invalid', wawahz_add_track_error_message('youtube_invalid'));
   }
 
-  $category = 0;
-  $category_id = absint($value('category'));
-  if ($category_id) {
-    $term = get_category($category_id);
-    if (!$term || is_wp_error($term)) {
-      return new WP_Error('category_invalid', wawahz_add_track_error_message('category_invalid'));
-    }
-    $category = (int) $term->term_id;
-  }
+  // カテゴリは投稿者に選ばせない。楽曲カテゴリ (music) だけを付与する。
+  $music = wawahz_music_category();
+  $category = $music ? (int) $music->term_id : 0;
 
   $statuses = wawahz_add_track_statuses();
   $status = $value('status');
