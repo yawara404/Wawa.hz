@@ -8,14 +8,14 @@ function wawahz_request_value($key, $default = '')
 function wawahz_view()
 {
   $view = wawahz_request_value('view');
-  return (is_home() || is_front_page()) && in_array($view, array('category', 'post', 'gallery', 'nowplaying', 'info'), true) ? $view : '';
+  return (is_home() || is_front_page()) && in_array($view, array('category', 'post', 'gallery', 'game', 'nowplaying', 'info'), true) ? $view : '';
 }
 
 function wawahz_view_url($view)
 {
   static $urls = array();
   if (!isset($urls[$view])) {
-    $templates = array('gallery' => 'page-gallery.php', 'nowplaying' => 'page-nowplaying.php');
+    $templates = array('gallery' => 'page-gallery.php', 'game' => 'page-game.php', 'nowplaying' => 'page-nowplaying.php');
     $pages = isset($templates[$view]) ? get_posts(array(
       'post_type' => 'page', 'post_status' => 'publish', 'posts_per_page' => 1,
       'meta_key' => '_wp_page_template', 'meta_value' => $templates[$view],
@@ -27,9 +27,10 @@ function wawahz_view_url($view)
 }
 
 /**
- * 横スライドで巡回する3画面の現在位置を返す。
- *   画面1 = home（ホーム） / 画面2 = category（カテゴリー・検索） / 画面3 = info（情報欄）
- * 3画面以外（Post / Gallery / Nowplaying / 記事ページなど）では空文字を返す。
+ * 横スライドで巡回する画面の現在位置を返す。
+ *   ホーム系: 画面1 = home（ホーム） / 画面2 = category（カテゴリー・検索） / 画面3 = info（情報欄）
+ *   Gallery系: 画面1 = gallery（作品一覧） / 画面2 = game（ミニゲーム）
+ * これら以外（Post / Nowplaying / 検索 / 記事ページなど）では空文字を返す。
  */
 function wawahz_slide_screen()
 {
@@ -38,18 +39,29 @@ function wawahz_slide_screen()
     if ($view === 'category' || $view === 'info') {
       return $view;
     }
+    // Gallery の2画面（画面1 作品一覧 ⇄ 画面2 ミニゲーム）も同じページ送りでつなぐ。
+    if ($view === 'gallery' || $view === 'game') {
+      return $view;
+    }
     if ($view === '' && !is_paged()) {
       return 'home';
     }
+  }
+  // 固定ページにテンプレートを割り当てて表示する場合（?view= なし）も同じ画面として扱う。
+  if (is_page_template('page-gallery.php')) {
+    return 'gallery';
+  }
+  if (is_page_template('page-game.php')) {
+    return 'game';
   }
   return '';
 }
 
 /**
- * 「次の画面」の URL（3画面を横スライドで進む）。
- *   画面1 ホーム → 画面2 カテゴリー / 画面3 情報欄 と進み、画面3では空文字
- *   （末尾なので次は無し＝右中央のボタンは表示されない）。
- * 3画面以外では空文字を返す。
+ * 「次の画面」の URL（横スライドで進む）。
+ *   ホーム: ホーム → カテゴリー → 情報欄（末尾では空文字）
+ *   Gallery: 作品一覧 → ミニゲーム（末尾では空文字）
+ * 対象外の画面では空文字を返す。
  */
 function wawahz_slide_next_url()
 {
@@ -58,15 +70,17 @@ function wawahz_slide_next_url()
       return wawahz_view_url('category');
     case 'category':
       return wawahz_view_url('info');
+    case 'gallery':
+      return wawahz_view_url('game');
   }
   return '';
 }
 
 /**
- * 「前の画面」の URL（3画面を横スライドで戻る）。
- *   画面2 カテゴリー → 画面1 ホーム / 画面3 情報欄 → 画面2 カテゴリー。
- *   先頭の画面1 では空文字（左中央のボタンは表示されない）。
- * 3画面以外では空文字を返す。
+ * 「前の画面」の URL（横スライドで戻る）。
+ *   ホーム: カテゴリー → ホーム / 情報欄 → カテゴリー（先頭では空文字）
+ *   Gallery: ミニゲーム → 作品一覧（先頭では空文字）
+ * 対象外の画面では空文字を返す。
  */
 function wawahz_slide_prev_url()
 {
@@ -75,6 +89,8 @@ function wawahz_slide_prev_url()
       return home_url('/');
     case 'info':
       return wawahz_view_url('category');
+    case 'game':
+      return wawahz_view_url('gallery');
   }
   return '';
 }
@@ -83,11 +99,11 @@ function wawahz_current_section()
 {
   $v = wawahz_view();
   if ($v === 'post') { return 'post'; }
-  if ($v === 'gallery') { return 'gallery'; }
+  if ($v === 'gallery' || $v === 'game') { return 'gallery'; }
   if ($v === 'category') { return 'category'; }
   if ($v === 'nowplaying') { return 'nowplaying'; }
   if ($v === 'info') { return 'info'; }
-  if (is_page_template('page-gallery.php')) { return 'gallery'; }
+  if (is_page_template('page-gallery.php') || is_page_template('page-game.php')) { return 'gallery'; }
   if (is_page_template('page-nowplaying.php')) { return 'nowplaying'; }
   if (is_search()) { return 'search'; }
   if (is_archive() || is_single()) { return 'post'; }
@@ -250,14 +266,34 @@ function wawahz_resolve_work_filter($filter)
   return 'all';
 }
 
+/** Works ギャラリーで「実際に見えている枚数」。画面サイズに応じて js/theme.js が gallery_per_page で指定する。 */
+function wawahz_gallery_per_page()
+{
+  $allowed = array(4, 6, 8, 10);
+  $value = (int) wawahz_request_value('gallery_per_page', '4');
+  return in_array($value, $allowed, true) ? $value : 4;
+}
+
+/** Works グリッドの最大枠数 (Post 画面と同じ 10)。画面が大きいほど表示する枠が増える。 */
+function wawahz_gallery_slots()
+{
+  return 10;
+}
+
 function wawahz_gallery_query($filter = 'all', $page = 1)
 {
+  $per_page = wawahz_gallery_per_page();
+  $page = max(1, absint($page));
   $work = get_category_by_slug('work');
   $args = array(
     'post_type' => 'post', 'post_status' => 'publish', 'has_password' => false,
-    // デスクトップは 2列×2行 で1画面に収まる4件 (モバイルは1カラム縦並び)。
-    // 作品が4件に満たない場合は「近日公開」カードで埋め、グリッドの形を保つ。
-    'posts_per_page' => 4, 'paged' => max(1, absint($page)),
+    // 画面が大きいほど段数＝枚数が増えるため最大10件を取得する
+    // (実際に見せるのは per_page 枚。5〜10枠は CSS が画面サイズで出し分ける)。
+    'posts_per_page' => wawahz_gallery_slots(),
+    // ページ送りは「実際に見えている枚数 (per_page)」ぶんだけ進める。
+    // offset を使うため paged は 1 に固定する (取りこぼし・重複を防ぐ)。
+    'offset' => ($page - 1) * $per_page,
+    'paged' => 1,
     'ignore_sticky_posts' => true,
     'orderby' => array('date' => 'DESC', 'ID' => 'DESC'),
   );
@@ -271,7 +307,7 @@ function wawahz_gallery_query($filter = 'all', $page = 1)
     if ($filter !== 'all') {
       // Resolve badges before paging; load IDs and bulk caches, not full content.
       $ids = get_posts(array_merge($args, array(
-        'posts_per_page' => -1, 'paged' => 1, 'fields' => 'ids',
+        'posts_per_page' => -1, 'offset' => 0, 'paged' => 1, 'fields' => 'ids',
       )));
       update_meta_cache('post', $ids);
       update_object_term_cache($ids, 'post');
@@ -282,11 +318,16 @@ function wawahz_gallery_query($filter = 'all', $page = 1)
     }
   }
   $query = new WP_Query($args);
-  $last_page = max(1, (int) $query->max_num_pages);
-  if ($args['paged'] > $last_page) {
-    $args['paged'] = $last_page;
+  // offset を使うと max_num_pages は posts_per_page (10) 基準になるため、per_page で計算し直す。
+  $max_pages = max(1, (int) ceil((int) $query->found_posts / $per_page));
+  if ($page > $max_pages) {
+    $page = $max_pages;
+    $args['offset'] = ($page - 1) * $per_page;
     $query = new WP_Query($args);
   }
+  $query->set('wawahz_gallery_page', $page);
+  $query->set('wawahz_gallery_per_page', $per_page);
+  $query->set('wawahz_gallery_max_pages', $max_pages);
   return $query;
 }
 

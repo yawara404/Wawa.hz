@@ -4,6 +4,7 @@ $parts = array(
   'category'   => 'category-screen',
   'post'       => 'post-screen',
   'gallery'    => 'works-gallery',
+  'game'       => 'mini-game-screen',
   'nowplaying' => 'nowplaying-gallery',
   'info'       => 'info-screen',
 );

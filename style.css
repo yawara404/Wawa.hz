@@ -34,16 +34,16 @@ Text Domain: wawahz
 @import url('css/category-search.css?v=20260928_09');
 
 /* 7. Now Playing & Works (音楽ギャラリー、YouTubeプレイヤーモーダル、楽曲追加) */
-@import url('css/nowplaying.css?v=20260928_07');
+@import url('css/nowplaying.css?v=20260929_02');
 
 /* 8. 記事詳細 (リーダーレイアウト)、投稿カード (post-card)、コメント、サイドバー、404 */
 @import url('css/single-page.css?v=20260928_04');
 
 /* 9. サイトフッター & 情報ハブ (site-info-card、ソーシャルリンク、ライセンス) */
-@import url('css/footer.css?v=20260928_05');
+@import url('css/footer.css?v=20260929_01');
 
-/* 10. Works ページ下部のミニゲーム枠 (p5play 製 Falling Survivor の埋め込み) */
-@import url('css/mini-game.css?v=20260928_03');
+/* 10. Gallery 画面2: ミニゲーム画面 (p5play 製 Falling Survivor の埋め込み) */
+@import url('css/mini-game.css?v=20260929_01');
 
 /* 11. レスポンシブ最終調整 (横はみ出し防止・タップ領域・中間ブレークポイント) */
 @import url('css/responsive.css?v=20260928_15');

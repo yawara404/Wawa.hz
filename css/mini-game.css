@@ -443,3 +443,74 @@
 :root.force-mobile .mini-game-body {
   grid-template-columns: minmax(0, 1fr);
 }
+
+/* ==========================================================================
+   Gallery 画面2: ミニゲーム専用画面 (#screen-game)
+   作品一覧 (#screen-gallery) と対になる独立した1画面。
+   デスクトップは「ゲーム画面 (4:3) + 右の『あそびかた』」を画面の高さから
+   逆算した幅で収め、低い画面でもスクロールせず1画面に収める。
+   ========================================================================== */
+.mini-game-screen-container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* 画面単体で使うため、枠の上余白は不要。 */
+#screen-game .mini-game-section {
+  margin-top: 0;
+}
+
+/* ゲーム一式が無い環境の案内。 */
+.game-screen-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 240px;
+  padding: 32px;
+  border-radius: 24px;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+.game-screen-empty .material-symbols-rounded {
+  font-size: 40px;
+  color: var(--md-sys-color-outline);
+}
+
+/* デスクトップ: 枠の幅を画面の高さから逆算して1画面に収める。 */
+@media (min-width: 760px) {
+  #screen-game .mini-game-body {
+    grid-template-columns: minmax(0, min(720px, calc((100dvh - 260px) * 4 / 3))) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  #screen-game .mini-game-stage {
+    max-width: min(720px, calc((100dvh - 260px) * 4 / 3));
+  }
+}
+
+:root.force-desktop #screen-game .mini-game-body {
+  grid-template-columns: minmax(0, min(720px, calc((100dvh - 260px) * 4 / 3))) minmax(0, 1fr);
+  align-items: start;
+}
+
+:root.force-desktop #screen-game .mini-game-stage {
+  max-width: min(720px, calc((100dvh - 260px) * 4 / 3));
+}
+
+:root.force-mobile #screen-game .mini-game-body {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* 低い画面では余白を詰めて、デスクトップでも1画面に収める。 */
+@media (min-width: 760px) and (max-height: 820px) {
+  #screen-game .mini-game-section {
+    padding: 16px;
+    gap: 12px;
+  }
+}

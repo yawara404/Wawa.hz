@@ -16,8 +16,18 @@ $gallery_ids = $work_term ? get_posts(array(
   'tax_query' => array(array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $work_term->term_id)),
   'orderby' => array('date' => 'DESC', 'ID' => 'DESC'),
 )) : array();
-$page_size = (int) wawahz_gallery_query('all', 1)->get('posts_per_page');
-np_check($page_size === 4, 'Gallery shows 4 works per page (desktop 2 columns x 2 rows)');
+// グリッドは最大10枠。通常デスクトップは4枚 (2列×2行) で、画面が大きいほど増える。
+$first_page = wawahz_gallery_query('all', 1);
+$page_size = (int) $first_page->get('wawahz_gallery_per_page');
+$slot_count = (int) $first_page->get('posts_per_page');
+np_check($page_size === 4, 'Gallery shows 4 works per page by default (desktop 2 columns x 2 rows)');
+np_check($slot_count === 10, 'Gallery fetches up to 10 slots for larger screens');
+np_check(wawahz_gallery_per_page() === 4, 'Default gallery per-page is 4 without JS');
+$_GET['gallery_per_page'] = '8';
+np_check(wawahz_gallery_per_page() === 8, 'Gallery per-page accepts the responsive values');
+$_GET['gallery_per_page'] = '99';
+np_check(wawahz_gallery_per_page() === 4, 'Out-of-range gallery per-page falls back to 4');
+unset($_GET['gallery_per_page']);
 foreach (array('all', 'Hardware', 'Audio', 'Photo', 'Design', 'Art', 'Craft') as $filter) {
   $expected = array_values(array_filter($gallery_ids, function ($id) use ($filter) {
     return $filter === 'all' || strcasecmp(wawahz_work_category($id), $filter) === 0;
@@ -26,13 +36,15 @@ foreach (array('all', 'Hardware', 'Audio', 'Photo', 'Design', 'Art', 'Craft') as
   $page_count = max(1, (int) ceil(count($expected) / $page_size));
   for ($page = 1; $page <= $page_count; $page++) {
     $query = wawahz_gallery_query($filter, $page);
-    np_check($query->post_count <= $page_size, 'Gallery page size: ' . $filter);
+    np_check($query->post_count <= $slot_count, 'Gallery never fetches more than the slot count: ' . $filter);
     np_check((int) $query->found_posts === count($expected), 'Gallery filtered total: ' . $filter);
-    $seen = array_merge($seen, wp_list_pluck($query->posts, 'ID'));
+    // ページ送りは per_page 枚ぶん進む (取得した先頭 per_page 枚が「このページ」)。
+    $seen = array_merge($seen, array_slice(wp_list_pluck($query->posts, 'ID'), 0, $page_size));
   }
   np_check($seen === $expected, 'All gallery pages cover exactly the selected category: ' . $filter);
 }
-np_check(wawahz_gallery_query('all', 999999)->get('paged') === 1, 'Stale gallery page recovers to first page');
+$stale = wawahz_gallery_query('all', 999999);
+np_check((int) $stale->get('wawahz_gallery_page') === (int) $stale->get('wawahz_gallery_max_pages'), 'Stale gallery page recovers to the last page');
 
 // 見出し右上のカテゴリフィルタ (ドロップダウン) は、作品がある分類だけを作品数の多い順に返す。
 $terms = wawahz_work_filter_terms();
@@ -67,21 +79,29 @@ np_check(strpos($html, 'class="m3-sort-dropdown-wrapper works-filter-dropdown"')
 np_check(substr_count($html, '<select') === 1, 'Gallery header renders a single dropdown control');
 np_check(strpos($html, 'class="m3-sort-select" id="works-filter-select"') !== false, 'Filter dropdown exposes a labelled native select');
 np_check(strpos($html, 'onchange="location.href = this.value;"') !== false, 'Filter dropdown navigates on change');
-np_check(substr_count($html, 'class="work-card"') === min($page_size, count($gallery_ids)), 'Gallery renders exactly one page of cards');
+np_check(substr_count($html, 'class="work-card"') === min($slot_count, count($gallery_ids)), 'Gallery renders a full page of real works');
+np_check(substr_count($html, 'data-work-slot="') === $slot_count, 'Gallery renders every responsive slot (4/6/8/10 by screen size)');
+preg_match_all('/data-work-slot="\d+"\s+data-id="(\d+)"/', $html, $rendered);
+np_check(array_map('intval', $rendered[1]) === array_slice($gallery_ids, 0, $slot_count), 'Rendered work cards follow the gallery order (no repeated post)');
 
-// グリッドの形 (デスクトップ2列×2行 = 4枠) は作品数に関係なく保つ:
-// 足りない枠は「近日公開」カードで埋める。
+// グリッドは表示中の枠数を「近日公開」カードで埋める (Post 画面と同じ仕組み):
+// 5〜10枠は CSS が画面サイズで出し分ける。
 $coming_soon = 'class="work-card is-coming-soon"';
 np_check(strpos($html, 'empty-state') === false, 'An empty grid shows coming-soon cards instead of a bare message');
-np_check(substr_count($html, $coming_soon) === max(0, $page_size - min($page_size, count($gallery_ids))), 'Gallery pads the 4 slots with coming-soon cards');
+np_check(substr_count($html, $coming_soon) === max(0, $slot_count - min($slot_count, count($gallery_ids))), 'Gallery pads every slot with coming-soon cards');
+$_GET['gallery_per_page'] = '6';
+$six_html = $render_gallery();
+unset($_GET['gallery_per_page']);
+np_check(strpos($six_html, 'data-gallery-per-page="6"') !== false, 'Pagination carries the current per-page step for JS');
+np_check(strpos($six_html, 'data-gallery-total="' . count($gallery_ids) . '"') !== false, 'Pagination carries the total work count for JS');
 $saved_get = $_GET;
 $last_page = max(1, (int) ceil(count($gallery_ids) / $page_size));
 $_GET['gallery_page'] = (string) $last_page;
 $last_html = $render_gallery();
 $_GET = $saved_get;
-$last_page_works = min($page_size, max(0, count($gallery_ids) - ($last_page - 1) * $page_size));
+$last_page_works = min($slot_count, max(0, count($gallery_ids) - ($last_page - 1) * $page_size));
 np_check(substr_count($last_html, 'class="work-card"') === $last_page_works, 'The last gallery page renders only its remaining works');
-np_check(substr_count($last_html, $coming_soon) === $page_size - $last_page_works, 'The last gallery page fills the remaining slots with coming-soon cards');
+np_check(substr_count($last_html, $coming_soon) === $slot_count - $last_page_works, 'The last gallery page fills the remaining slots with coming-soon cards');
 preg_match_all('/<option value="([^"]*)"[^>]*>([^<]*)</', $html, $found, PREG_SET_ORDER);
 $option_urls = array_map(function ($option) { return $option[1]; }, $found);
 $option_labels = array_map(function ($option) { return trim($option[2]); }, $found);

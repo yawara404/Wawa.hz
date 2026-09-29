@@ -1051,6 +1051,75 @@ document.addEventListener('DOMContentLoaded', () => {
     marqueeResizeTimer = setTimeout(() => setupMarquees(document), 150);
   });
 
+  /* =====================================================================
+     12. Works ギャラリー: 画面サイズに応じたページ送り幅の調整
+     - グリッドの表示枚数 (4 / 6 / 8 / 10) は css/nowplaying.css が決める。
+     - ページ送りは「実際に見えている枚数」ぶんだけ進める必要があるため、
+       表示枚数に合わせて前/次のリンクと 1 / N インジケータを更新する。
+       こうしないと、通常デスクトップで 5枚目以降の作品が取りこぼされる。
+     ===================================================================== */
+  const galleryNav = document.querySelector('[data-gallery-pagination]');
+  if (galleryNav) {
+    const galleryTotal = parseInt(galleryNav.dataset.galleryTotal || '0', 10);
+    const galleryServerPage = parseInt(galleryNav.dataset.galleryPage || '1', 10);
+
+    // css/nowplaying.css のメディアクエリと同じ条件で「見えている枚数」を求める。
+    const galleryVisibleSlots = () => {
+      if (document.documentElement.classList.contains('force-mobile')) return 4;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w >= 2560 || h >= 1600) return 10;
+      if (w >= 2200 || h >= 1400) return 8;
+      if (w >= 1920 || h >= 1200) return 6;
+      return 4;
+    };
+
+    const syncGalleryPagination = () => {
+      if (!galleryTotal) return;
+      const perPage = galleryVisibleSlots();
+      const maxPage = Math.max(1, Math.ceil(galleryTotal / perPage));
+      const current = Math.min(galleryServerPage, maxPage);
+
+      const indicator = galleryNav.querySelector('.page-indicator');
+      if (indicator) {
+        indicator.innerHTML = String(current) + '<span class="page-sep">/</span>' + String(maxPage);
+      }
+
+      galleryNav.querySelectorAll('a.m3-btn[rel]').forEach((link) => {
+        const dir = link.getAttribute('rel');
+        const target = dir === 'prev' ? current - 1 : dir === 'next' ? current + 1 : 0;
+        if (target < 1 || target > maxPage) {
+          link.classList.add('is-disabled');
+          link.setAttribute('aria-disabled', 'true');
+          link.setAttribute('tabindex', '-1');
+          return;
+        }
+        link.classList.remove('is-disabled');
+        link.removeAttribute('aria-disabled');
+        link.removeAttribute('tabindex');
+        const url = new URL(link.href, window.location.href);
+        url.searchParams.set('gallery_page', String(target));
+        url.searchParams.set('gallery_per_page', String(perPage));
+        link.href = url.toString();
+      });
+
+      // 直接リンクなどで現在ページが表示上限を超える場合は1ページ目へ整える。
+      if (galleryServerPage > maxPage) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('gallery_page', '1');
+        url.searchParams.set('gallery_per_page', String(perPage));
+        window.location.replace(url.toString());
+      }
+    };
+
+    syncGalleryPagination();
+    let galleryResizeTimer = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(galleryResizeTimer);
+      galleryResizeTimer = setTimeout(syncGalleryPagination, 150);
+    });
+  }
+
   // Webフォント読み込み後に文字幅が変わるため再計測する
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => setupMarquees(document));

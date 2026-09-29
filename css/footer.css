@@ -268,11 +268,14 @@
 }
 
 /* ==========================================================================
-   サイトフッターの表示範囲（3画面のうち3画面目だけに表示）
+   サイトフッターの表示範囲
    ・画面1（ホーム: モバイル / デスクトップ）… 表示しない
    ・画面2（カテゴリー / 検索）… 表示しない
    ・Post 画面 … 表示しない（カードグリッド + ページ送りで画面下まで使う）
-   ・画面3（情報欄・サイト情報）以降 … 従来どおり表示する
+   ・Gallery 画面1（作品一覧 #screen-gallery）… 表示しない
+     （2列×2行の作品一覧とページ送りで1画面を使うため。Gallery 画面2 の
+       ミニゲーム #screen-game には従来どおり表示する）
+   ・画面3（情報欄・サイト情報）以降（ミニゲーム / Nowplaying / 記事ページなど）… 表示する
    フッター内のリンクは、ドロワー（ナビゲーションメニュー）と
    右上の「その他」メニューから開ける。
    ========================================================================== */
@@ -280,6 +283,7 @@
 .main-content-wrapper:has(> .site-main > #desktop-home-container) > .site-footer,
 .main-content-wrapper:has(> .site-main > #screen-category) > .site-footer,
 .main-content-wrapper:has(> .site-main > #screen-post) > .site-footer,
+.main-content-wrapper:has(> .site-main > #screen-gallery) > .site-footer,
 .main-content-wrapper:has(> .site-main > #screen-search) > .site-footer {
   display: none;
 }
@@ -291,6 +295,7 @@
   .main-content-wrapper:has(> .site-main > .mobile-home-wrapper),
   .main-content-wrapper:has(> .site-main > #screen-category),
   .main-content-wrapper:has(> .site-main > #screen-post),
+  .main-content-wrapper:has(> .site-main > #screen-gallery),
   .main-content-wrapper:has(> .site-main > #screen-search) {
     padding-bottom: 104px;
   }

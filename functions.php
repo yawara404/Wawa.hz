@@ -133,9 +133,9 @@ function wawahz_scripts()
     ));
   }
 
-  // Works ページ下部のミニゲーム枠 (ゲーム本体の p5play は起動時に iframe で遅延読み込み)
+  // Gallery 画面2 のミニゲーム枠 (ゲーム本体の p5play は起動時に iframe で遅延読み込み)
   $mini_game_script = get_template_directory() . '/js/mini-game.js';
-  if (file_exists($mini_game_script) && (wawahz_view() === 'gallery' || is_page_template('page-gallery.php'))) {
+  if (file_exists($mini_game_script) && (wawahz_view() === 'game' || is_page_template('page-game.php'))) {
     wp_enqueue_script(
       'wawahz-mini-game',
       get_template_directory_uri() . '/js/mini-game.js',

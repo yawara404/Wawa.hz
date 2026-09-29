@@ -573,6 +573,84 @@
 }
 
 /* ==========================================================================
+   Works グリッドのレスポンシブ表示 (Post 画面と同じ仕組み)
+   基準は通常デスクトップで 4枚 (2列×2行)。画面が大きいほど段数＝枚数が
+   増える (6 → 8 → 10枚)。5〜10枠は CSS が画面サイズで出し分け、
+   ページ送り幅は js/theme.js が「実際に見えている枚数」に合わせて調整する
+   (取りこぼし・重複を防ぐため)。
+   ========================================================================== */
+#screen-gallery [data-work-slot="5"],
+#screen-gallery [data-work-slot="6"],
+#screen-gallery [data-work-slot="7"],
+#screen-gallery [data-work-slot="8"],
+#screen-gallery [data-work-slot="9"],
+#screen-gallery [data-work-slot="10"] {
+  display: none;
+}
+
+@media (min-width: 1920px), (min-height: 1200px) {
+  #screen-gallery [data-work-slot="5"],
+  #screen-gallery [data-work-slot="6"] {
+    display: flex;
+  }
+}
+
+@media (min-width: 2200px), (min-height: 1400px) {
+  #screen-gallery [data-work-slot="7"],
+  #screen-gallery [data-work-slot="8"] {
+    display: flex;
+  }
+}
+
+@media (min-width: 2560px), (min-height: 1600px) {
+  #screen-gallery [data-work-slot="9"],
+  #screen-gallery [data-work-slot="10"] {
+    display: flex;
+  }
+}
+
+/* 画面サイズ プレビューの force-mobile は常に 4枚 (2列×2行) のまま。 */
+:root.force-mobile #screen-gallery [data-work-slot="5"],
+:root.force-mobile #screen-gallery [data-work-slot="6"],
+:root.force-mobile #screen-gallery [data-work-slot="7"],
+:root.force-mobile #screen-gallery [data-work-slot="8"],
+:root.force-mobile #screen-gallery [data-work-slot="9"],
+:root.force-mobile #screen-gallery [data-work-slot="10"] {
+  display: none;
+}
+
+/* 作品一覧 (Gallery 画面1) の内容を画面の上下中央に配置する (スクショ準拠)。
+   内容が高くて収まらないときは margin-block: auto が 0 になり、上寄せのまま
+   スクロールする (中央寄せで上端が切れるのを防ぐ)。 */
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .site-main:has(> #screen-gallery) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :root:not(.force-mobile) .site-main:has(> #screen-gallery) > #screen-gallery {
+    flex: 0 1 auto;
+    margin-block: auto;
+  }
+}
+
+.force-desktop .site-main:has(> #screen-gallery) {
+  display: flex;
+  flex-direction: column;
+}
+
+.force-desktop .site-main:has(> #screen-gallery) > #screen-gallery {
+  flex: 0 1 auto;
+  margin-block: auto;
+}
+
+/* 大きい画面でページ数が減ったときの「次へ」無効化 (js/theme.js が付与)。 */
+.works-pagination a.is-disabled {
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+/* ==========================================================================
    音楽レビュー・Nowplaying記事用 拡張UIスタイル
    ========================================================================== */
 .detail-music-player-box {
