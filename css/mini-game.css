@@ -514,3 +514,27 @@
     gap: 12px;
   }
 }
+
+/* ミニゲーム画面も内容を画面の上下中央に配置する (作品一覧と同じ扱い)。
+   収まらないときは margin-block: auto が 0 になり、上寄せのままスクロールする。 */
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .site-main:has(> #screen-game) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :root:not(.force-mobile) .site-main:has(> #screen-game) > #screen-game {
+    flex: 0 1 auto;
+    margin-block: auto;
+  }
+}
+
+.force-desktop .site-main:has(> #screen-game) {
+  display: flex;
+  flex-direction: column;
+}
+
+.force-desktop .site-main:has(> #screen-game) > #screen-game {
+  flex: 0 1 auto;
+  margin-block: auto;
+}
