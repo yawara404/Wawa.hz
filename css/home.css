@@ -82,55 +82,55 @@
    ========================================================================== */
 
 /* --- ホーム画面 Pickup カード (左側 2x2 グリッド) --- */
-#desk-card-1 { background-image: url('images/music_shimmer.svg'); }
-#desk-card-2 { background-image: url('images/music_velocity.svg'); }
-#desk-card-3 { background-image: url('images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
-#desk-card-4 { background-image: url('images/music_monologue.svg'); }
+#desk-card-1 { background-image: url('../images/music_shimmer.svg'); }
+#desk-card-2 { background-image: url('../images/music_velocity.svg'); }
+#desk-card-3 { background-image: url('../images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
+#desk-card-4 { background-image: url('../images/music_monologue.svg'); }
 
 /* --- ホーム画面 Lately カード (右側 2x2 グリッド) --- */
-#desk-lately-card-1 { background-image: url('images/music_shimmer.svg'); }
-#desk-lately-card-2 { background-image: url('images/music_velocity.svg'); }
-#desk-lately-card-3 { background-image: url('images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
-#desk-lately-card-4 { background-image: url('images/work_design.svg'); }
+#desk-lately-card-1 { background-image: url('../images/music_shimmer.svg'); }
+#desk-lately-card-2 { background-image: url('../images/music_velocity.svg'); }
+#desk-lately-card-3 { background-image: url('../images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
+#desk-lately-card-4 { background-image: url('../images/work_design.svg'); }
 
 /* --- モバイル/各画面での記事サムネイル --- */
 /* モバイル Pickup カルーセルは各スライドが inline style でサムネイルを指定する (ここはフォールバック) */
-.mobile-pickup-card { background-image: url('images/music_shimmer.svg'); background-size: cover; background-position: center; }
-#lately-img-1 { background-image: url('images/music_shimmer.svg'); background-size: cover; background-position: center; }
-#lately-img-2 { background-image: url('images/music_velocity.svg'); background-size: cover; background-position: center; }
-#lately-img-3 { background-image: url('images/music_pourover.svg'); background-size: cover; background-position: center; }
+.mobile-pickup-card { background-image: url('../images/music_shimmer.svg'); background-size: cover; background-position: center; }
+#lately-img-1 { background-image: url('../images/music_shimmer.svg'); background-size: cover; background-position: center; }
+#lately-img-2 { background-image: url('../images/music_velocity.svg'); background-size: cover; background-position: center; }
+#lately-img-3 { background-image: url('../images/music_pourover.svg'); background-size: cover; background-position: center; }
 
 /* --- ホーム画面 Works Gallery サブカード --- */
-#desk-sub-card-1 { --card-bg-img: url('images/work_keyboard.svg'); }
-#desk-sub-card-2 { --card-bg-img: url('images/work_ambient.svg'); }
+#desk-sub-card-1 { --card-bg-img: url('../images/work_keyboard.svg'); }
+#desk-sub-card-2 { --card-bg-img: url('../images/work_ambient.svg'); }
 
 /* --- 記事・作品IDごとの個別スタイル (全画面・全カード・モーダル共通) --- */
-[data-article-id="art-np-1"] { background-image: url('images/music_shimmer.svg'); }
-[data-article-id="art-np-2"] { background-image: url('images/music_velocity.svg'); }
-[data-article-id="art-np-3"] { background-image: url('images/music_pourover.svg'); }
-[data-article-id="art-np-4"] { background-image: url('images/music_monologue.svg'); }
-[data-article-id="art-life-1"] { background-image: url('images/life_desk_plant.svg'); }
-[data-article-id="art-life-2"] { background-image: url('images/life_pomodoro.svg'); }
-[data-article-id="art-hobby-1"] { background-image: url('images/hobby_camera.svg'); }
-[data-article-id="art-work-1"] { background-image: url('images/work_design.svg'); }
-[data-article-id="art-tips-1"] { background-image: url('images/work_ambient.svg'); }
-[data-article-id="art-uncat-1"] { background-image: url('images/uncat_minimal_web.svg'); }
-[data-article-id="art-uncat-2"] { background-image: url('images/uncat_coffee_beans.svg'); }
+[data-article-id="art-np-1"] { background-image: url('../images/music_shimmer.svg'); }
+[data-article-id="art-np-2"] { background-image: url('../images/music_velocity.svg'); }
+[data-article-id="art-np-3"] { background-image: url('../images/music_pourover.svg'); }
+[data-article-id="art-np-4"] { background-image: url('../images/music_monologue.svg'); }
+[data-article-id="art-life-1"] { background-image: url('../images/life_desk_plant.svg'); }
+[data-article-id="art-life-2"] { background-image: url('../images/life_pomodoro.svg'); }
+[data-article-id="art-hobby-1"] { background-image: url('../images/hobby_camera.svg'); }
+[data-article-id="art-work-1"] { background-image: url('../images/work_design.svg'); }
+[data-article-id="art-tips-1"] { background-image: url('../images/work_ambient.svg'); }
+[data-article-id="art-uncat-1"] { background-image: url('../images/uncat_minimal_web.svg'); }
+[data-article-id="art-uncat-2"] { background-image: url('../images/uncat_coffee_beans.svg'); }
 
 /* --- Post画面 初期カード (1ページ目) --- */
-#post-card-1 { background-image: url('images/music_shimmer.svg'); }
-#post-card-2 { background-image: url('images/music_velocity.svg'); }
-#post-card-3 { background-image: url('images/music_pourover.svg'); }
-#post-card-4 { background-image: url('images/music_monologue.svg'); }
-#post-card-5 { background-image: url('images/life_desk_plant.svg'); }
-#post-card-6 { background-image: url('images/life_pomodoro.svg'); }
+#post-card-1 { background-image: url('../images/music_shimmer.svg'); }
+#post-card-2 { background-image: url('../images/music_velocity.svg'); }
+#post-card-3 { background-image: url('../images/music_pourover.svg'); }
+#post-card-4 { background-image: url('../images/music_monologue.svg'); }
+#post-card-5 { background-image: url('../images/life_desk_plant.svg'); }
+#post-card-6 { background-image: url('../images/life_pomodoro.svg'); }
 
-[data-work-id="work-1"] { background-image: url('images/work_keyboard.svg'); }
-[data-work-id="work-2"] { background-image: url('images/work_ambient.svg'); }
-[data-work-id="work-3"] { background-image: url('images/hobby_camera.svg'); }
-[data-work-id="work-4"] { background-image: url('images/work_design.svg'); }
-[data-work-id="work-5"] { background-image: url('images/music_velocity.svg'); }
-[data-work-id="work-6"] { background-image: url('images/uncat_coffee_beans.svg'); }
+[data-work-id="work-1"] { background-image: url('../images/work_keyboard.svg'); }
+[data-work-id="work-2"] { background-image: url('../images/work_ambient.svg'); }
+[data-work-id="work-3"] { background-image: url('../images/hobby_camera.svg'); }
+[data-work-id="work-4"] { background-image: url('../images/work_design.svg'); }
+[data-work-id="work-5"] { background-image: url('../images/music_velocity.svg'); }
+[data-work-id="work-6"] { background-image: url('../images/uncat_coffee_beans.svg'); }
 
 .dhome-article-card .card-scrim-white {
   background: rgba(255, 255, 255, 0.74);

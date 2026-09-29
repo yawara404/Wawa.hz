@@ -1,0 +1,38 @@
+# 改行コードを自動正規化して、Windows / macOS / Linux のどの環境でも
+# 同じ内容で clone / checkout できるようにする。
+# (Windows で作業する場合は推奨: git config --global core.autocrlf true)
+* text=auto
+
+# 画像・フォント・メディア・ベンダー(min) はバイナリ扱い (改行変換しない)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.bmp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.mp3 binary
+*.mp4 binary
+*.wav binary
+*.ogg binary
+*.min.js binary
+*.min.css binary
+
+# テキストは明示 (Windows でもそのままの改行で扱える)
+*.php text
+*.css text
+*.js text
+*.json text
+*.html text
+*.md text
+*.txt text
+*.svg text

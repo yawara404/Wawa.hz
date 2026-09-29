@@ -17,7 +17,7 @@
 | Now Playing | 16:9 サムネ付きの楽曲カード + YouTube 公式 IFrame 再生モーダル（`?view=nowplaying`） |
 | Site Info | ブランドカード・仕様グリッド・プライバシーポリシー・お問い合わせフォーム |
 | Search | リアルタイム絞り込み検索（見出しインクリメンタル抽出） |
-| Mini Game | 授業で制作した 2D アクション「Falling Survivor」を Gallery 下部に同梱表示 |
+| Mini Game | 授業で制作した 2D アクション「Falling Survivor」を独立画面（`page-game.php` / `?view=game`）で同梱表示（Gallery の左右中央ボタンで移動） |
 
 - **デザイントークン**: `--md-sys-color-*` / `--md-sys-shape-*` による Dark / Light 完全対応（`css/variables.css`）
 - **インタラクション**: Glassmorphism、リップル風ホバー、View Transitions API によるページ遷移スライド
@@ -39,8 +39,20 @@
 | カスタムブロック | `wawahz/nowplaying-gallery`（属性: `limit` / `showHeader`） |
 | ショートコード | `[nowplaying_gallery limit="6" show_header="true"]` |
 | テーマ設定 | `theme.json`（コンテンツ幅 760px / ワイド幅 1120px、カラーパレット、フォントサイズ） |
-| 画面ルーティング | `view.php` が `?view=category / post / gallery / nowplaying / info` を `template-parts/` に振り分け |
+| 画面ルーティング | `view.php` が `?view=category / post / gallery / game / nowplaying / info` を `template-parts/` に振り分け |
 | 同梱ライブラリ | p5.js / planck.js / p5play（`games/falling-survivor/lib/`）— CDN 非依存で動作 |
+
+---
+
+## デプロイ / 移行
+
+- **Windows 本番サーバーへ移行する手順**: [WINDOWS_DEPLOY.md](WINDOWS_DEPLOY.md)
+  - IIS / Apache、PHP 8.2–8.3、MySQL 8、git clone 先、DB 移行、パーマリンク、トラブルシューティングまで記載
+- **Windows でもそのまま動きます**（対策済み）
+  - `css/images` のシンボリックリンクを廃止し、CSS を `url('../images/...')` 参照に変更
+  - `.gitattributes` による改行コードの自動正規化
+  - IIS 用 `web.config` を同梱（`.md` / `.json` / `.git` への直接アクセス拒否）
+- 更新時は `wp-content/themes/Wawa.hz` で `git pull origin main`。
 
 ---
 

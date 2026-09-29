@@ -79,7 +79,7 @@
   --top-app-bar-height: 64px;
 
   /* サイト背景パターン (電波・周波数アイコン散布パターン) */
-  --site-bg-pattern: url('images/radio_waves_pattern_light.svg?v=2');
+  --site-bg-pattern: url('../images/radio_waves_pattern_light.svg?v=2');
 }
 
 /* ダークスキーム */
@@ -117,7 +117,7 @@
     --md-sys-color-error-container: #8C1D18;
     --md-sys-color-on-error-container: #F9DEDC;
 
-    --site-bg-pattern: url('images/radio_waves_pattern_dark.svg?v=2');
+    --site-bg-pattern: url('../images/radio_waves_pattern_dark.svg?v=2');
   }
 }
 
@@ -154,7 +154,7 @@
   --md-sys-color-error-container: #8C1D18;
   --md-sys-color-on-error-container: #F9DEDC;
 
-  --site-bg-pattern: url('images/radio_waves_pattern_dark.svg?v=2');
+  --site-bg-pattern: url('../images/radio_waves_pattern_dark.svg?v=2');
 }
 
 :root[data-theme="light"] {
@@ -197,7 +197,7 @@
   --md-sys-color-error-container: #F9DEDC;
   --md-sys-color-on-error-container: #410E0B;
 
-  --site-bg-pattern: url('images/radio_waves_pattern_light.svg?v=2');
+  --site-bg-pattern: url('../images/radio_waves_pattern_light.svg?v=2');
 }
 
 /* ライトテーマ: 参照デザイン準拠 (ボタンと同じオレンジのクローム + 白ピル + シアンのカード) */
