@@ -515,26 +515,25 @@
   }
 }
 
-/* ミニゲーム画面も内容を画面の上下中央に配置する (作品一覧と同じ扱い)。
-   収まらないときは margin-block: auto が 0 になり、上寄せのままスクロールする。 */
+/* ミニゲーム画面 (Gallery 画面2) は内容を画面の上下中央に配置する。
+   #screen-game (.screen-view) を画面の高さいっぱいに伸ばし、
+   justify-content: center で中身を上下中央に寄せる。 */
 @media (min-width: 900px) {
   :root:not(.force-mobile) .site-main:has(> #screen-game) {
-    display: flex;
-    flex-direction: column;
+    display: grid;
   }
 
   :root:not(.force-mobile) .site-main:has(> #screen-game) > #screen-game {
-    flex: 0 1 auto;
-    margin-block: auto;
+    flex: 1 1 auto;
+    justify-content: center;
   }
 }
 
 .force-desktop .site-main:has(> #screen-game) {
-  display: flex;
-  flex-direction: column;
+  display: grid;
 }
 
 .force-desktop .site-main:has(> #screen-game) > #screen-game {
-  flex: 0 1 auto;
-  margin-block: auto;
+  flex: 1 1 auto;
+  justify-content: center;
 }
