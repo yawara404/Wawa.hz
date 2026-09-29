@@ -14,7 +14,7 @@
 | ホーム | Pickup カルーセル + Lately ボックス、Now Playing / Works ボックス連携 |
 | Category / Archive | カテゴリートーナルボタン + 連結ページ送り |
 | Works Gallery | 作品カードグリッド + 詳細モーダル（`page-gallery.php` / `?view=gallery`） |
-| Now Playing | 16:9 サムネ付きの楽曲カード + YouTube 公式 IFrame 再生モーダル（`?view=nowplaying`） |
+| Now Playing | 16:9 サムネ付きの楽曲カード + YouTube 公式 IFrame 再生モーダル（`page-music.php` / `page-nowplaying.php` / `?view=nowplaying`。固定ページ「Music」を優先） |
 | Site Info | ブランドカード・仕様グリッド・プライバシーポリシー・お問い合わせフォーム |
 | Search | リアルタイム絞り込み検索（見出しインクリメンタル抽出） |
 | Mini Game | 授業で制作した 2D アクション「Falling Survivor」を独立画面（`page-game.php` / `?view=game`）で同梱表示（Gallery の左右中央ボタンで移動） |

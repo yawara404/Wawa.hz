@@ -64,6 +64,15 @@ if ($pages) {
   add_filter('posts_pre_query', $resolve_page, 10, 2);
   np_check(wawahz_view_url('gallery') === get_permalink($pages[0]), 'Assigned gallery template uses a real permalink');
   remove_filter('posts_pre_query', $resolve_page, 10);
+
+  // Now Playing は page-music.php を優先して検出する。
+  $resolve_music = function ($posts, $query) use ($pages) {
+    return $query->get('meta_value') === 'page-music.php' ? $pages : $posts;
+  };
+  add_filter('posts_pre_query', $resolve_music, 10, 2);
+  $music_page = wawahz_view_page('nowplaying');
+  np_check($music_page && (int) $music_page->ID === (int) $pages[0]->ID, 'Music template page takes priority for the Now Playing URL');
+  remove_filter('posts_pre_query', $resolve_music, 10);
 }
 $_GET = $original_get;
 np_check(current_theme_supports('align-wide') && current_theme_supports('editor-styles'), 'Editor and wide block support enabled');

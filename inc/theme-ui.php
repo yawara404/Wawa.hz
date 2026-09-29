@@ -11,17 +11,39 @@ function wawahz_view()
   return (is_home() || is_front_page()) && in_array($view, array('category', 'post', 'gallery', 'game', 'nowplaying', 'info'), true) ? $view : '';
 }
 
+/**
+ * 指定した view に対応する固定ページを返す (優先順あり)。無ければ null。
+ * Now Playing は page-music.php → page-nowplaying.php の順に探す。
+ */
+function wawahz_view_page($view)
+{
+  $templates = array(
+    'gallery'    => array('page-gallery.php'),
+    'game'       => array('page-game.php'),
+    'nowplaying' => array('page-music.php', 'page-nowplaying.php'),
+  );
+  if (!isset($templates[$view])) {
+    return null;
+  }
+  foreach ($templates[$view] as $template) {
+    $found = get_posts(array(
+      'post_type' => 'page', 'post_status' => 'publish', 'posts_per_page' => 1,
+      'meta_key' => '_wp_page_template', 'meta_value' => $template,
+      'orderby' => 'ID', 'order' => 'ASC',
+    ));
+    if ($found) {
+      return $found[0];
+    }
+  }
+  return null;
+}
+
 function wawahz_view_url($view)
 {
   static $urls = array();
   if (!isset($urls[$view])) {
-    $templates = array('gallery' => 'page-gallery.php', 'game' => 'page-game.php', 'nowplaying' => 'page-nowplaying.php');
-    $pages = isset($templates[$view]) ? get_posts(array(
-      'post_type' => 'page', 'post_status' => 'publish', 'posts_per_page' => 1,
-      'meta_key' => '_wp_page_template', 'meta_value' => $templates[$view],
-      'orderby' => 'ID', 'order' => 'ASC',
-    )) : array();
-    $urls[$view] = $pages ? get_permalink($pages[0]) : add_query_arg('view', $view, home_url('/'));
+    $page = wawahz_view_page($view);
+    $urls[$view] = $page ? get_permalink($page) : add_query_arg('view', $view, home_url('/'));
   }
   return $urls[$view];
 }
@@ -104,7 +126,7 @@ function wawahz_current_section()
   if ($v === 'nowplaying') { return 'nowplaying'; }
   if ($v === 'info') { return 'info'; }
   if (is_page_template('page-gallery.php') || is_page_template('page-game.php')) { return 'gallery'; }
-  if (is_page_template('page-nowplaying.php')) { return 'nowplaying'; }
+  if (is_page_template('page-nowplaying.php') || is_page_template('page-music.php')) { return 'nowplaying'; }
   if (is_search()) { return 'search'; }
   if (is_archive() || is_single()) { return 'post'; }
   return is_front_page() || is_home() ? 'home' : '';
