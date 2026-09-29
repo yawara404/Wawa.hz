@@ -45,5 +45,6 @@ auth.json
 wp-config.php
 debug.log
 
-# リポジトリに含めないローカル専用ドキュメント（Web 公開しない運用手順など）
+# リポジトリに含めないローカル専用ドキュメント（Web 公開しない運用手順・提案書など）
 MANUAL.md
+IMPROVEMENT_PROPOSALS.md
