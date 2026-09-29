@@ -211,9 +211,8 @@ $selected_post_url = $selected_post ? get_permalink($selected_post) : '';
         </div>
 
         <div class="footer-links-col">
-          <span class="label-large" style="color: var(--md-sys-color-primary); font-weight: 700; display: block; margin-bottom: 8px;">コミュニティ &amp; 管理</span>
+          <span class="label-large" style="color: var(--md-sys-color-primary); font-weight: 700; display: block; margin-bottom: 8px;">コミュニティ</span>
           <ul class="footer-links-list">
-            <li><a href="<?php echo esc_url(is_user_logged_in() ? admin_url() : wp_login_url()); ?>" id="footer-admin-link">🛡️ 投稿管理ダッシュボード (PHP 8.3)</a></li>
             <li><a href="https://github.com/yawara404" target="_blank" rel="noopener noreferrer">💻 GitHub リポジトリ</a></li>
             <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer">📺 YouTube チャンネル</a></li>
             <li><a href="https://x.com/ya_ya_moderate" target="_blank" rel="noopener noreferrer">𝕏 (Twitter) 公式アカウント</a></li>
