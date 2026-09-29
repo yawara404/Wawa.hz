@@ -8,6 +8,9 @@
 
 // === データ取得 ===
 $sticky_ids  = get_option( 'sticky_posts', array() );
+// 通常の記事枠 (Pickup / Lately) からは楽曲カテゴリ (music) を除外する (Now Playing と分離)。
+$wawahz_music_id = function_exists( 'wawahz_music_category_id' ) ? wawahz_music_category_id() : 0;
+$wawahz_exclude_music = $wawahz_music_id ? array( 'category__not_in' => array( $wawahz_music_id ) ) : array();
 $pickup_args = array(
   'post_type'           => 'post',
   'post_status'         => 'publish',
@@ -18,26 +21,26 @@ $pickup_args = array(
 if ( $sticky_ids ) {
   $pickup_args['post__in'] = $sticky_ids;
 }
-$pickup_posts = get_posts( $pickup_args );
+$pickup_posts = get_posts( array_merge( $pickup_args, $wawahz_exclude_music ) );
 if ( ! $pickup_posts ) {
   // フォールバック：スティッキーなし → 最新5件
-  $pickup_posts = get_posts( array(
+  $pickup_posts = get_posts( array_merge( array(
     'post_type'           => 'post',
     'post_status'         => 'publish',
     'has_password'        => false,
     'posts_per_page'      => 5,
     'ignore_sticky_posts' => true,
-  ) );
+  ), $wawahz_exclude_music ) );
 }
 
 // Lately 用：最新6件
-$lately_posts = get_posts( array(
+$lately_posts = get_posts( array_merge( array(
   'post_type'           => 'post',
   'post_status'         => 'publish',
   'has_password'        => false,
   'posts_per_page'      => 6,
   'ignore_sticky_posts' => true,
-) );
+), $wawahz_exclude_music ) );
 
 // モバイルの初期表示（3枚目）には最新記事を置く。Pickup に含まれる場合は重複させない。
 $mobile_pickup_posts = $pickup_posts;

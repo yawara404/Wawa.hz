@@ -30,6 +30,11 @@ $query_args = array(
   'order'               => $order,
   'ignore_sticky_posts' => true,
 );
+// 通常投稿の一覧なので、楽曲カテゴリ (music) は除外する (Now Playing と分離)。
+$wawahz_music_id = wawahz_music_category_id();
+if ($wawahz_music_id) {
+  $query_args['category__not_in'] = array($wawahz_music_id);
+}
 
 $post_query = new WP_Query($query_args);
 $posts = $post_query->posts;

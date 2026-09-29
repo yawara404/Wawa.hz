@@ -334,6 +334,7 @@ function wawahz_gallery_query($filter = 'all', $page = 1)
 function wawahz_filter_query($works = false)
 {
   $sort = wawahz_request_value('sort', 'date-desc');
+  $music_id = wawahz_music_category_id();
   $args = array(
     'post_type' => 'post', 'post_status' => 'publish', 'has_password' => false,
     'posts_per_page' => max(1, min(24, (int) get_option('posts_per_page', 10))),
@@ -353,10 +354,17 @@ function wawahz_filter_query($works = false)
         $args['tax_query'][] = array('taxonomy' => 'category', 'field' => 'term_id', 'terms' => $selected->term_id);
       }
     }
+    // 楽曲は Now Playing 側なので Gallery からも除外する。
+    if ($music_id) {
+      $args['category__not_in'] = array($music_id);
+    }
   } elseif ($selected) {
     $args['cat'] = $selected->term_id;
   } elseif (wawahz_request_value('cat_slug')) {
     $args['post__in'] = array(0);
+  } elseif ($music_id) {
+    // 通常の記事一覧では楽曲カテゴリ (music) を除外する (Now Playing と分離)。
+    $args['category__not_in'] = array($music_id);
   }
   return new WP_Query($args);
 }
@@ -427,3 +435,24 @@ foreach (array('title', 'description', 'canonical', 'og_title', 'og_description'
     return wawahz_view_seo_value($map[$wawahz_seo_key], $value);
   });
 }
+
+// 通常の一覧 (アーカイブ / ホーム / ブログ) からは楽曲カテゴリ (music) を除外して、
+// Now Playing と通常投稿を分離する。検索と Music カテゴリのアーカイブでは除外しない。
+add_action('pre_get_posts', function ($query) {
+  if (is_admin() || !$query->is_main_query() || $query->is_singular() || $query->is_feed()) {
+    return;
+  }
+  if ($query->is_search()) {
+    return;
+  }
+  $music_id = wawahz_music_category_id();
+  if (!$music_id) {
+    return;
+  }
+  if ($query->is_category() && (int) $query->get_queried_object_id() === $music_id) {
+    return;
+  }
+  $exclude = array_filter((array) $query->get('category__not_in'));
+  $exclude[] = $music_id;
+  $query->set('category__not_in', array_values(array_unique($exclude)));
+});

@@ -56,5 +56,19 @@ np_check(strpos($html, 'nowplaying-header-row') === false && strpos($html, '<aud
 $html = wawahz_nowplaying_gallery_shortcode(array('limit' => 1, 'show_header' => 'false'));
 np_check(strpos($html, 'nowplaying-header-row') === false, 'Shortcode header toggle');
 remove_filter('posts_pre_query', $filter, 10);
+
+// Now Playing は楽曲カテゴリ (music) の投稿だけを列挙する (通常投稿と分離)。
+$music_id = wawahz_music_category_id();
+if ($music_id) {
+  $all_music = true;
+  foreach (wawahz_nowplaying_posts(50) as $track) {
+    if (!in_array($music_id, wp_get_post_categories($track['post']->ID), true)) {
+      $all_music = false;
+      break;
+    }
+  }
+  np_check($all_music, 'Now Playing only lists music-category posts');
+}
+
 require __DIR__ . '/theme-ui.php';
 echo $checks . " checks passed; no posts changed.\n";

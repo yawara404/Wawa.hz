@@ -471,13 +471,19 @@ function wawahz_home_settings_page_id()
 function wawahz_home_music_candidates()
 {
   $candidates = array();
-  $posts = get_posts(array(
+  $music_id = function_exists('wawahz_music_category_id') ? wawahz_music_category_id() : 0;
+  $args = array(
     'post_type'      => 'post',
     'post_status'    => 'publish',
     'has_password'   => false,
     'posts_per_page' => 50,
     'orderby'        => array('date' => 'DESC', 'ID' => 'DESC'),
-  ));
+  );
+  // 楽曲カテゴリ (music) だけを候補にする (通常投稿と分離)。
+  if ($music_id) {
+    $args['category__in'] = array($music_id);
+  }
+  $posts = get_posts($args);
   foreach ($posts as $post) {
     if (function_exists('wawahz_post_media') && wawahz_post_media($post)) {
       $candidates[] = $post;

@@ -164,17 +164,23 @@ function wawahz_post_media($post)
 /** 公開済み・パスワードなしの投稿を走査。最新10件以外の楽曲も対象。 */
 function wawahz_nowplaying_posts($limit)
 {
+  $music_id = wawahz_music_category_id();
   $tracks = array();
   $page = 1;
   do {
-    $posts = get_posts(array(
+    $args = array(
       'post_type' => 'post',
       'post_status' => 'publish',
       'has_password' => false,
       'posts_per_page' => 50,
       'paged' => $page++,
       'orderby' => array('date' => 'DESC', 'ID' => 'DESC'),
-    ));
+    );
+    // Now Playing は楽曲カテゴリ (music) の投稿だけを対象にする (通常投稿と分離)。
+    if ($music_id) {
+      $args['category__in'] = array($music_id);
+    }
+    $posts = get_posts($args);
     foreach ($posts as $post) {
       $media = wawahz_post_media($post);
       if ($media) {
@@ -258,6 +264,17 @@ function wawahz_music_category()
     return null;
   }
   return get_category((int) $created['term_id']);
+}
+
+/** Now Playing の楽曲カテゴリ ID (無ければ 0)。クエリ用 (新規作成はしない)。 */
+function wawahz_music_category_id()
+{
+  static $id = null;
+  if ($id === null) {
+    $term = get_category_by_slug('music');
+    $id = ($term && !is_wp_error($term)) ? (int) $term->term_id : 0;
+  }
+  return $id;
 }
 
 /**
