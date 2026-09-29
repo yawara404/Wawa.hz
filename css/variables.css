@@ -1,0 +1,323 @@
+/* ==========================================================================
+   Wawa.hz - CSS Variables & Material 3 Expressive Tokens
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CSS カスタムプロパティ (Material 3 Expressive Custom Color Scheme)
+   ========================================================================== */
+:root {
+  /* ライトスキーム: warm orange + calm teal */
+  --md-sys-color-primary: #E96424;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #FFE0CC;
+  --md-sys-color-on-primary-container: #4A1800;
+
+  --md-sys-color-secondary: #2F7475;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #D8EDED;
+  --md-sys-color-on-secondary-container: #123A3B;
+  --md-sys-color-tertiary-container: #CBE8EA;
+  --md-sys-color-on-tertiary-container: #103839;
+
+  --md-sys-color-surface: #FFFCFA;
+  --md-sys-color-surface-container-low: #FFF5EF;
+  --md-sys-color-surface-container: #F8E8DD;
+  --md-sys-color-surface-container-high: #F3ECE7;
+  --md-sys-color-surface-container-highest: #EAE0DA;
+
+  --md-sys-color-on-surface: #271E19;
+  --md-sys-color-on-surface-variant: #5F4B40;
+  --md-sys-color-outline: #8B7569;
+  --md-sys-color-outline-variant: #DECBC0;
+
+  --md-sys-color-inverse-surface: #382E29;
+  --md-sys-color-inverse-on-surface: #FFEDE5;
+  --md-sys-color-inverse-primary: #FFB58E;
+
+  /* Wawa.hz semantic accents */
+  --wawahz-color-chrome: #EA6B2C;
+  --wawahz-color-warm-panel: #FFF5EF;
+  --wawahz-color-cyan-panel: #CBE8EA;
+  --wawahz-color-teal: #2F7475;
+  --wawahz-color-teal-strong: #245F60;
+  --wawahz-color-content-accent: #2F7475;
+
+  --md-sys-color-error: #B3261E;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #F9DEDC;
+  --md-sys-color-on-error-container: #410E0B;
+
+  /* 形・余白・モーション (M3 Expressive) */
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 20px;      /* カード、画像 */
+  --md-sys-shape-corner-extra-large: 28px;/* ボックス、ダイアログ */
+  --md-sys-shape-corner-full: 9999px;    /* ボタン (ピル型) */
+
+  --md-sys-motion-standard-easing: cubic-bezier(0.2, 0.0, 0, 1.0);
+  --md-sys-motion-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --md-sys-motion-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --md-sys-motion-duration-short: 150ms;
+  --md-sys-motion-duration-medium: 250ms;
+  --md-sys-motion-duration-long: 350ms;
+
+  /* 多層アンビエントソフトシャドウ (M3 Elevation Tokens) */
+  --md-sys-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --md-sys-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --md-sys-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --md-sys-elevation-4: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --md-sys-elevation-5: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* タイポグラフィ */
+  --md-ref-typeface: 'Inter', 'Roboto', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  --scrim-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.45) 60%, rgba(0, 0, 0, 0.88) 100%);
+  --scrim-text-color: #FDFFFF;
+
+  /* トップバー & 再生バー共通寸法トークン */
+  --top-app-bar-height: 64px;
+
+  /* サイト背景パターン (電波・周波数アイコン散布パターン) */
+  --site-bg-pattern: url('images/radio_waves_pattern_light.svg?v=2');
+}
+
+/* ダークスキーム */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --md-sys-color-primary: #56D8E0;
+    --md-sys-color-on-primary: #093638;
+    --md-sys-color-primary-container: #104E52;
+    --md-sys-color-on-primary-container: #77F5FD;
+
+    --md-sys-color-secondary: #AACDCF;
+    --md-sys-color-on-secondary: #0E3538;
+    --md-sys-color-secondary-container: #2C4C4E;
+    --md-sys-color-on-secondary-container: #C6E9EB;
+    --md-sys-color-tertiary-container: #2F4962;
+    --md-sys-color-on-tertiary-container: #D1E4FC;
+
+    --md-sys-color-surface: #0D1515;
+    --md-sys-color-surface-container-low: #161D1D;
+    --md-sys-color-surface-container: #1A2121;
+    --md-sys-color-surface-container-high: #252B2B;
+    --md-sys-color-surface-container-highest: #2F3636;
+
+    --md-sys-color-on-surface: #DCE4E4;
+    --md-sys-color-on-surface-variant: #B7CACB;
+    --md-sys-color-outline: #819495;
+    --md-sys-color-outline-variant: #394A4B;
+
+    --md-sys-color-inverse-surface: #DCE4E4;
+    --md-sys-color-inverse-on-surface: #2B3232;
+    --md-sys-color-inverse-primary: #0C696E;
+
+    --md-sys-color-error: #F2B8B5;
+    --md-sys-color-on-error: #601410;
+    --md-sys-color-error-container: #8C1D18;
+    --md-sys-color-on-error-container: #F9DEDC;
+
+    --site-bg-pattern: url('images/radio_waves_pattern_dark.svg?v=2');
+  }
+}
+
+:root[data-theme="dark"] {
+  --md-sys-color-primary: #56D8E0;
+  --md-sys-color-on-primary: #093638;
+  --md-sys-color-primary-container: #104E52;
+  --md-sys-color-on-primary-container: #77F5FD;
+
+  --md-sys-color-secondary: #AACDCF;
+  --md-sys-color-on-secondary: #0E3538;
+  --md-sys-color-secondary-container: #2C4C4E;
+  --md-sys-color-on-secondary-container: #C6E9EB;
+  --md-sys-color-tertiary-container: #2F4962;
+  --md-sys-color-on-tertiary-container: #D1E4FC;
+
+  --md-sys-color-surface: #0D1515;
+  --md-sys-color-surface-container-low: #161D1D;
+  --md-sys-color-surface-container: #1A2121;
+  --md-sys-color-surface-container-high: #252B2B;
+  --md-sys-color-surface-container-highest: #2F3636;
+
+  --md-sys-color-on-surface: #DCE4E4;
+  --md-sys-color-on-surface-variant: #B7CACB;
+  --md-sys-color-outline: #819495;
+  --md-sys-color-outline-variant: #394A4B;
+
+  --md-sys-color-inverse-surface: #DCE4E4;
+  --md-sys-color-inverse-on-surface: #2B3232;
+  --md-sys-color-inverse-primary: #0C696E;
+
+  --md-sys-color-error: #F2B8B5;
+  --md-sys-color-on-error: #601410;
+  --md-sys-color-error-container: #8C1D18;
+  --md-sys-color-on-error-container: #F9DEDC;
+
+  --site-bg-pattern: url('images/radio_waves_pattern_dark.svg?v=2');
+}
+
+:root[data-theme="light"] {
+  --md-sys-color-primary: #E96424;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #FFE0CC;
+  --md-sys-color-on-primary-container: #4A1800;
+
+  --md-sys-color-secondary: #2F7475;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #D8EDED;
+  --md-sys-color-on-secondary-container: #123A3B;
+  --md-sys-color-tertiary-container: #CBE8EA;
+  --md-sys-color-on-tertiary-container: #103839;
+
+  --md-sys-color-surface: #FFFCFA;
+  --md-sys-color-surface-container-low: #FFF5EF;
+  --md-sys-color-surface-container: #F8E8DD;
+  --md-sys-color-surface-container-high: #F3ECE7;
+  --md-sys-color-surface-container-highest: #EAE0DA;
+
+  --md-sys-color-on-surface: #271E19;
+  --md-sys-color-on-surface-variant: #5F4B40;
+  --md-sys-color-outline: #8B7569;
+  --md-sys-color-outline-variant: #DECBC0;
+
+  --md-sys-color-inverse-surface: #382E29;
+  --md-sys-color-inverse-on-surface: #FFEDE5;
+  --md-sys-color-inverse-primary: #FFB58E;
+
+  --wawahz-color-chrome: #EA6B2C;
+  --wawahz-color-warm-panel: #FFF5EF;
+  --wawahz-color-cyan-panel: #CBE8EA;
+  --wawahz-color-teal: #2F7475;
+  --wawahz-color-teal-strong: #245F60;
+  --wawahz-color-content-accent: #2F7475;
+
+  --md-sys-color-error: #B3261E;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #F9DEDC;
+  --md-sys-color-on-error-container: #410E0B;
+
+  --site-bg-pattern: url('images/radio_waves_pattern_light.svg?v=2');
+}
+
+/* ライトテーマ: 参照デザイン準拠 (ボタンと同じオレンジのクローム + 白ピル + シアンのカード) */
+:root[data-theme="light"] .top-app-bar,
+:root[data-theme="light"] .top-app-bar.scrolled,
+:root[data-theme="light"] .m3-navigation-bar,
+:root[data-theme="light"] .m3-navigation-rail {
+  background-color: var(--wawahz-color-chrome);
+}
+
+/* トップバー & ナビゲーションレール内のハンバーガーアイコン等のボタンをロゴ周りの白(#FFFFFF)に統一 */
+:root[data-theme="light"] .top-app-bar .icon-btn-48,
+:root[data-theme="light"] .m3-navigation-rail .icon-btn-48,
+:root[data-theme="light"] .rail-menu-btn,
+:root[data-theme="light"] #mobile-menu-btn,
+:root[data-theme="light"] #rail-menu-toggle-btn,
+:root[data-theme="light"] #rail-theme-toggle-btn,
+:root[data-theme="light"] #top-theme-toggle-btn,
+:root[data-theme="light"] #top-more-vert-btn {
+  color: #FFFFFF;
+}
+
+:root[data-theme="light"] .top-app-bar .icon-btn-48:hover,
+:root[data-theme="light"] .m3-navigation-rail .icon-btn-48:hover,
+:root[data-theme="light"] .rail-menu-btn:hover,
+:root[data-theme="light"] .brand-home-btn:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* プレビュー切り替えセレクターもロゴ周りの白に合わせて馴染ませる */
+:root[data-theme="light"] .top-app-bar .preview-selector-chip {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+:root[data-theme="light"] .top-app-bar .preview-selector-chip:hover {
+  background-color: rgba(255, 255, 255, 0.28);
+}
+:root[data-theme="light"] .top-app-bar .preview-selector-chip .material-symbols-rounded {
+  color: #FFFFFF;
+}
+
+/* ナビゲーションメニュー (アイテム・アイコン・文字) をロゴ周りの白に統一 */
+:root[data-theme="light"] .nav-item,
+:root[data-theme="light"] .rail-item {
+  color: rgba(255, 255, 255, 0.88);
+}
+:root[data-theme="light"] .nav-item .nav-label,
+:root[data-theme="light"] .rail-item .rail-label {
+  color: rgba(255, 255, 255, 0.88);
+}
+:root[data-theme="light"] .nav-item:hover,
+:root[data-theme="light"] .rail-item:hover {
+  color: #FFFFFF;
+}
+:root[data-theme="light"] .nav-item:hover .nav-label,
+:root[data-theme="light"] .rail-item:hover .rail-label {
+  color: #FFFFFF;
+}
+:root[data-theme="light"] .rail-item:hover .rail-indicator {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* アクティブ (選択中) 状態: 白ピル + オレンジアイコン + 白太字ラベル */
+:root[data-theme="light"] .nav-item.active .nav-indicator,
+:root[data-theme="light"] .rail-item.active .rail-indicator {
+  background-color: #FFFFFF;
+  color: var(--wawahz-color-chrome);
+}
+:root[data-theme="light"] .nav-item.active .nav-label,
+:root[data-theme="light"] .rail-item.active .rail-label {
+  color: #FFFFFF;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme="light"] .brand-logo-icon,
+:root[data-theme="light"] .brand-home-btn:hover .brand-logo-icon {
+  color: var(--wawahz-color-content-accent);
+}
+:root[data-theme="light"] .top-app-bar .app-title {
+  color: #FFFFFF;
+}
+:root[data-theme="light"] .top-app-bar .brand-home-btn:focus-visible {
+  outline-color: #FFFFFF;
+}
+:root[data-theme="light"] .brand-home-btn:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* コンテンツ見出しはセカンダリー、主要操作はプライマリーに役割を分ける。 */
+:root[data-theme="light"] .screen-heading-icon,
+:root[data-theme="light"] .screen-heading-text {
+  color: var(--wawahz-color-content-accent) !important;
+}
+:root[data-theme="light"] .site-info-card {
+  background-color: var(--md-sys-color-tertiary-container);
+}
+:root[data-theme="light"] .site-info-card .m3-btn-tonal {
+  background-color: var(--md-sys-color-surface);
+}
+:root[data-theme="light"] .site-spec-item {
+  background-color: var(--md-sys-color-surface);
+}
+:root[data-theme="light"] .m3-dropdown-field {
+  background-color: var(--md-sys-color-surface);
+}
+:root[data-theme="light"] .m3-search-bar {
+  background-color: var(--md-sys-color-surface);
+  border-color: var(--md-sys-color-outline-variant);
+}
+:root[data-theme="light"] .m3-sort-dropdown-wrapper {
+  background-color: var(--md-sys-color-surface);
+}
+:root[data-theme="light"] .work-card {
+  background-color: var(--md-sys-color-tertiary-container);
+}
+:root[data-theme="light"] .dhome-overlapping-pill {
+  background-color: var(--md-sys-color-secondary);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================

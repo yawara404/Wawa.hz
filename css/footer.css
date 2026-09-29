@@ -1,0 +1,734 @@
+/* ==========================================================================
+   Wawa.hz - Site Footer & Information Hub
+   ========================================================================== */
+
+/* ==========================================================================
+   サイトフッター・情報まとめ (Site Information & Footer Hub / 画面 3)
+   ========================================================================== */
+.site-info-footer-container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.site-info-card {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: 22px 24px;
+  box-shadow: 0 7px 22px rgba(47, 116, 117, 0.08);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 15%, transparent);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.site-info-card:hover {
+  box-shadow: 0 11px 28px rgba(47, 116, 117, 0.12);
+}
+
+/* Nowplaying Hub カード - 下のカードと背景色・枠線を完全統一 */
+.np-hub-card {
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 15%, transparent);
+}
+
+.np-hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.info-np-dropdown-menu {
+  max-height: 320px;
+  border-radius: 16px;
+  padding: 6px;
+}
+
+.info-np-dropdown-menu .m3-dropdown-item {
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin-bottom: 2px;
+}
+
+.np-hub-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* ボタン内テキストは折り返さず、収まらない場合は省略する */
+.np-hub-actions .m3-btn {
+  min-width: 0;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.np-hub-actions .m3-btn > span:not(.material-symbols-rounded) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Track Station の主操作はテーマのプライマリー色に統一する。 */
+:root #info-open-player-btn {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 78%, var(--md-sys-color-on-primary));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+}
+
+:root #info-open-player-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+  color: var(--md-sys-color-on-primary);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+  filter: none;
+}
+
+/* モバイルでは縦に並べて文字切れ・はみ出しを防ぐ */
+@media (max-width: 600px) {
+  .np-hub-actions {
+    flex-direction: column;
+  }
+  .np-hub-actions .m3-btn {
+    width: 100%;
+  }
+}
+
+/* サイト概要 & ブランドカード */
+.brand-about-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand-logo-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-tags-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.brand-about-desc {
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: 1.65;
+  margin: 0;
+  font-size: 14px;
+}
+
+.site-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.site-spec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: var(--md-sys-color-surface-container-low);
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.site-spec-item span.material-symbols-rounded {
+  color: var(--md-sys-color-primary);
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.site-spec-item strong {
+  display: block;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.site-spec-item span:not(.material-symbols-rounded) {
+  display: block;
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+/* サイトナビゲーション & モーダル導線 */
+.info-action-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.info-grid-btn {
+  height: 48px;
+  padding: 0 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 14px;
+  white-space: nowrap;
+}
+
+.site-footer-links-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links-list a {
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.footer-links-list a:hover {
+  color: var(--md-sys-color-primary);
+  transform: translateX(3px);
+}
+
+/* 最下部バー */
+.site-footer-bottom-bar {
+  padding: 8px 4px 16px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+@media (max-width: 600px) {
+  .site-info-footer-container {
+    padding: 0 0 80px;
+    gap: 16px;
+  }
+  .site-info-card {
+    padding: 16px;
+  }
+  .site-spec-grid {
+    grid-template-columns: 1fr;
+  }
+  .info-action-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .site-footer-links-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ==========================================================================
+/* ---------- site-footer ---------- */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 16px 104px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--md-sys-color-surface);
+  background-image: none !important;
+  position: relative;
+  z-index: 10;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ==========================================================================
+   サイトフッターの表示範囲（3画面のうち3画面目だけに表示）
+   ・画面1（ホーム: モバイル / デスクトップ）… 表示しない
+   ・画面2（カテゴリー / 検索）… 表示しない
+   ・Post 画面 … 表示しない（カードグリッド + ページ送りで画面下まで使う）
+   ・画面3（情報欄・サイト情報）以降 … 従来どおり表示する
+   フッター内のリンクは、ドロワー（ナビゲーションメニュー）と
+   右上の「その他」メニューから開ける。
+   ========================================================================== */
+.main-content-wrapper:has(> .site-main > .mobile-home-wrapper) > .site-footer,
+.main-content-wrapper:has(> .site-main > #desktop-home-container) > .site-footer,
+.main-content-wrapper:has(> .site-main > #screen-category) > .site-footer,
+.main-content-wrapper:has(> .site-main > #screen-post) > .site-footer,
+.main-content-wrapper:has(> .site-main > #screen-search) > .site-footer {
+  display: none;
+}
+
+/* フッターを出さない画面では、フッターが持っていた下余白 (104px) が
+   なくなるため、モバイルの固定ボトムナビに最後の内容が隠れないよう
+   同じ高さの余白を本文側で確保する。 */
+@media (max-width: 899px) {
+  .main-content-wrapper:has(> .site-main > .mobile-home-wrapper),
+  .main-content-wrapper:has(> .site-main > #screen-category),
+  .main-content-wrapper:has(> .site-main > #screen-post),
+  .main-content-wrapper:has(> .site-main > #screen-search) {
+    padding-bottom: 104px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .site-footer {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .site-footer {
+    padding: 24px 32px;
+  }
+}
+.force-desktop .site-footer {
+  padding: 24px 32px !important;
+}
+.site-footer a,
+.site-footer button.footer-modal-trigger {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+.site-footer a:hover,
+.site-footer button.footer-modal-trigger:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+.site-footer nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---------- Info 画面 (screen-info) スタイル ---------- */
+.info-screen-view {
+  width: 100%;
+  padding: 0;
+}
+.site-info-footer-container {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.site-info-card {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--md-sys-elevation-1);
+}
+.np-hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.site-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.site-spec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--md-sys-color-surface);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+.site-spec-item .material-symbols-rounded {
+  color: var(--md-sys-color-primary);
+  font-size: 22px;
+  margin-top: 2px;
+}
+.site-spec-item strong {
+  display: block;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface);
+}
+.site-spec-item span {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ---------- Info 画面: 両テーマ共通の配色整理 ---------- */
+:root #screen-info .site-info-card {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
+  box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
+}
+
+:root #screen-info .site-info-card:hover {
+  box-shadow: 0 12px 30px rgba(47, 116, 117, 0.14);
+}
+
+:root #screen-info .m3-dropdown-field {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 94%, transparent);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 38%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 3px 12px rgba(47, 116, 117, 0.07);
+}
+
+:root #screen-info .m3-dropdown-field:hover,
+:root #screen-info .m3-dropdown-field:focus-visible,
+:root #screen-info .m3-dropdown-field[aria-expanded="true"] {
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-secondary) 13%, transparent),
+              0 5px 16px rgba(47, 116, 117, 0.10);
+}
+
+:root #screen-info .m3-dropdown-field .dropdown-label {
+  background-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 78%, var(--md-sys-color-surface));
+  color: var(--md-sys-color-secondary);
+}
+
+/* Info: 「ギャラリーを開く」ボタンはセカンダリーカラー (全テーマ共通) */
+#info-goto-gallery-btn {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 80%, var(--md-sys-color-on-secondary));
+  box-shadow: 0 4px 12px rgba(47, 116, 117, 0.18);
+}
+
+#info-goto-gallery-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-secondary) 90%, var(--md-sys-color-on-secondary));
+  box-shadow: 0 6px 16px rgba(47, 116, 117, 0.24);
+  filter: none;
+}
+
+:root #screen-info .np-hub-card .nowplaying-yt-tag {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-error) 32%, transparent);
+  box-shadow: none;
+}
+
+:root #screen-info .brand-tags-row .preview-selector-chip {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  border-color: color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent);
+}
+
+:root #screen-info .brand-tags-row .preview-selector-chip:first-child {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-secondary) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 24%, transparent);
+}
+
+:root #screen-info .site-spec-item {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.06);
+}
+
+:root #screen-info .info-grid-btn {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent);
+  box-shadow: 0 3px 10px rgba(79, 51, 36, 0.05);
+}
+
+/* 情報の役割ごとに面色を分け、同色カードの連続感を解消する。 */
+:root #screen-info .np-hub-card {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 70%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 92%, var(--md-sys-color-surface))
+  );
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 24%, transparent);
+}
+
+:root #screen-info .brand-about-card {
+  background: linear-gradient(145deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container));
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 17%, transparent);
+  box-shadow: 0 8px 24px rgba(79, 51, 36, 0.09);
+}
+
+:root #screen-info .brand-about-card:hover {
+  box-shadow: 0 12px 30px rgba(79, 51, 36, 0.13);
+}
+
+:root #screen-info .brand-about-card .site-spec-item {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 66%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 82%, var(--md-sys-color-surface))
+  );
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+}
+
+:root #screen-info .site-nav-directory-card {
+  background: linear-gradient(145deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container-high));
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent);
+  box-shadow: 0 8px 24px rgba(79, 51, 36, 0.08);
+}
+
+:root #screen-info .site-nav-directory-card > h3 {
+  color: var(--md-sys-color-secondary) !important;
+}
+
+:root #screen-info .site-nav-directory-card .info-grid-btn {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.07);
+}
+
+:root #screen-info .site-nav-directory-card .info-grid-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 82%, var(--md-sys-color-secondary));
+  box-shadow: 0 5px 14px rgba(47, 116, 117, 0.12);
+}
+
+#screen-info .footer-links-col {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 64%, transparent);
+}
+
+:root #screen-info .footer-links-list a {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+:root #screen-info .footer-links-list a:hover {
+  color: var(--md-sys-color-primary);
+}
+
+:root #screen-info .site-footer-bottom-bar {
+  border-top-color: color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
+}
+
+/* 説明用アイコンはテーマのセカンダリー色に統一する。 */
+:root #screen-info .np-hub-header > div > .material-symbols-rounded,
+:root #screen-info .m3-dropdown-field .material-symbols-rounded,
+:root #screen-info .info-np-dropdown-menu .material-symbols-rounded,
+:root #screen-info .brand-logo-badge > .material-symbols-rounded,
+:root #screen-info .site-spec-item > .material-symbols-rounded,
+:root #screen-info .info-grid-btn > .material-symbols-rounded {
+  color: var(--md-sys-color-secondary) !important;
+}
+
+:root #screen-info .brand-wordmark,
+:root #screen-info .brand-wordmark-suffix {
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+:root #screen-info .footer-links-col > .label-large {
+  color: var(--md-sys-color-secondary) !important;
+}
+
+/* ブランドの主操作と外部サービス色は役割が伝わる色を維持する。 */
+:root #screen-info #info-open-player-btn > .material-symbols-rounded {
+  color: var(--md-sys-color-on-primary) !important;
+}
+
+:root #screen-info .nowplaying-yt-tag .material-symbols-rounded {
+  color: currentColor !important;
+}
+
+/* ---------- フッターモーダルトリガー ---------- */
+.footer-modal-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.footer-modal-trigger:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* ==========================================================================
+   Fix: ハンバーガードロワーでサイトロゴが見切れないようにする
+   原因: .m3-slide-drawer-backdrop が position:fixed inset:0 (top:0) のため、
+   ログイン時の WP 管理バー (#wpadminbar / body.admin-bar, 32px / 782px以下46px)
+   の下にドロワーヘッダーが潜り込み、ロゴ上部が見切れる。
+   対策: body.admin-bar 時にBackdrop全体を管理バー高さ分だけ下げ、
+   高さをその分だけ縮めてドロワーを管理バーの下に収める。
+   ========================================================================== */
+body.admin-bar .m3-slide-drawer-backdrop {
+  top: var(--wawahz-admin-bar-height, 32px);
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: calc(100vh - var(--wawahz-admin-bar-height, 32px));
+  height: calc(100dvh - var(--wawahz-admin-bar-height, 32px));
+}
+
+/* 画面幅プレビュー(アプリ内フレーム)時は管理バー分の下げは不要 */
+body.admin-bar #app-viewport.preview-mobile .m3-slide-drawer-backdrop,
+body.admin-bar #app-viewport.preview-desktop .m3-slide-drawer-backdrop {
+  top: 0;
+  bottom: 0;
+  height: 100%;
+}
+
+body.admin-bar .m3-slide-drawer {
+  height: 100%;
+  max-height: 100%;
+}
+
+/* ドロワーヘッダー自体も余裕を持たせ、折り返しや拡大表示でも潰れないように */
+.drawer-header {
+  min-height: 64px;
+  height: auto;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  gap: 12px;
+}
+
+.drawer-branding {
+  min-width: 0;
+  flex: 1;
+}
+
+.drawer-logo {
+  white-space: nowrap;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+#drawer-close-btn {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Now Playing 楽曲追加モーダル (専用フォーム / AJAX 追加)
+   ========================================================================== */
+#dialog-nowplaying-add-track .nowplaying-add-track-dialog {
+  max-width: 560px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.nowplaying-add-track-intro {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.nowplaying-add-track-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nowplaying-add-track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.nowplaying-add-track-preview {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.nowplaying-add-track-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.nowplaying-add-track-status {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.nowplaying-add-track-status[data-state="pending"] {
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 500;
+}
+
+.nowplaying-add-track-status[data-state="error"] {
+  color: #ff5252;
+}
+
+.nowplaying-add-track-status[data-state="success"] {
+  color: var(--md-sys-color-primary);
+}
+
+.nowplaying-add-track-toast {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* 追加直後のカードを軽く強調する */
+.nowplaying-card.is-newly-added {
+  animation: nowplaying-card-in 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes nowplaying-card-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nowplaying-card.is-newly-added { animation: none; }
+}
+
+/* ==========================================================================
+   記事ページ (single / page) — 静的版 article-detail-dialog 準拠
+   参考: ~/Wawa.hz/index.html #article-detail-dialog (.m3-dialog)
+   方針: single.php の .reading-card を .m3-dialog と同等のカードに見せる。
+   .breadcrumbs / .entry-meta / .entry-cover / .entry-content / .entry-tags /
+   .post-navigation は WP 側に定義が無く崩れるためここで付与。
+   (コメント欄は wpDiscuz プラグイン側で描画するためテーマ側では定義しない)
+   ========================================================================== */

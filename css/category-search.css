@@ -1,0 +1,910 @@
+/* ==========================================================================
+   Wawa.hz - Category & Search Screens
+   ========================================================================== */
+
+/* ===========================================================================
+   Category / Search result views
+   Search screen is unified with Category screen (ホーム画面 2) design & layout.
+   =========================================================================== */
+.search-screen-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.search-screen-title {
+  /* カテゴリー画面（ホーム画面2）のモバイル見出し 182×48 と統一。
+     900px以上（force-desktop）では 380×56 へ切り替える。 */
+  width: 182px;
+  max-width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.search-controls-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.search-results-panel {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  box-shadow: var(--md-sys-elevation-1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .search-screen-container,
+  .force-desktop .search-screen-container {
+    max-width: 616px;
+    width: 100%;
+    gap: 20px; /* ホーム画面2 (dcat-desktop-container) と完全に同一の gap: 20px */
+    /* 下余白は付けない。カテゴリー画面 (dcat-desktop-container: padding 0) と
+       記事枠の下端・ページネーションの位置を揃えるため。 */
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  :root:not(.force-mobile) .search-screen-title,
+  .force-desktop .search-screen-title {
+    /* カテゴリ見出し（filter-list.php: デスクトップ 380x56）と幅・高さを揃える */
+    width: 380px;
+    height: 56px;
+    font-size: 14px;
+  }
+
+  /* コントロール行: 検索バー + カテゴリSelect + 並び替えソートをホーム画面2のコントロール行と完全同一の1行に */
+  :root:not(.force-mobile) .search-controls-row,
+  .force-desktop .search-controls-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    width: 100%;
+    max-width: 616px;
+    margin: 0 auto;
+  }
+
+  :root:not(.force-mobile) .search-controls-row .m3-search-bar,
+  .force-desktop .search-controls-row .m3-search-bar {
+    flex: 1;
+    min-width: 0;
+    height: 56px;
+    margin: 0;
+    border-radius: 28px;
+    padding: 0 10px 0 16px;
+  }
+
+  :root:not(.force-mobile) .search-controls-row .m3-sort-dropdown-wrapper,
+  .force-desktop .search-controls-row .m3-sort-dropdown-wrapper {
+    flex-shrink: 0;
+    width: 140px;
+    height: 44px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  :root:not(.force-mobile) .search-controls-row .m3-sort-select,
+  .force-desktop .search-controls-row .m3-sort-select {
+    flex: 1;
+    text-align: center;
+    text-align-last: center;
+    width: auto;
+    padding: 0;
+  }
+
+  :root:not(.force-mobile) .search-results-panel,
+  .force-desktop .search-results-panel {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  box-shadow: var(--md-sys-elevation-1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+  :root:not(.force-mobile) .search-results-panel .cat-scroll-articles-list,
+  .force-desktop .search-results-panel .cat-scroll-articles-list {
+    overflow-y: auto;
+    gap: 8px;
+    height: 100%;
+  }
+
+  :root:not(.force-mobile) .search-results-panel .cat-article-item,
+  .force-desktop .search-results-panel .cat-article-item {
+  background: var(--md-sys-color-surface) !important;
+  border-radius: 18px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-sys-elevation-1);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+}
+
+.cat-article-item {
+  background: var(--md-sys-color-surface) !important;
+  border-radius: 18px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-sys-elevation-1);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.cat-article-item:hover {
+  background-color: var(--md-sys-color-secondary-container);
+  filter: brightness(0.96);
+  transform: translateX(4px);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.cat-article-item:active {
+  transform: scale(0.98);
+}
+
+.cat-article-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.cat-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-article-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  letter-spacing: 0.3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.cat-article-date {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.75;
+}
+
+.cat-article-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.cat-article-summary {
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.cat-article-chevron {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.65;
+  font-size: 20px;
+  flex-shrink: 0;
+  min-width: 20px;
+  margin-left: 8px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.cat-article-item:hover .cat-article-chevron {
+  transform: translateX(3px);
+  color: var(--md-sys-color-primary);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   モバイル: 固定ボトムナビゲーションバー(80px)に本文が隠れないよう下余白を確保
+   （画面隅の固定 ↑/↓ ボタンは廃止し、右中央の「次の画面」ボタンに統一）
+   ========================================================================== */
+#screen-category > .mobile-only,
+#screen-info .site-info-footer-container {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+/* ==========================================================================
+/* ---------- wawa-pagination ---------- */
+.wawa-pagination { display: flex; justify-content: center; margin-top: 24px; }
+.wawa-pagination .page-numbers {
+  display: inline-flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wawa-pagination .page-numbers li { list-style: none; }
+.wawa-pagination .page-numbers a,
+.wawa-pagination .page-numbers span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.wawa-pagination .page-numbers a:hover {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+.wawa-pagination .page-numbers .current {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.wawa-pagination .page-numbers {
+  gap: 7px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.wawa-pagination .page-numbers a,
+.wawa-pagination .page-numbers span {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 16%, var(--md-sys-color-surface));
+  color: var(--md-sys-color-on-secondary-container);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 22%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.09);
+}
+
+.wawa-pagination .page-numbers a:hover {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 34%, var(--md-sys-color-surface));
+  color: var(--md-sys-color-on-secondary-container);
+  box-shadow: 0 5px 14px rgba(47, 116, 117, 0.14);
+}
+
+.wawa-pagination .page-numbers .current {
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 4px 12px rgba(47, 116, 117, 0.18);
+}
+.cat-scroll-articles-list {
+  height: 100%;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* Cat scroll list & article cards unified styles */
+.cat-scroll-articles-list::-webkit-scrollbar { width: 6px; }
+.cat-scroll-articles-list::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 3px;
+}
+
+/* ---------- Search 画面 (screen-search) スタイル ----------
+   モバイル（〜899px）はカテゴリー画面（ホーム画面2）と同じ
+   「380px 幅の1カラム + 182×48 の見出し」で表示する。
+   デスクトップ用の値（616px 幅 / 380×56 の見出し / 1行コントロール）は
+   ファイル上部の `@media (min-width: 900px)` ブロックで定義している。
+   ※ 以前はここにデスクトップ用の値が無条件で書かれており、
+     上部のモバイル指定を常に上書きしてしまっていた（＝非レスポンシブの原因）。 */
+.search-screen-view {
+  width: 100%;
+  padding: 0;
+}
+.search-controls-row .m3-sort-dropdown-wrapper {
+  flex: 0 0 auto;
+  width: 130px;
+  height: 48px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-controls-row .m3-sort-dropdown-wrapper .m3-sort-select {
+  flex: 1;
+  text-align: center;
+  text-align-last: center;
+  width: auto;
+  padding: 0;
+}
+.search-controls-row .m3-search-bar {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+}
+.m3-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  background: var(--md-sys-color-surface-container-high);
+  border-radius: 24px;
+  padding: 0 12px 0 16px;
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.m3-search-bar:focus-within {
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.m3-search-bar input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  font-size: 14px;
+  font-family: inherit;
+}
+.search-clear-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.search-clear-btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--md-sys-color-on-surface);
+}
+:root[data-theme="dark"] .search-clear-btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+.search-clear-btn .material-symbols-rounded {
+  font-size: 18px;
+}
+
+/* クイックおすすめタグ (トピック) */
+.search-quick-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.search-quick-tags::-webkit-scrollbar { display: none; }
+.search-quick-tags-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-quick-tags-list {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.search-tag-chip {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.search-tag-chip:hover {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  transform: translateY(-1px);
+}
+
+/* 検索初期状態・空状態カード */
+.search-initial-card,
+.search-empty-card {
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 28px;
+  padding: 32px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(79, 51, 36, 0.07);
+}
+.search-initial-icon-wrap,
+.search-empty-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.12);
+}
+.search-empty-icon-wrap {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-outline);
+}
+.search-initial-icon-wrap .material-symbols-rounded,
+.search-empty-icon-wrap .material-symbols-rounded {
+  font-size: 28px;
+}
+.search-initial-title,
+.search-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+.search-initial-desc,
+.search-empty-desc {
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.5;
+}
+.search-initial-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+  width: 100%;
+}
+.search-category-tile {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  box-shadow: 0 2px 8px rgba(47, 116, 117, 0.08);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+}
+.search-category-tile:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.95);
+  box-shadow: var(--md-sys-elevation-2);
+}
+.search-category-tile .material-symbols-rounded {
+  font-size: 18px;
+  color: var(--md-sys-color-primary);
+}
+.search-cat-count {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .search-results-panel {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  box-shadow: var(--md-sys-elevation-1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+}
+
+/* ---------- アーカイブ: カテゴリーチップ行 ---------- */
+.category-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.category-chips::-webkit-scrollbar { display: none; }
+.category-chips a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.category-chips a:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  border-color: var(--md-sys-color-outline);
+}
+.category-chips a[aria-current="page"] {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+  font-weight: 600;
+}
+.archive-description {
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 8px 0 0;
+  line-height: 1.6;
+}
+.archive-description p { margin: 0; }
+.cat-article-empty { cursor: default; }
+.cat-article-empty:hover { transform: none; }
+
+/* ==========================================================================
+   Category 画面: テーマトークンで共通の配色整理
+   ========================================================================== */
+#screen-category #mobile-category-header-btn,
+#screen-category #desk-category-header-btn,
+#screen-search #btn-search-header {
+  background-color: var(--md-sys-color-secondary) !important;
+  color: var(--md-sys-color-on-secondary) !important;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 78%, var(--md-sys-color-on-secondary));
+  box-shadow: 0 5px 16px rgba(47, 116, 117, 0.20);
+  opacity: 1;
+  filter: none;
+}
+
+#screen-category .m3-dropdown-field,
+#screen-category .m3-sort-dropdown-wrapper {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 96%, transparent);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 28%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 3px 12px rgba(79, 51, 36, 0.06);
+}
+
+#screen-category .m3-dropdown-field:hover,
+#screen-category .m3-dropdown-field:focus-visible,
+#screen-category .m3-sort-dropdown-wrapper:hover,
+#screen-category .m3-sort-dropdown-wrapper:focus-within {
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent),
+              0 5px 16px rgba(47, 116, 117, 0.09);
+  outline: none;
+}
+
+#screen-category .m3-dropdown-field .dropdown-label {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-secondary);
+}
+
+#screen-category .m3-sort-dropdown-wrapper .sort-icon {
+  color: var(--md-sys-color-primary);
+}
+
+#screen-category #mobile-cat-articles-box,
+#screen-category #desk-cat-articles-box {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
+  box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
+}
+
+/* デスクトップでは記事枠に残りの高さを割り当て、上下の外周余白を揃える。 */
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .site-main:has(> #screen-category) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.force-desktop .site-main:has(> #screen-category) {
+  display: flex;
+  flex-direction: column;
+}
+
+#screen-category > .dcat-desktop-container {
+  flex: 1;
+}
+
+#screen-category #desk-cat-articles-box {
+  flex: 1 0 320px;
+  height: auto;
+  max-height: none;
+}
+
+#screen-category #desk-cat-articles-list {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+#screen-category .cat-article-item {
+  background: color-mix(in srgb, var(--md-sys-color-surface) 96%, var(--md-sys-color-tertiary-container)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.07);
+}
+
+#screen-category .cat-article-item:hover {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 42%, var(--md-sys-color-surface)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 32%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 6px 16px rgba(47, 116, 117, 0.11);
+  filter: none;
+}
+
+#screen-category .cat-article-badge {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+  box-shadow: none;
+}
+
+#screen-category .cat-article-chevron {
+  color: var(--md-sys-color-secondary);
+}
+
+#screen-category .cat-scroll-articles-list::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--md-sys-color-secondary) 42%, var(--md-sys-color-secondary-container));
+}
+
+/* ==========================================================================
+   Search 画面: Category / Info と共通の配色
+   ========================================================================== */
+#screen-search #main-search-bar {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 96%, transparent);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 28%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 4px 14px rgba(79, 51, 36, 0.07);
+}
+
+#screen-search #main-search-bar:focus-within {
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent),
+              0 6px 18px rgba(47, 116, 117, 0.10);
+}
+
+#screen-search .search-input-icon {
+  color: var(--md-sys-color-secondary);
+}
+
+#screen-search .search-submit-btn {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
+}
+
+#screen-search .search-submit-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+  color: var(--md-sys-color-on-primary);
+}
+
+#screen-search .search-tag-chip {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 92%, var(--md-sys-color-primary-container));
+  color: var(--md-sys-color-on-surface-variant);
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
+}
+
+#screen-search .search-tag-chip:hover {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+}
+
+#screen-search .search-initial-card,
+#screen-search .search-empty-card,
+#screen-search .search-results-panel {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
+  ) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
+  box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
+}
+
+#screen-search .search-initial-icon-wrap {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  box-shadow: 0 4px 12px rgba(47, 116, 117, 0.18);
+}
+
+#screen-search .search-empty-icon-wrap {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+#screen-search .search-category-tile {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 94%, transparent);
+  color: var(--md-sys-color-on-surface);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.07);
+}
+
+#screen-search .search-category-tile:hover {
+  background-color: var(--md-sys-color-primary-container);
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+  filter: none;
+}
+
+#screen-search .cat-article-item {
+  background: color-mix(in srgb, var(--md-sys-color-surface) 96%, var(--md-sys-color-tertiary-container)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.07);
+}
+
+#screen-search .cat-article-item:hover {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 42%, var(--md-sys-color-surface)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 32%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 6px 16px rgba(47, 116, 117, 0.11);
+  filter: none;
+}
+
+#screen-search .cat-article-badge {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+  box-shadow: none;
+}
+
+#screen-search .search-empty-card .m3-btn-tonal {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+  color: var(--md-sys-color-secondary);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
+}
+
+/* ==========================================================================
+   検索画面のレスポンシブ構成（カテゴリー画面と同一挙動）
+   ・モバイル: 380×320 の記事ボックス（#search-results-box-mobile）
+   ・デスクトップ: 616 幅の枠が画面の残り高さを吸収し、内部リストがスクロール
+   ========================================================================== */
+/* デスクトップでは記事枠に残りの高さを割り当て、上下の外周余白を揃える。 */
+@media (min-width: 900px) {
+  :root:not(.force-mobile) .site-main:has(> #screen-search) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.force-desktop .site-main:has(> #screen-search) {
+  display: flex;
+  flex-direction: column;
+}
+
+#screen-search > .dcat-desktop-container {
+  flex: 1;
+}
+
+/* デスクトップ枠の中の 616px 枠も伸ばして、記事ボックスに残り高さを渡す */
+#screen-search > .dcat-desktop-container > .search-screen-container {
+  flex: 1;
+  min-height: 0;
+}
+
+#screen-search #search-results-box-desktop {
+  flex: 1 0 320px;
+  height: auto;
+  max-height: none;
+}
+
+#screen-search #search-results-list-desktop {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+/* --- 検索の「初期状態」「結果ゼロ(空ステート)」の枠も、カテゴリー画面の記事枠と
+       同じ枠寸法・同じレスポンシブ挙動に揃える -------------------------------
+   ・モバイル    : 380×320 の固定枠（カテゴリー画面 #mobile-cat-articles-box と同一）
+   ・デスクトップ: 616 幅で画面の残り高さを吸収（カテゴリー画面 #desk-cat-articles-box
+                  と同じく flex: 1 0 320px で縦に伸びる）
+   どちらも中身が収まらないときは、枠の中だけがスクロールする。 */
+#screen-search > .mobile-only .search-initial-card,
+#screen-search > .mobile-only .search-empty-card {
+  width: 100%;
+  max-width: 380px;
+  height: 320px;
+  max-height: 320px;
+  margin: 0 auto;
+  padding: 16px 12px;
+  gap: 8px;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+#screen-search > .desktop-only .search-initial-card,
+#screen-search > .desktop-only .search-empty-card {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  min-height: 320px;
+  flex: 1 0 320px;
+  margin: 0;
+  padding: 32px 20px;
+  gap: 12px;
+  justify-content: center;
+  justify-content: safe center; /* 枠より中身が高いときは上寄せ（対応ブラウザのみ） */
+  overflow-y: auto;
+}
+
+/* post 画面のモバイル記事ボックスも、カテゴリー画面と同じ見た目に揃える。 */
+#screen-post #mobile-post-articles-box {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
+  box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
+}
+
+#screen-post .cat-article-item {
+  background: color-mix(in srgb, var(--md-sys-color-surface) 96%, var(--md-sys-color-tertiary-container)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent);
+  box-shadow: 0 3px 10px rgba(47, 116, 117, 0.07);
+}
+
+#screen-post .cat-article-item:hover {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 42%, var(--md-sys-color-surface)) !important;
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 32%, var(--md-sys-color-outline-variant));
+  box-shadow: 0 6px 16px rgba(47, 116, 117, 0.11);
+}

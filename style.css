@@ -1,0 +1,49 @@
+/*
+Theme Name: Wawa.hz
+Theme URI: https://example.com/wawahz
+Author: Wawa.hz Team
+Author URI: https://example.com
+Description: Material 3 Expressive WordPress Theme
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: wawahz
+*/
+
+/* ==========================================================================
+   Wawa.hz Modular Stylesheets
+   役割ごとに分割されたモジュール式スタイルシート
+   ========================================================================== */
+
+/* 1. デザイントークン (Material 3 Expressive カラー、タイポグラフィ、モーション、シェイプ) */
+@import url('css/variables.css?v=20260928_47');
+
+/* 2. 基本リセット、タイポグラフィ、メインコンテナ (wawa-container) & アクセシビリティ */
+@import url('css/base.css?v=20260928_09');
+
+/* 3. M3 Expressive コンポーネント (ボタン、カード、ドロップダウン、モーダル、ドロワー) */
+@import url('css/components.css?v=20260928_16');
+
+/* 4. ナビゲーション (トップアプリバー、ナビゲーションレール、ボトムナビバー、テーマ切替) */
+@import url('css/navigation.css?v=20260928_47');
+
+/* 5. ホーム画面 (モバイルPickupカルーセル、Lately、デスクトップ2カラムレイアウト) */
+@import url('css/home.css?v=20260928_13');
+
+/* 6. カテゴリー & 検索画面 (記事カード裏コンテナ、検索バー、クリアボタン、ページネーション) */
+@import url('css/category-search.css?v=20260928_09');
+
+/* 7. Now Playing & Works (音楽ギャラリー、YouTubeプレイヤーモーダル、楽曲追加) */
+@import url('css/nowplaying.css?v=20260928_07');
+
+/* 8. 記事詳細 (リーダーレイアウト)、投稿カード (post-card)、コメント、サイドバー、404 */
+@import url('css/single-page.css?v=20260928_04');
+
+/* 9. サイトフッター & 情報ハブ (site-info-card、ソーシャルリンク、ライセンス) */
+@import url('css/footer.css?v=20260928_05');
+
+/* 10. Works ページ下部のミニゲーム枠 (p5play 製 Falling Survivor の埋め込み) */
+@import url('css/mini-game.css?v=20260928_03');
+
+/* 11. レスポンシブ最終調整 (横はみ出し防止・タップ領域・中間ブレークポイント) */
+@import url('css/responsive.css?v=20260928_15');

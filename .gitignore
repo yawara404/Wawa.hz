@@ -1,0 +1,49 @@
+# ============================================================================
+# Wawa.hz theme - Git ignore
+# ローカル環境や個人情報を含むファイルはコミットしない
+# ============================================================================
+
+# macOS / Windows のゴミファイル
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# エディタ / IDE の一時ファイル
+*.swp
+*.swo
+*~
+.idea/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# 認証情報・環境変数（誤コミット防止）
+.env
+.env.*
+*.pem
+*.key
+*.p12
+auth.json
+
+# バックアップ / ログ / 一時ファイル
+*.log
+*.bak
+*.orig
+*.rej
+*.tmp
+*~
+
+# WordPress のローカル専用ファイル
+wp-config.php
+debug.log
+
+# リポジトリに含めないローカル専用ドキュメント（Web 公開しない運用手順など）
+MANUAL.md

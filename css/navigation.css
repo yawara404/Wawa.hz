@@ -1,0 +1,368 @@
+/* ==========================================================================
+   Wawa.hz - Navigation (Top App Bar, Bottom Bar, Nav Rail)
+   ========================================================================== */
+
+/* ==========================================================================
+   5. トップアプリバー & ナビゲーション
+   ========================================================================== */
+.top-app-bar {
+  height: var(--top-app-bar-height);
+  min-height: var(--top-app-bar-height);
+  flex-shrink: 0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* ダークモードではナビレール/ボトムバーと同じ surface-container にして
+     クローム（アプリ枠）の色を揃える。ライトモードは下の
+     :root[data-theme="light"] ルールでオレンジに上書きされる。 */
+  background-color: var(--md-sys-color-surface-container);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing),
+              box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+}
+
+.top-app-bar.scrolled {
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+/* WordPress adds the toolbar offset to html. Size the app to the remaining
+   viewport; the sticky header is relative to its own scroll container. */
+body {
+  --wawahz-admin-bar-height: 0px;
+  --wawahz-viewport-height: calc(100dvh - var(--wawahz-admin-bar-height));
+}
+body.admin-bar {
+  --wawahz-admin-bar-height: 32px;
+}
+body.admin-bar .m3-navigation-rail {
+  top: 0;
+  height: var(--wawahz-viewport-height);
+}
+@media screen and (max-width: 782px) {
+  body.admin-bar {
+    --wawahz-admin-bar-height: 46px;
+  }
+}
+
+.top-app-bar .app-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.app-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn-48 {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--md-sys-shape-corner-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing),
+              transform var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+}
+
+.icon-btn-48:active {
+  transform: scale(0.92);
+}
+
+.icon-btn-48:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* プレビューセレクターチップ */
+.preview-selector-chip {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.preview-selector-chip:hover {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* ナビゲーションバー (モバイル用ボトムバー) */
+.m3-navigation-bar {
+  height: 80px;
+  background-color: var(--md-sys-color-surface-container);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  user-select: none;
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+  min-width: 64px;
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+.nav-indicator {
+  width: 64px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+}
+
+.nav-item.active .nav-indicator {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.nav-item.active .nav-label {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.nav-label {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+/* M3 Expressive Wide Navigation Rail (デスクトップ用) */
+.m3-navigation-rail {
+  width: 96px;
+  height: 100%;
+  background-color: var(--md-sys-color-surface-container);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  flex-shrink: 0;
+  transition: width var(--md-sys-motion-duration-long) var(--md-sys-motion-standard-easing);
+}
+
+.m3-navigation-rail.expanded {
+  width: 220px;
+  align-items: stretch;
+  padding: 16px 12px;
+}
+
+.rail-menu-btn {
+  margin-bottom: 24px;
+  align-self: center;
+}
+
+.rail-destinations {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  gap: 4px;
+  padding: 6px 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+}
+
+.m3-navigation-rail.expanded .rail-item {
+  flex-direction: row;
+  height: 56px;
+  padding: 0 16px;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.rail-item.active .rail-indicator {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.rail-item.active .rail-label {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.rail-indicator {
+  width: 56px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m3-navigation-rail.expanded .rail-indicator {
+  width: 36px;
+  height: 36px;
+  background: transparent !important;
+}
+
+.rail-label {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.m3-navigation-rail.expanded .rail-label {
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   ブランドホーム復帰ボタン & アイコンスタイル
+   ========================================================================== */
+.brand-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1), transform 150ms cubic-bezier(0.2, 0, 0, 1);
+  user-select: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  text-decoration: none;
+  color: inherit;
+  font: inherit;
+}
+
+.brand-home-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  transform: translateY(-1px);
+}
+
+.brand-home-btn:active {
+  transform: scale(0.97);
+}
+
+.brand-home-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.brand-logo-icon {
+  color: var(--md-sys-color-primary);
+  font-size: 26px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), color 200ms ease;
+}
+
+.brand-home-btn:hover .brand-logo-icon {
+  transform: scale(1.18);
+  color: var(--md-sys-color-primary);
+}
+
+.drawer-branding {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color 200ms ease, transform 150ms ease;
+  user-select: none;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.drawer-branding:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.drawer-nowplaying-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(var(--md-sys-color-primary-rgb, 103, 80, 164), 0.15) 0%, rgba(var(--md-sys-color-tertiary-rgb, 125, 82, 96), 0.1) 100%);
+  border: 1px solid rgba(var(--md-sys-color-primary-rgb, 103, 80, 164), 0.25);
+  cursor: pointer;
+  transition: background 200ms ease, transform 150ms ease, box-shadow 200ms ease;
+  user-select: none;
+  margin: 12px 20px;
+  box-sizing: border-box;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.drawer-nowplaying-card:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.drawer-branding:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  transform: translateY(-1px);
+}
+
+.drawer-branding:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================

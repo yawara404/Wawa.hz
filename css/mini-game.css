@@ -1,0 +1,445 @@
+/* ==========================================================================
+   Wawa.hz - Mini Game (Works ギャラリー最下部のちいさなゲーム枠)
+   ========================================================================== */
+.mini-game-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 32px;
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background:
+    radial-gradient(130% 120% at 0% 0%, color-mix(in srgb, var(--md-sys-color-primary) 9%, transparent), transparent 62%),
+    var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+/* ---------- 見出し ---------- */
+.mini-game-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mini-game-head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border-radius: 14px;
+  font-size: 24px;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
+  color: var(--md-sys-color-primary);
+}
+
+.mini-game-head-text {
+  flex: 1 1 190px;
+  min-width: 0;
+}
+
+.mini-game-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mini-game-sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mini-game-badge {
+  padding: 5px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  color: var(--md-sys-color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- 本体レイアウト ---------- */
+.mini-game-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.mini-game-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ---------- ゲーム画面 (4:3) ---------- */
+.mini-game-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: #F4F1EA; /* ゲーム側の下地と同じ色 (読み込み中もチラつかない) */
+}
+
+.mini-game-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.mini-game-frame[hidden] {
+  display: none;
+}
+
+.mini-game-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #F4F1EA;
+}
+
+/* ---------- 起動前のプレースホルダー ---------- */
+.mini-game-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.mini-game-placeholder[hidden] {
+  display: none;
+}
+
+.mini-game-sprites {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.mini-game-sprite {
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.mini-game-sprite--player {
+  width: 45px;
+  animation: mini-game-float 2.6s var(--md-sys-motion-standard-easing) infinite;
+}
+
+.mini-game-sprite--enemy {
+  width: 50px;
+  animation: mini-game-float 3.4s var(--md-sys-motion-standard-easing) infinite reverse;
+}
+
+@keyframes mini-game-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-game-sprite { animation: none; }
+}
+
+.mini-game-lead {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mini-game-start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: filter 0.15s ease, transform 0.15s var(--md-sys-motion-standard-easing);
+}
+
+.mini-game-start-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.mini-game-start-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.mini-game-hint {
+  margin: 0;
+  font-size: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.8;
+}
+
+/* ---------- タッチ操作パッド ---------- */
+.mini-game-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mini-game-pad[hidden] {
+  display: none;
+}
+
+.mini-game-pad-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mini-game-pad-top,
+.mini-game-pad-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mini-game-pad-move,
+.mini-game-pad-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mini-game-pad-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.12s ease, transform 0.12s ease;
+}
+
+.mini-game-pad-btn:active {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
+  transform: scale(0.96);
+}
+
+.mini-game-pad-btn .material-symbols-rounded {
+  font-size: 27px;
+}
+
+.mini-game-pad-btn--jump,
+.mini-game-pad-btn--drop {
+  width: 48px;
+  height: 48px;
+}
+
+.mini-game-pad-btn--start {
+  width: auto;
+  min-width: 96px;
+  height: 40px;
+  padding: 0 18px;
+  border-color: transparent;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-size: 12px;
+  letter-spacing: 1.2px;
+}
+
+.mini-game-pad-btn--start:active {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 80%, black);
+}
+
+@media (max-width: 360px) {
+  .mini-game-pad-controls {
+    gap: 8px;
+  }
+
+  .mini-game-pad-move,
+  .mini-game-pad-actions {
+    gap: 4px;
+  }
+
+  .mini-game-pad-move .mini-game-pad-btn {
+    width: 48px;
+    height: 52px;
+  }
+
+  .mini-game-pad-btn--jump,
+  .mini-game-pad-btn--drop {
+    width: 44px;
+    height: 48px;
+  }
+}
+
+/* ---------- あそびかた / ランク ---------- */
+.mini-game-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.mini-game-aside-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--md-sys-color-primary);
+}
+
+.mini-game-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mini-game-rules li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-game-keys {
+  display: inline-flex;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.mini-game-keys kbd {
+  min-width: 26px;
+  padding: 3px 7px;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mini-game-aside-note {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mini-game-ranks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mini-game-rank {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 52px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.mini-game-rank b {
+  font-size: 13px;
+  color: var(--md-sys-color-primary);
+}
+
+.mini-game-rank small {
+  font-size: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.mini-game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mini-game-actions .m3-btn {
+  text-decoration: none;
+}
+
+.mini-game-actions .m3-btn[hidden] {
+  display: none;
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (min-width: 760px) {
+  .mini-game-section {
+    padding: 24px;
+  }
+
+  .mini-game-title {
+    font-size: 20px;
+  }
+
+  /* ちいさなゲーム枠: 画面は 480px までに抑え、残りを説明カラムに使う */
+  .mini-game-body {
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .mini-game-stage {
+    max-width: 480px;
+  }
+}
+
+:root.force-desktop .mini-game-body {
+  grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+  align-items: start;
+}
+
+:root.force-desktop .mini-game-stage {
+  max-width: 480px;
+}
+
+:root.force-mobile .mini-game-body {
+  grid-template-columns: minmax(0, 1fr);
+}

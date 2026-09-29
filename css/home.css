@@ -1,0 +1,1484 @@
+/* ==========================================================================
+   Wawa.hz - Home Screen Layout (Mobile & Desktop)
+   ========================================================================== */
+
+/* ==========================================================================
+   dホーム専用レイアウト (手本M3E Canvas完全再現)
+   ========================================================================== */
+.dhome-two-column-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dhome-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dhome-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 6px;
+}
+
+/* 見出し左のアイコン (Pickup / Lately) */
+.dhome-section-title .material-symbols-rounded {
+  font-size: 26px;
+  color: var(--md-sys-color-secondary);
+}
+
+/* 2×2 グリッド */
+.dhome-grid-2x2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Pickup側 カード (角丸20dp、スクリム、見出し、本文) */
+.dhome-article-card {
+  height: var(--home-preview-card-height, 125px);
+  border-radius: var(--md-sys-shape-corner-large);
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1),
+              border-color 0.25s ease;
+}
+
+.dhome-article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -2px rgba(0, 0, 0, 0.12), 0 3px 8px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   記事サムネイル・サイト画像管理 (images/ フォルダ連携)
+   ※ このセクションのCSSを編集することで、images/ フォルダ内の画像を自由に差し替え・管理できます
+   ========================================================================== */
+
+/* --- ホーム画面 Pickup カード (左側 2x2 グリッド) --- */
+#desk-card-1 { background-image: url('images/music_shimmer.svg'); }
+#desk-card-2 { background-image: url('images/music_velocity.svg'); }
+#desk-card-3 { background-image: url('images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
+#desk-card-4 { background-image: url('images/music_monologue.svg'); }
+
+/* --- ホーム画面 Lately カード (右側 2x2 グリッド) --- */
+#desk-lately-card-1 { background-image: url('images/music_shimmer.svg'); }
+#desk-lately-card-2 { background-image: url('images/music_velocity.svg'); }
+#desk-lately-card-3 { background-image: url('images/music_pourover.svg'); } /* ★朝の光とアコースティックギター (真っ黒解消) */
+#desk-lately-card-4 { background-image: url('images/work_design.svg'); }
+
+/* --- モバイル/各画面での記事サムネイル --- */
+/* モバイル Pickup カルーセルは各スライドが inline style でサムネイルを指定する (ここはフォールバック) */
+.mobile-pickup-card { background-image: url('images/music_shimmer.svg'); background-size: cover; background-position: center; }
+#lately-img-1 { background-image: url('images/music_shimmer.svg'); background-size: cover; background-position: center; }
+#lately-img-2 { background-image: url('images/music_velocity.svg'); background-size: cover; background-position: center; }
+#lately-img-3 { background-image: url('images/music_pourover.svg'); background-size: cover; background-position: center; }
+
+/* --- ホーム画面 Works Gallery サブカード --- */
+#desk-sub-card-1 { --card-bg-img: url('images/work_keyboard.svg'); }
+#desk-sub-card-2 { --card-bg-img: url('images/work_ambient.svg'); }
+
+/* --- 記事・作品IDごとの個別スタイル (全画面・全カード・モーダル共通) --- */
+[data-article-id="art-np-1"] { background-image: url('images/music_shimmer.svg'); }
+[data-article-id="art-np-2"] { background-image: url('images/music_velocity.svg'); }
+[data-article-id="art-np-3"] { background-image: url('images/music_pourover.svg'); }
+[data-article-id="art-np-4"] { background-image: url('images/music_monologue.svg'); }
+[data-article-id="art-life-1"] { background-image: url('images/life_desk_plant.svg'); }
+[data-article-id="art-life-2"] { background-image: url('images/life_pomodoro.svg'); }
+[data-article-id="art-hobby-1"] { background-image: url('images/hobby_camera.svg'); }
+[data-article-id="art-work-1"] { background-image: url('images/work_design.svg'); }
+[data-article-id="art-tips-1"] { background-image: url('images/work_ambient.svg'); }
+[data-article-id="art-uncat-1"] { background-image: url('images/uncat_minimal_web.svg'); }
+[data-article-id="art-uncat-2"] { background-image: url('images/uncat_coffee_beans.svg'); }
+
+/* --- Post画面 初期カード (1ページ目) --- */
+#post-card-1 { background-image: url('images/music_shimmer.svg'); }
+#post-card-2 { background-image: url('images/music_velocity.svg'); }
+#post-card-3 { background-image: url('images/music_pourover.svg'); }
+#post-card-4 { background-image: url('images/music_monologue.svg'); }
+#post-card-5 { background-image: url('images/life_desk_plant.svg'); }
+#post-card-6 { background-image: url('images/life_pomodoro.svg'); }
+
+[data-work-id="work-1"] { background-image: url('images/work_keyboard.svg'); }
+[data-work-id="work-2"] { background-image: url('images/work_ambient.svg'); }
+[data-work-id="work-3"] { background-image: url('images/hobby_camera.svg'); }
+[data-work-id="work-4"] { background-image: url('images/work_design.svg'); }
+[data-work-id="work-5"] { background-image: url('images/music_velocity.svg'); }
+[data-work-id="work-6"] { background-image: url('images/uncat_coffee_beans.svg'); }
+
+.dhome-article-card .card-scrim-white {
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #1a1a1a;
+  padding: 8px 12px;
+  margin: 6px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.dhome-article-card:hover .card-scrim-white {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.dhome-article-card .card-scrim-white .card-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  letter-spacing: 0.6px;
+}
+
+.dhome-article-card .card-scrim-white .card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dhome-article-card .card-scrim-white .card-desc {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ダークモード時のサムネ文字裏の透明度・視認性スタイル */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dhome-article-card .card-scrim-white {
+    background: rgba(13, 21, 21, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  }
+  :root:not([data-theme="light"]) .dhome-article-card:hover .card-scrim-white {
+    background: rgba(13, 21, 21, 0.76);
+  }
+  :root:not([data-theme="light"]) .dhome-article-card .card-scrim-white .card-badge {
+    color: #56D8E0;
+  }
+  :root:not([data-theme="light"]) .dhome-article-card .card-scrim-white .card-title {
+    color: #FDFFFF;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+  :root:not([data-theme="light"]) .dhome-article-card .card-scrim-white .card-desc {
+    color: #DCE4E4;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+
+:root[data-theme="dark"] .dhome-article-card .card-scrim-white {
+  background: rgba(13, 21, 21, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] .dhome-article-card:hover .card-scrim-white {
+  background: rgba(13, 21, 21, 0.76);
+}
+
+:root[data-theme="dark"] .dhome-article-card .card-scrim-white .card-badge {
+  color: #56D8E0;
+}
+
+:root[data-theme="dark"] .dhome-article-card .card-scrim-white .card-title {
+  color: #FDFFFF;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .dhome-article-card .card-scrim-white .card-desc {
+  color: #DCE4E4;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* 下部ボックスラッパー (上部にピルボタンが半分重なる) */
+.dhome-bottom-box-wrapper {
+  position: relative;
+  margin-top: 18px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 上部に重なる水色ピルボタン (Nowplaying / Gallery) */
+.dhome-overlapping-pill {
+  position: absolute;
+  top: -19px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  height: 38px;
+  padding: 0 28px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-family: var(--md-ref-typeface);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.16), 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+              filter 0.2s ease;
+}
+
+.dhome-overlapping-pill:hover {
+  transform: translateX(-50%) translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px -2px rgba(0, 0, 0, 0.22);
+  filter: brightness(1.05);
+}
+
+.dhome-overlapping-pill:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+/* 下部グレーボックス (背景 surfaceContainerHigh、角丸 28dp) */
+.dhome-bottom-box {
+  height: 165px;
+  background: linear-gradient(145deg, var(--md-sys-color-surface-container-low), var(--md-sys-color-surface-container-high));
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: 24px 16px 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(79, 51, 36, 0.06);
+}
+
+/* 音楽プレイヤー行 */
+.dhome-player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 丸型トーナルボタン (music_note / play_arrow) */
+.dhome-circle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--md-sys-motion-duration-short);
+}
+
+.dhome-circle-btn:active {
+  transform: scale(0.92);
+}
+
+/* 下部ボックス内のカード (NowPlaying / Gallery 共通)
+   見やすく・箱に馴染み・背景が見えるカード (グラデーション不使用) */
+.dhome-inner-card {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  height: 100px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+  transition: transform var(--md-sys-motion-duration-short) ease,
+              box-shadow var(--md-sys-motion-duration-short) ease,
+              border-color var(--md-sys-motion-duration-short) ease;
+}
+
+/* 画像サムネイル共通 (Gallery は右・角丸 / NowPlaying は左・円形) */
+.dhome-inner-card::after {
+  content: '';
+  background-image: var(--card-bg-img, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+/* Gallery: 全面プレビュー (画像 + 背景色つきタイトルバー + 下に重なる情報枠) */
+.dhome-inner-card--gallery {
+  padding: 0;
+  align-items: stretch;
+  overflow: visible;
+  background: transparent;
+}
+
+.dhome-inner-card--gallery::after {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow: none;
+}
+
+.dhome-inner-card--gallery .dhome-inner-card-title {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 6px 12px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--md-sys-color-on-surface);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 24px);
+  border-radius: var(--md-sys-shape-corner-small);
+  z-index: 2;
+}
+
+.dhome-inner-card--gallery .dhome-inner-card-desc {
+  position: absolute;
+  top: calc(100% - 6px);
+  left: 10px;
+  right: 10px;
+  margin: 0;
+  padding: 5px 10px;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-small);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10);
+}
+
+/* NowPlaying: セカンダリー配色 (右下コーナーボタンと同色) */
+.dhome-player-row .dhome-inner-card {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+.dhome-player-row .dhome-inner-card-title {
+  color: var(--md-sys-color-on-secondary-container);
+}
+.dhome-player-row .dhome-inner-card-desc {
+  color: var(--md-sys-color-on-secondary-container);
+  opacity: 0.8;
+}
+
+/* NowPlaying: 左側の円形アルバムアート */
+.dhome-player-row .dhome-inner-card::after {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  order: -1;
+}
+
+.dhome-inner-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+}
+
+.dhome-inner-card:hover::after {
+  transform: scale(1.04);
+}
+
+.dhome-inner-card:active {
+  transform: scale(0.98);
+}
+
+.dhome-inner-card-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.dhome-inner-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dhome-inner-card-desc {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dhome-inner-card-icon {
+  display: none; /* サムネイルがある通常時はアイコンを省略 */
+}
+
+.dhome-inner-card--empty::after {
+  display: none; /* 空状態ではサムネイルなし */
+}
+
+.dhome-inner-card--empty .dhome-inner-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* サブカード行 (Gallery側) */
+.dhome-subcards-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+/* ---------- モバイルホームラッパー ---------- */
+.mobile-home-wrapper {
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 0 0 16px;
+}
+
+/* ---------- Pickup 見出し & カルーセル (モバイル) ---------- */
+.mobile-pickup-section {
+  /* 中央カードの幅とスライド間隔。両端のカードは左右に少し覗く */
+  --mobile-pickup-slide: 72%;
+  --mobile-pickup-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* 見出し (デザイン仕様: 中央寄せ 16sp 太字) */
+.mobile-pickup-heading {
+  text-align: center;
+  margin-top: 0;
+  padding: 0 0 4px;
+}
+
+.mobile-pickup-heading h2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+.mobile-pickup-heading h2 .material-symbols-rounded {
+  font-size: 20px;
+  color: var(--md-sys-color-secondary);
+}
+
+.mobile-pickup-row {
+  position: relative;
+  width: 100%;
+}
+
+/* カルーセルの矢印: カードに重ねる半透明グラスモーフィズム円形ボタン */
+.mobile-pickup-row .m3-btn-icon-only {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  z-index: 5;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(24, 24, 24, 0.52);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+#mobile-pickup-prev-btn { left: 6px; }
+#mobile-pickup-next-btn { right: 6px; }
+.mobile-pickup-row .m3-btn-icon-only:hover {
+  background-color: rgba(24, 24, 24, 0.78);
+  transform: translateY(-50%) scale(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+.mobile-pickup-row .m3-btn-icon-only:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+/* カルーセル ページネーション (ドットインジケーター) */
+.mobile-pickup-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+.mobile-pickup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  border: none;
+  padding: 0;
+  background-color: var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1),
+              background-color 0.25s cubic-bezier(0.2, 0, 0, 1),
+              transform 0.2s ease;
+}
+.mobile-pickup-dot:hover {
+  background-color: var(--md-sys-color-outline);
+}
+.mobile-pickup-dot.is-active,
+.mobile-pickup-dot[aria-current="true"] {
+  width: 24px;
+  background-color: var(--md-sys-color-primary);
+}
+
+/* hidden 属性 (矢印・ドットの非表示) を確実に反映 */
+.mobile-pickup-section [hidden] {
+  display: none !important;
+}
+
+/* 横スクロール (中央スナップ) 領域 */
+.mobile-pickup-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.mobile-pickup-track {
+  position: relative;
+  display: flex;
+  gap: var(--mobile-pickup-gap);
+  margin: 0;
+  /* 上下の余白はホバー時の浮き上がり (translateY) がクリップされないための逃げ */
+  padding: 3px 0;
+  list-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+/* 先頭・末尾のカードも中央に来られるように左右へスペーサーを挿入 */
+.mobile-pickup-track::before,
+.mobile-pickup-track::after {
+  content: "";
+  flex: 0 0 max(0px, calc((100% - var(--mobile-pickup-slide)) / 2 - var(--mobile-pickup-gap)));
+}
+
+/* スクロールバー非表示 (Safari / Chrome) */
+.mobile-pickup-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* マウスドラッグ中はスナップを無効化してスムーズに追従させる */
+.mobile-pickup-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.mobile-pickup-slide {
+  display: flex;
+  flex: 0 0 var(--mobile-pickup-slide);
+  min-width: 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* 非アクティブなスライドは縮小 + 減光して「前後にも記事がある」ことを示す
+   ※ transform はスライド (スナップ対象) ではなく内側のカードに掛ける。
+     スナップ領域は「変形後のボックス」で計算されるため、スライド自体を
+     変形するとスナップ位置がずれてしまう。 */
+.mobile-pickup-slide .mobile-pickup-card {
+  transform: scale(0.9);
+  opacity: 0.55;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+              opacity 0.3s ease,
+              box-shadow 0.2s ease;
+}
+
+/* 表示中のスライドを強調 */
+.mobile-pickup-slide.is-active .mobile-pickup-card {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* スライドが 1 枚だけのときは全幅で表示 */
+.mobile-pickup-section.is-single {
+  --mobile-pickup-slide: 100%;
+}
+.mobile-pickup-section.is-single .mobile-pickup-slide .mobile-pickup-card {
+  transform: none;
+  opacity: 1;
+}
+
+.mobile-pickup-card {
+  flex: 1;
+  min-width: 0;
+  min-height: 190px;
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: var(--md-sys-color-surface-container-highest);
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.mobile-pickup-slide.is-active .mobile-pickup-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+/* マウスドラッグ中はグラブカーソルに統一 */
+.mobile-pickup-track.is-dragging .mobile-pickup-card {
+  cursor: grabbing;
+}
+
+/* 記事先が無いプレースホルダーカード */
+.mobile-pickup-card--empty {
+  cursor: default;
+  background-image: none;
+}
+
+/* 下部のガラス調インフォパネル (Post画面カード準拠) */
+.mobile-pickup-scrim {
+  margin: 6px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.mobile-pickup-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--md-sys-color-primary);
+  text-transform: uppercase;
+}
+
+.mobile-pickup-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-pickup-summary {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ダークモード時のガラスパネル (Post画面カード準拠) */
+:root[data-theme="dark"] .mobile-pickup-scrim {
+  background: rgba(13, 21, 21, 0.72);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .mobile-pickup-badge { color: #56D8E0; }
+:root[data-theme="dark"] .mobile-pickup-title { color: #FDFFFF; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+:root[data-theme="dark"] .mobile-pickup-summary { color: #DCE4E4; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .mobile-pickup-scrim {
+    background: rgba(13, 21, 21, 0.72);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  :root:not([data-theme="light"]) .mobile-pickup-badge { color: #56D8E0; }
+  :root:not([data-theme="light"]) .mobile-pickup-title { color: #FDFFFF; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+  :root:not([data-theme="light"]) .mobile-pickup-summary { color: #DCE4E4; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+}
+
+/* ---------- Lately ヘッダー (モバイル) ---------- */
+.mobile-lately-heading {
+  text-align: center;
+  margin-top: 4px;
+}
+.mobile-lately-heading h2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+}
+.mobile-lately-heading h2 .material-symbols-rounded {
+  font-size: 20px;
+  color: var(--md-sys-color-secondary);
+}
+
+/* ---------- Lately ボックスリスト (モバイル) ---------- */
+.mobile-lately-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.lately-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 190px;
+  border-radius: 28px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--md-sys-elevation-1);
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.lately-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--md-sys-elevation-3);
+}
+
+.lately-item:active { transform: scale(0.98); }
+
+/* 下部のガラス調インフォパネル (Post画面カード準拠) */
+.lately-item-content {
+  margin: 6px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.lately-item-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--md-sys-color-primary);
+  text-transform: uppercase;
+}
+
+.lately-item-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lately-item-desc {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ダークモード時のガラスパネル (Post画面カード準拠) */
+:root[data-theme="dark"] .lately-item-content {
+  background: rgba(13, 21, 21, 0.72);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .lately-item-badge { color: #56D8E0; }
+:root[data-theme="dark"] .lately-item-title { color: #FDFFFF; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+:root[data-theme="dark"] .lately-item-desc { color: #DCE4E4; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lately-item-content {
+    background: rgba(13, 21, 21, 0.72);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  :root:not([data-theme="light"]) .lately-item-badge { color: #56D8E0; }
+  :root:not([data-theme="light"]) .lately-item-title { color: #FDFFFF; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+  :root:not([data-theme="light"]) .lately-item-desc { color: #DCE4E4; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+}
+
+.lately-play-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 3px 10px 3px 6px;
+  border-radius: 20px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  align-self: flex-start;
+  transition: filter 0.15s ease;
+  text-decoration: none;
+}
+
+.lately-play-chip:hover { filter: brightness(1.08); }
+.lately-play-chip .material-symbols-rounded { font-size: 16px; }
+
+.lately-empty {
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px;
+}
+
+/* モバイルホームの余白とカード階層を整理（カルーセル操作ボタンは変更しない）。 */
+@media (max-width: 600px) {
+  .mobile-home-wrapper {
+    gap: 22px;
+    padding: 0 0 calc(80px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-pickup-section {
+    gap: 12px;
+  }
+
+  .mobile-pickup-heading,
+  .mobile-lately-heading {
+    padding: 0 0 2px;
+  }
+
+  .mobile-pickup-heading h2,
+  .mobile-lately-heading h2 {
+    color: var(--md-sys-color-secondary);
+    font-weight: 750;
+    letter-spacing: 0.01em;
+  }
+
+  .mobile-pickup-card,
+  .lately-item {
+    border: 1px solid rgba(47, 116, 117, 0.20);
+    box-shadow: 0 7px 20px rgba(47, 116, 117, 0.12);
+  }
+
+  .mobile-pickup-slide.is-active .mobile-pickup-card:hover,
+  .lately-item:hover {
+    box-shadow: 0 10px 26px rgba(47, 116, 117, 0.18);
+  }
+
+  .mobile-lately-heading {
+    margin-top: 2px;
+  }
+
+  .mobile-lately-list {
+    gap: 16px;
+  }
+
+  .mobile-pickup-scrim,
+  .lately-item-content {
+    border-color: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 4px 16px -2px rgba(18, 58, 59, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  }
+}
+
+.force-mobile .mobile-home-wrapper {
+  gap: 22px;
+  padding: 0 0 calc(80px + env(safe-area-inset-bottom));
+}
+
+.force-mobile .mobile-pickup-heading h2,
+.force-mobile .mobile-lately-heading h2 {
+  color: var(--md-sys-color-secondary);
+  font-weight: 750;
+}
+
+.force-mobile .mobile-lately-list {
+  gap: 16px;
+}
+
+/* ---------- dhome subcards row ---------- */
+.dhome-subcards-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+.dhome-subcards-row .dhome-inner-card { flex: 1; min-width: 0; }
+
+/* ---------- dhome リンク版 ---------- */
+a.dhome-article-card,
+a.dhome-overlapping-pill,
+a.dhome-circle-btn,
+a.dhome-inner-card {
+  text-decoration: none;
+}
+a.dhome-article-card { display: flex; }
+a.dhome-circle-btn { display: flex; }
+
+/* ホームの音楽・作品ハブ */
+.home-feature.dhome-bottom-box-wrapper {
+  /* 同じ行のカラム内で残りの高さを分け合い、両パネルの下端を揃える。 */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  padding: 16px;
+  border-radius: 24px;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
+  box-shadow: 0 6px 22px rgba(18, 58, 59, 0.07);
+}
+.home-feature .dhome-overlapping-pill {
+  position: static;
+  transform: none;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  height: auto;
+  padding: 0 0 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--md-sys-color-secondary) !important;
+  box-shadow: none;
+  font-size: 16px;
+}
+.home-feature .dhome-overlapping-pill:hover { transform: none; filter: none; }
+.home-feature .dhome-overlapping-pill > :last-child { margin-left: auto; font-size: 20px; }
+.dhome-column:nth-child(2) > .dhome-section-title > span:not(.material-symbols-rounded),
+.home-feature--gallery .dhome-overlapping-pill > span:not(.material-symbols-rounded) {
+  color: var(--md-sys-color-on-surface);
+}
+.home-feature .dhome-bottom-box {
+  flex: 1;
+  padding: 0;
+  height: auto;
+  min-height: 108px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.home-feature.home-feature--music,
+.home-feature.home-feature--gallery {
+  padding: 18px 20px 14px;
+  background: var(--md-sys-color-secondary-container);
+  border-color: var(--md-sys-color-secondary-container);
+}
+.home-feature .dhome-overlapping-pill { padding-bottom: 16px; font-size: 15px; }
+.home-feature .dhome-overlapping-pill > :first-child {
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--md-sys-color-secondary-container);
+  font-size: 20px;
+}
+.home-feature--music .dhome-player-row { gap: 18px; }
+.home-feature--music #desk-music-note-btn { display: none; }
+.home-feature--music .dhome-inner-card {
+  height: auto;
+  min-height: 104px;
+  padding: 10px;
+  gap: 14px;
+  background: color-mix(in srgb, var(--md-sys-color-surface) 88%, var(--md-sys-color-secondary-container));
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 22%, var(--md-sys-color-outline-variant));
+  border-radius: 20px;
+  box-shadow: 0 3px 12px rgba(18, 58, 59, 0.08);
+  backdrop-filter: none;
+  transform: none;
+}
+.home-feature--music .dhome-inner-card:hover {
+  border-color: var(--md-sys-color-secondary);
+  box-shadow: 0 7px 18px rgba(18, 58, 59, 0.14);
+}
+.home-feature--music .dhome-inner-card::before,
+.home-feature--music .dhome-inner-card::after,
+.home-feature--music .dhome-inner-card-icon { display: none; }
+.home-feature-artwork {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(18, 58, 59, 0.16);
+}
+.home-music-cover {
+  display: flex;
+  flex-shrink: 0;
+  padding: 5px;
+  border-radius: 23px;
+  background: color-mix(in srgb, var(--md-sys-color-surface) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  transform: rotate(-3deg);
+  transition: transform 200ms ease;
+}
+.home-feature-artwork--empty {
+  display: grid;
+  place-items: center;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-secondary);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: none;
+}
+.home-feature-artwork--empty > .material-symbols-rounded { font-size: 30px; }
+.home-feature--music .dhome-inner-card:hover .home-music-cover { transform: rotate(0); }
+.home-feature--music .dhome-inner-card-texts { gap: 6px; }
+.home-music-eyebrow {
+  color: var(--md-sys-color-secondary);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+.home-music-caption,
+.home-gallery-caption {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+.home-feature--music .home-music-caption,
+.home-feature--gallery .home-gallery-caption {
+  width: 100%;
+  flex: 0 0 auto;
+}
+.home-music-caption > .material-symbols-rounded { font-size: 18px; color: var(--md-sys-color-secondary); }
+.home-gallery-caption > .material-symbols-rounded { font-size: 18px; color: var(--md-sys-color-secondary); }
+.home-gallery-caption a { margin-left: auto; font-size: 10px; color: var(--md-sys-color-secondary); }
+.home-gallery-caption a:hover { text-decoration: underline; }
+.home-music-hint { margin-left: auto; font-size: 10px; }
+.home-feature--music .dhome-inner-card-title {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+  text-shadow: none;
+}
+.home-feature--music .dhome-inner-card-desc { color: var(--md-sys-color-on-surface-variant); text-shadow: none; }
+.home-feature--music #desk-music-play-btn {
+  width: 54px;
+  height: 54px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+}
+.home-feature--music #desk-music-play-btn:hover:not(:disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--md-sys-color-primary) 32%, transparent);
+}
+.home-feature--music #desk-music-play-btn:active:not(:disabled) { transform: scale(0.95); }
+.home-feature--music #desk-music-play-btn:disabled { opacity: 0.4; cursor: default; }
+.home-feature--music #desk-music-play-btn .material-symbols-rounded { font-size: 30px; }
+@media (min-width: 900px) and (max-width: 1100px) {
+  .home-feature.home-feature--music,
+  .home-feature.home-feature--gallery { padding: 16px; }
+  .home-feature--music .dhome-player-row { gap: 10px; }
+  .home-feature--music .home-feature-artwork { width: 60px; height: 60px; }
+  .home-feature--music .dhome-inner-card { gap: 10px; }
+}
+.home-feature--gallery .dhome-inner-card--gallery {
+  --gallery-ink: #fff;
+  --gallery-shade: rgba(8, 24, 25, 0.82);
+  --gallery-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  height: var(--home-preview-card-height, 125px);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  gap: 3px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--md-sys-color-surface) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 16%, transparent);
+  box-shadow: 0 3px 10px rgba(18, 58, 59, 0.06);
+  backdrop-filter: none;
+}
+.home-feature--gallery .dhome-subcards-row {
+  align-self: stretch;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.home-feature--gallery .dhome-subcards-row .dhome-inner-card {
+  height: var(--home-preview-card-height, 125px);
+  min-height: var(--home-preview-card-height, 125px);
+}
+.home-feature--gallery .dhome-inner-card--gallery::after { display: none; }
+.home-feature--gallery .dhome-inner-card--gallery::before {
+  display: block;
+  background: linear-gradient(180deg, transparent 15%, var(--gallery-shade) 100%);
+}
+.home-feature--gallery .dhome-inner-card--gallery[data-image-tone="light"] {
+  --gallery-ink: #111;
+  --gallery-shade: rgba(255, 255, 255, 0.84);
+  --gallery-text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+.home-gallery-artwork { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.home-feature--gallery .dhome-inner-card--gallery:hover {
+  background: var(--md-sys-color-surface);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 32%, transparent);
+  box-shadow: 0 6px 16px rgba(18, 58, 59, 0.10);
+}
+.home-feature--gallery .dhome-inner-card-title,
+.home-feature--gallery .dhome-inner-card-desc {
+  position: relative;
+  inset: auto;
+  transform: none;
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: 2;
+  color: var(--gallery-ink);
+  text-shadow: var(--gallery-text-shadow);
+}
+.home-feature--gallery .dhome-inner-card-title {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.home-feature--gallery .dhome-inner-card-desc { margin-top: 0; font-size: 11px; color: var(--gallery-ink); }
+.mobile-feature-links { display: grid; gap: 12px; }
+.mobile-feature-links > a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
+  color: var(--md-sys-color-secondary);
+  /* 320px 級の狭い画面で、行内の長い曲名（nowrap）がグリッド幅を押し広げて
+     右端が切れるのを防ぐ */
+  min-width: 0;
+}
+.mobile-feature-links > a:first-child {
+  background: var(--md-sys-color-secondary-container);
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 24%, transparent);
+}
+.mobile-feature-links > a:first-child > .material-symbols-rounded:first-child {
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--md-sys-color-surface);
+}
+.mobile-feature-links > a > span:not(.material-symbols-rounded) { flex: 1; min-width: 0; }
+.mobile-feature-links strong,
+.mobile-feature-links small { display: block; }
+.mobile-feature-links small {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ホームのデスクトップ密度: 低いウィンドウでも下段まで余裕を持たせる。
+   高さは vh 連動にして、ウィンドウが低いときは自動でコンパクトになる。 */
+@media (min-width: 900px) {
+  :root:not(.force-mobile) #desktop-home-container {
+    --home-preview-card-height: clamp(108px, 16vh, 125px);
+    /* 下段パネル内側ボックス（Now Playing / Gallery）の高さ。
+       左右で必ず同じ値になり、パネルの下端が揃う。 */
+    --home-panel-box-height: clamp(112px, 16vh, 140px);
+    padding-bottom: 0;
+  }
+  :root:not(.force-mobile) .dhome-two-column-layout { gap: 24px; }
+  :root:not(.force-mobile) .dhome-column { gap: 12px; }
+  :root:not(.force-mobile) .dhome-section-title {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 2px;
+    padding-left: 4px;
+  }
+  :root:not(.force-mobile) .home-feature.dhome-bottom-box-wrapper {
+    margin-top: 4px;
+    padding: 14px 16px 12px;
+    border-radius: 22px;
+  }
+  :root:not(.force-mobile) .home-feature .dhome-overlapping-pill {
+    padding-bottom: 10px;
+    font-size: 14px;
+  }
+  :root:not(.force-mobile) .home-feature .dhome-overlapping-pill > :first-child {
+    padding: 6px;
+    border-radius: 10px;
+  }
+  :root:not(.force-mobile) .home-feature .dhome-bottom-box { min-height: 100px; }
+  :root:not(.force-mobile) .home-feature--music .dhome-inner-card { min-height: 100px; }
+  :root:not(.force-mobile) .home-music-caption,
+  :root:not(.force-mobile) .home-gallery-caption {
+    margin-top: 10px;
+    padding-top: 9px;
+    line-height: 18px;
+  }
+  :root:not(.force-mobile) .home-feature--music #desk-music-play-btn { width: 48px; height: 48px; }
+}
+
+/* ==========================================================================
+   ホーム （画面1 デスクトップ）: 1画面（スクロールなし）に収める。
+   ホーム2（Category 画面）と同じく、画面内はアプリのように完結させる。
+   ・サイトフッターは画面1・2では表示しない（css/footer.css の
+     「サイトフッターの表示範囲」で制御。画面3=情報欄では従来どおり表示）
+   ・余白があるとき … 2×2 カード行が伸びて余白を埋める
+   ・高さが足りないとき … 2×2 カード行が縮んで画面内に収まる
+     （固定の aspect-ratio / height だと低いウィンドウで下段がはみ出すため、
+       カードの高さは「残りの高さ」に追従させている）
+   ・ホーム側（#desktop-home-container）には内側スクロール領域を作らない
+     ＝ スクロールが二重にならないようにする
+   ・それでも収まらない極端に低いウィンドウでは、従来どおり
+     アプリ枠（.main-content-wrapper）だけがスクロールする
+   ========================================================================== */
+@media (min-width: 900px) {
+  /* 本文（site-main）が画面の高さをぴったり使う。
+     内容のほうが高いときは site-main 側も縮み、カードが縮んで収まる。 */
+  :root:not(.force-mobile) .site-main:has(> #desktop-home-container) {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  /* 記事枠（2カラム＋下段パネル）は内側スクロールを持たず、
+     画面の高さぴったりに伸縮する。 */
+  :root:not(.force-mobile) #desktop-home-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  :root:not(.force-mobile) #desktop-home-container > .dhome-two-column-layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  /* 各カラム = 見出し(auto) + 2×2カード(残りの高さ) + 下段パネル(auto) */
+  :root:not(.force-mobile) .dhome-column {
+    min-height: 0;
+  }
+
+  /* カード行が余白を吸収し、足りなければ縮む（左右カラムで同じ高さになる）。 */
+  :root:not(.force-mobile) .dhome-grid-2x2 {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  /* カードは幅ではなく行の高さに追従させる（固定比・固定高は使わない）。 */
+  :root:not(.force-mobile) .dhome-article-card {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 0;
+  }
+
+  /* 下段パネル（Now Playing / Gallery）は伸縮させず自然な高さのまま。
+     左右のボックス高さを同じ変数（--home-panel-box-height）に揃えて
+     いるので、パネルの高さ＝下端の位置も揃う。 */
+  :root:not(.force-mobile) #desktop-home-container .home-feature.dhome-bottom-box-wrapper {
+    flex: 0 0 auto;
+    margin-top: 0;
+  }
+
+  :root:not(.force-mobile) #desktop-home-container .home-feature .dhome-bottom-box {
+    flex: 0 0 auto;
+    height: var(--home-panel-box-height, 140px);
+    min-height: 0;
+  }
+}
+
+/* モードシミュレーター (force-desktop) でも同じ挙動にする。 */
+.force-desktop .site-main:has(> #desktop-home-container) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.force-desktop #desktop-home-container {
+  --home-panel-box-height: clamp(112px, 16vh, 140px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.force-desktop #desktop-home-container > .dhome-two-column-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.force-desktop .dhome-column {
+  min-height: 0;
+}
+
+.force-desktop .dhome-grid-2x2 {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.force-desktop .dhome-article-card {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 0;
+}
+
+.force-desktop #desktop-home-container .home-feature.dhome-bottom-box-wrapper {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+.force-desktop #desktop-home-container .home-feature .dhome-bottom-box {
+  flex: 0 0 auto;
+  height: var(--home-panel-box-height, 140px);
+  min-height: 0;
+}

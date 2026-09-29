@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Falling Survivor｜Wawa.hz ミニゲーム</title>
+    <script>
+        /* Works ページのミニゲーム枠 (iframe) から読み込まれたか、単体で開かれたかを先に判定する。
+           単体のときだけ、ゲーム画面を中央にカードのように配置する余白をつける。 */
+        document.documentElement.classList.add(
+            window.self === window.top ? 'is-standalone' : 'is-embedded'
+        );
+    </script>
+    <!-- ライブラリは CDN に依存せずテーマ内 (lib/) に同梱し、オフラインの Local 環境でも動作させる -->
+    <script src="lib/p5.min.js"></script>
+    <script src="lib/planck.min.js"></script>
+    <script src="lib/p5play.min.js"></script>
+    <script src="sketch.js" defer></script>
+    <script src="embed.js" defer></script>
+    <script src="touch.js" defer></script>
+    <style>
+        :root {
+            color-scheme: light;
+            /* ゲーム画面 (canvas) のまわりに空ける余白。単体で開いたときだけ付ける。 */
+            --game-gap-top: 0px;
+            --game-gap-bottom: 0px;
+            --game-gap-x: 0px;
+            /* START 行・画面内キーの高さと、キャンバスとの間隔 */
+            --game-start-space: 0px;
+            --game-pad-space: 0px;
+            /* 操作 UI を含めて画面内へ収め、キャンバスの 4:3 を保つ */
+            --game-stage-width: min(100%,
+                    calc((100dvh - var(--game-gap-top) - var(--game-gap-bottom) - var(--game-start-space) - var(--game-pad-space)) * 4 / 3));
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        /* p5play は読み込み時に `html, body { margin: 0; padding: 0 }` を後から注入する。
+           body 単体 (特異度 0,0,1) だとこれに負けて余白が消えるため、
+           html のクラス込み (特異度 0,1,2) で指定して必ず勝たせる。 */
+        html.is-standalone body,
+        html.is-embedded body {
+            background: #F4F1EA;
+            overflow: hidden;
+            /* grid の自動トラックでは % 指定が解決されず左寄せになるため flex で中央揃えする。
+               単体ページでは START・ゲーム画面・十字キーを縦に並べて中央に置く。 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: var(--game-gap-top) var(--game-gap-x) var(--game-gap-bottom);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        html.is-standalone {
+            --game-gap-top: 16px;
+            --game-gap-bottom: 16px;
+            --game-gap-x: 16px;
+            --game-start-space: 56px;
+        }
+
+        /* タッチ端末では十字キーのぶんだけゲーム画面を小さくする。 */
+        html.is-touch-pad {
+            --game-pad-space: calc(84px + env(safe-area-inset-bottom, 0px));
+        }
+
+        /* p5play は canvas を main で包み、body の末尾へ追加する。 */
+        body>main {
+            order: 0;
+            width: var(--game-stage-width);
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* キャンバスは 4:3 を保ったまま、wrapper いっぱいに表示する */
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 4 / 3;
+            display: block;
+            border: 0;
+            border-radius: 0;
+            outline: none;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 単体で開いたときは、まわりと区別できるよう角を丸めて影を落とす */
+        html.is-standalone body {
+            background: #E9E4D9;
+        }
+
+        html.is-standalone canvas {
+            border-radius: 14px;
+            box-shadow: 0 12px 32px rgba(60, 50, 40, 0.18);
+        }
+
+        .game-start {
+            display: none;
+            order: -1;
+            width: var(--game-stage-width);
+            flex: 0 0 auto;
+            justify-content: flex-end;
+        }
+
+        html.is-standalone .game-start {
+            display: flex;
+        }
+
+        /* ---------- タッチ端末用の画面内操作キー ---------- */
+        /* 左手で移動、右手でジャンプと急降下を同時に操作する。 */
+        .game-pad {
+            order: 1;
+            /* ゲーム画面と同じ幅に揃えて、すぐ下に並べる */
+            width: var(--game-stage-width);
+            flex: 0 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .game-pad[hidden] {
+            display: none;
+        }
+
+        .game-pad-move,
+        .game-pad-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .game-pad-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 62px;
+            height: 62px;
+            padding: 0;
+            border: 2px solid rgba(107, 94, 81, 0.35);
+            border-radius: 14px;
+            background: rgba(244, 241, 234, 0.92);
+            color: #6B5E51;
+            font-family: inherit;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-pad-btn:active {
+            background: rgba(211, 140, 125, 0.28);
+        }
+
+        .game-pad-btn--jump,
+        .game-pad-btn--drop {
+            width: 54px;
+            height: 54px;
+        }
+
+        .game-pad-btn--start {
+            min-width: 96px;
+            width: auto;
+            height: 44px;
+            padding: 0 16px;
+            border-color: transparent;
+            background: #D38C7D;
+            color: #FFFDF9;
+            font-size: 14px;
+            letter-spacing: 1.4px;
+        }
+
+        .game-pad-btn--start:active {
+            background: #C07A6B;
+        }
+
+        /* 縦が足りない端末ではキーを1列に縮めてゲーム画面を広く残す。 */
+        @media (max-height: 480px) {
+            html.is-standalone {
+                --game-start-space: 50px;
+            }
+
+            html.is-touch-pad {
+                --game-pad-space: calc(60px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .game-pad-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            .game-pad-btn--jump,
+            .game-pad-btn--drop {
+                width: 44px;
+                height: 44px;
+            }
+
+            .game-pad-btn--start {
+                min-width: 82px;
+                height: 38px;
+                padding: 0 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-start">
+        <button type="button" class="game-pad-btn game-pad-btn--start" data-game-key=" "
+                aria-label="スタート / タイトルへ戻る">START</button>
+    </div>
+    <!-- タッチ端末では touch.js が十字キーを表示する。 -->
+    <div class="game-pad" data-game-pad hidden>
+        <div class="game-pad-move" role="group" aria-label="移動">
+            <button type="button" class="game-pad-btn" data-game-key="ArrowLeft" aria-label="左へ移動">&larr;</button>
+            <button type="button" class="game-pad-btn" data-game-key="ArrowRight" aria-label="右へ移動">&rarr;</button>
+        </div>
+        <div class="game-pad-actions" role="group" aria-label="ジャンプと急降下">
+            <button type="button" class="game-pad-btn game-pad-btn--drop" data-game-key="ArrowDown" aria-label="下へ降りる">&darr;</button>
+            <button type="button" class="game-pad-btn game-pad-btn--jump" data-game-key="ArrowUp" aria-label="ジャンプ">&uarr;</button>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <!-- Wi-Fi / 電波アイコン (大) -->
+    <g id="wifi-lg">
+      <path d="M -18,-9 A 22 22 0 0 1 18,-9" fill="none" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M -11,-3 A 14 14 0 0 1 11,-3" fill="none" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M -5,3 A 7 7 0 0 1 5,3" fill="none" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="0" cy="8" r="2.5"/>
+    </g>
+
+    <!-- Wi-Fi / 電波アイコン (小) -->
+    <g id="wifi-sm">
+      <path d="M -12,-6 A 15 15 0 0 1 12,-6" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M -7,-2 A 9 9 0 0 1 7,-2" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="0" cy="4" r="2"/>
+    </g>
+
+    <!-- 電波塔 / アンテナ -->
+    <g id="tower">
+      <path d="M -8,15 L 0,0 L 8,15" fill="none" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M -5,8 L 5,8" fill="none" stroke-width="2"/>
+      <line x1="0" y1="0" x2="0" y2="-8" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="0" cy="-8" r="2.2"/>
+      <path d="M -7,-12 A 8 8 0 0 0 -7,-4" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 7,-12 A 8 8 0 0 1 7,-4" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M -12,-16 A 14 14 0 0 0 -12,0" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 12,-16 A 14 14 0 0 1 12,0" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- ブロードキャスト / 配信シグナル -->
+    <g id="broadcast">
+      <circle cx="0" cy="0" r="3"/>
+      <path d="M -6,-7 A 9 9 0 0 0 -6,7" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 6,-7 A 9 9 0 0 1 6,7" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M -12,-13 A 17 17 0 0 0 -12,13" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 12,-13 A 17 17 0 0 1 12,13" fill="none" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- 周波数サイン波 (Sine Wave) -->
+    <g id="sine">
+      <path d="M -24,0 C -16,-12 -8,-12 0,0 C 8,12 16,12 24,0" fill="none" stroke-width="2.2" stroke-linecap="round"/>
+    </g>
+
+    <!-- イコライザーバー (Graphic EQ) -->
+    <g id="eq">
+      <line x1="-12" y1="-8" x2="-12" y2="8" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="-6" y1="-14" x2="-6" y2="14" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="0" y1="-5" x2="0" y2="5" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="6" y1="-18" x2="6" y2="18" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="12" y1="-10" x2="12" y2="10" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- 電波同心円パルス (Rings) -->
+    <g id="rings">
+      <circle cx="0" cy="0" r="3"/>
+      <circle cx="0" cy="0" r="9" fill="none" stroke-width="1.8" stroke-dasharray="3 3"/>
+      <circle cx="0" cy="0" r="17" fill="none" stroke-width="1.8" stroke-dasharray="4 4"/>
+    </g>
+
+    <!-- 周波数クロスマーカー (+) -->
+    <g id="cross">
+      <line x1="-5" y1="0" x2="5" y2="0" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="0" y1="-5" x2="0" y2="5" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- ダークモード: 白系・視認できる馴染む濃さ (14%) -->
+  <g stroke="#FFFFFF" fill="#FFFFFF" opacity="0.14">
+    <!-- 行 1 付近 (y: 50~120) -->
+    <use href="#wifi-lg" x="80" y="70" transform="rotate(-8 80 70)"/>
+    <use href="#tower" x="320" y="60"/>
+    <use href="#sine" x="510" y="80"/>
+    <use href="#cross" x="210" y="90"/>
+    <circle cx="430" cy="70" r="2"/>
+
+    <!-- 行 2 付近 (y: 170~230) -->
+    <use href="#eq" x="180" y="190"/>
+    <use href="#broadcast" x="420" y="200" transform="rotate(12 420 200)"/>
+    <use href="#wifi-sm" x="540" y="190" transform="rotate(-15 540 190)"/>
+    <circle cx="70" cy="210" r="2.5"/>
+    <use href="#cross" x="310" y="180"/>
+
+    <!-- 行 3 付近 (y: 280~340) -->
+    <use href="#rings" x="75" y="320"/>
+    <use href="#wifi-lg" x="270" y="330" transform="rotate(10 270 330)"/>
+    <use href="#tower" x="490" y="340" transform="rotate(-5 490 340)"/>
+    <use href="#cross" x="170" y="330"/>
+    <circle cx="390" cy="310" r="2"/>
+
+    <!-- 行 4 付近 (y: 400~460) -->
+    <use href="#sine" x="150" y="440" transform="rotate(5 150 440)"/>
+    <use href="#eq" x="370" y="440"/>
+    <use href="#broadcast" x="530" y="460"/>
+    <circle cx="270" cy="450" r="2.5"/>
+    <use href="#cross" x="60" y="450"/>
+
+    <!-- 行 5 付近 (y: 520~570) -->
+    <use href="#wifi-sm" x="70" y="550" transform="rotate(15 70 550)"/>
+    <use href="#rings" x="260" y="540"/>
+    <use href="#wifi-lg" x="450" y="550" transform="rotate(-6 450 550)"/>
+    <use href="#cross" x="550" y="550"/>
+    <circle cx="170" cy="560" r="2"/>
+    <circle cx="370" cy="550" r="2"/>
+  </g>
+</svg>

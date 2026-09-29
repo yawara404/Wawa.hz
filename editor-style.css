@@ -1,0 +1,11 @@
+/* 編集画面でも本文の文字組・配色・メディア幅を揃える。 */
+body { font-family: Roboto, 'Noto Sans JP', sans-serif; color: #271E19; background: #FFFCFA; line-height: 1.9; }
+a { color: #E96424; text-underline-offset: .2em; }
+h1, h2, h3, h4 { line-height: 1.4; font-weight: 700; }
+.wp-block { max-width: 760px; }
+.wp-block[data-align="wide"] { max-width: 1120px; }
+.wp-block[data-align="full"] { max-width: none; }
+img, video, iframe { max-width: 100%; }
+blockquote { border-left: 4px solid #E96424; padding: 1rem 1.5rem; background: #FFF5EF; }
+pre { overflow-x: auto; padding: 1.25rem; background: #FFF5EF; border-radius: 12px; }
+.wp-block-button__link { border-radius: 999px; }

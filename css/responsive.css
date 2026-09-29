@@ -1,0 +1,328 @@
+/* ==========================================================================
+   Wawa.hz - Responsive Polish & Device Optimization
+   モジュール式スタイルシートの最終レイヤー。
+   既存レイアウトの崩れ・横はみ出し・タップ領域・中間ブレークポイントを
+   一括で整える。style.css の最後に読み込むため既存 CSS を安全に上書きできる。
+   ========================================================================== */
+
+/* ==========================================================================
+   1. グローバル: 横スクロール (はみ出し) 防止
+   ========================================================================== */
+
+/* 画像・動画・埋め込みは常に親幅に収める */
+img,
+picture,
+video,
+canvas,
+svg,
+audio {
+  max-width: 100%;
+  height: auto;
+}
+
+/* WordPress / Gutenberg 埋め込み (YouTube 等) をカード内で破綻させない */
+.entry-content iframe,
+.entry-content embed,
+.entry-content object {
+  max-width: 100%;
+}
+
+/* 表組み (wp-block-table) は狭い画面で横スクロールに閉じる */
+.entry-content .wp-block-table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.entry-content .wp-block-table table {
+  margin: 0;
+}
+
+/* 複数カラム / メディア+テキスト / ギャラリーの横はみ出しを防止 */
+.entry-content .wp-block-columns,
+.entry-content .wp-block-media-text,
+.entry-content .wp-block-gallery,
+.entry-content .wp-block-embed,
+.entry-content .wp-block-video,
+.entry-content .wp-block-audio {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Gutenberg のカラム系ブロック: 狭い画面で強制的に縦積み (崩れ防止) */
+@media (max-width: 600px) {
+  .entry-content .wp-block-columns {
+    flex-wrap: wrap !important;
+  }
+  .entry-content .wp-block-column {
+    flex-basis: 100% !important;
+    flex-grow: 0 !important;
+    min-width: 0;
+    margin-left: 0;
+  }
+  .entry-content .wp-block-media-text {
+    grid-template-columns: 1fr !important;
+  }
+  .entry-content .wp-block-media-text .wp-block-media-text__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .entry-content .wp-block-media-text .wp-block-media-text__content {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* 全幅・ワイド寄せブロックは読み取りカード内に収める (横はみ出し防止) */
+.entry-content .alignwide,
+.entry-content .alignfull {
+  max-width: 100%;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ==========================================================================
+   2. タップ領域 (44px) の確保 — タッチデバイス向け
+   ========================================================================== */
+@media (pointer: coarse) {,
+  .wawa-pagination .page-numbers a,
+  .wawa-pagination .page-numbers span,
+  .page-links a,
+  .page-links > span:not(:first-child) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* 閉じる・クリア系の小さなボタン */
+  .search-clear-btn,
+  .drawer-search-clear-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  /* カテゴリーチップ・タグピルも押しやすく */
+  .category-chips a,
+  .search-tag-chip,
+  .entry-tags a {
+    min-height: 36px;
+  }
+}
+
+/* ==========================================================================
+   3. 極小画面 (〜400px) の1カラム化
+   ========================================================================== */
+@media (max-width: 400px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+  .works-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* ==========================================================================
+   4. 短い画面 (ランドスケープ・小型端末) での余白圧縮
+   ========================================================================== */
+@media (max-height: 480px) and (orientation: landscape) {
+  .wawa-container {
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+  .top-app-bar {
+    height: 56px;
+    min-height: 56px;
+  }
+}
+
+/* ==========================================================================
+   5. モーダルダイアログの小型端末対応 (下端セーフエリア確保)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .m3-dialog-backdrop {
+    padding: 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .m3-dialog {
+    max-width: 100%;
+    max-height: calc(100dvh - 24px - env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================================================
+   6. トップバーのサイト名が長い場合の省略 (横はみ出し防止)
+   ========================================================================== */
+.top-app-bar .brand-home-btn {
+  min-width: 0;
+  max-width: 100%;
+}
+.top-app-bar .app-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 44vw;
+}
+
+/* ==========================================================================
+   7. 本文の可読性 (読書レイアウト) の微調整
+   ========================================================================== */
+@media (max-width: 600px) {
+  .entry-content {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .entry-content h2 {
+    font-size: 21px;
+  }
+  .entry-content h3 {
+    font-size: 18px;
+  }
+  .entry-content h4 {
+    font-size: 16px;
+  }
+}
+
+/* ==========================================================================
+   8. ワイド画面 (>=1440px) での本文最大幅を保ちつつ見やすく
+   ========================================================================== */
+@media (min-width: 1440px) {
+  .reading-layout {
+    max-width: 760px;
+  }
+}
+
+/* ==========================================================================
+   9. ホーム画面 (home.php) のレスポンシブ最適化
+   ========================================================================== */
+
+/* --- 空のデスクトップカード (記事が4件未満) を中立的な見た目に --- */
+.dhome-article-card--empty {
+  background-image: none !important;
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: none;
+}
+.dhome-article-card--empty:hover {
+  transform: none;
+  box-shadow: none;
+}
+.dhome-article-card--empty .card-scrim-white .card-title {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* --- タブレット帯 (600〜899px): モバイルレイアウトの引き伸ばしを解消 --- */
+@media (min-width: 600px) and (max-width: 899px) {
+  /* Pickup カルーセル: スライド幅を約55%に絞り、隣カードが覗く表示を維持 */
+  .mobile-pickup-section {
+    --mobile-pickup-slide: 55%;
+    --mobile-pickup-gap: 16px;
+  }
+
+  /* Lately: 2カラムグリッド化して横方向の余白を有効活用 */
+  .mobile-lately-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .lately-item {
+    min-height: 170px;
+  }
+
+  /* 特徴リンク (Now Playing / Gallery): 2カラム化 */
+  .mobile-feature-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+/* --- モバイル (<600px): カード高さを画面幅に応じて流動化 --- */
+@media (max-width: 599px) {
+  .mobile-pickup-card,
+  .lately-item {
+    min-height: clamp(175px, 46vw, 200px);
+  }
+
+  /* 特徴リンクは行間を整え、長い曲名でも折り返さず省略できるよう揃える */
+  .mobile-feature-links {
+    gap: 14px;
+  }
+}
+
+/* --- 短いデスクトップウィンドウ: ホーム下段パネルをややコンパクトに --- */
+@media (min-width: 900px) and (max-height: 760px) {
+  :root:not(.force-mobile) #desktop-home-container {
+    --home-preview-card-height: 104px;
+    --home-panel-box-height: 104px;
+  }
+  :root:not(.force-mobile) .home-feature.dhome-bottom-box-wrapper {
+    padding: 12px 16px 10px;
+  }
+  :root:not(.force-mobile) .home-feature--music .dhome-inner-card {
+    min-height: 90px;
+  }
+  :root:not(.force-mobile) .home-feature--music .home-feature-artwork {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* ==========================================================================
+   10. ホーム画面 (デスクトップ): 画面幅いっぱいに拡大 & 1画面に収める
+   ・コンテナ幅の上限 (1200px) を解除し、画面幅いっぱいに拡大
+   ・カードは √3 などの固定比ではなく、残りの高さに追従して伸縮する
+     （固定比だと縦の低いウィンドウで下段パネルがはみ出してしまうため）
+     ※ 伸縮の実装は css/home.css（#desktop-home-container 関連）側で行う
+   ・下段パネルは過伸長させず、高さの変数 (--home-panel-box-height) を
+     左右で共有して下端の位置を揃える
+   ========================================================================== */
+@media (min-width: 900px) {
+  /* コンテナ幅の上限 (1200px) を解除し、画面幅いっぱいに拡大 */
+  :root:not(.force-mobile) .dhome-desktop-container {
+    max-width: none;
+  }
+
+  /* NowPlaying / Gallery パネルを過伸長させない (コンパクトに) */
+  :root:not(.force-mobile) .home-feature.dhome-bottom-box-wrapper {
+    flex: 0 0 auto;
+  }
+  :root:not(.force-mobile) .home-feature .dhome-bottom-box {
+    flex: 0 0 auto;
+    height: var(--home-panel-box-height, 140px);
+    min-height: 0;
+  }
+}
+
+/* 画面幅プレビュー (force-desktop) でも同じ挙動に揃える */
+.force-desktop .dhome-desktop-container {
+  max-width: none;
+}
+.force-desktop .home-feature.dhome-bottom-box-wrapper {
+  flex: 0 0 auto;
+}
+.force-desktop .home-feature .dhome-bottom-box {
+  flex: 0 0 auto;
+  height: var(--home-panel-box-height, 140px);
+  min-height: 0;
+}
+
+/* ==========================================================================
+   11. 印刷時の余分な装飾・固定要素を除去
+   ========================================================================== */
+@media print {
+  .m3-navigation-rail,
+  .m3-navigation-bar,
+  .top-app-bar,
+  .slide-prev-btn,
+  .slide-next-btn,
+  .m3-slide-drawer-backdrop,
+  .m3-dialog-backdrop,
+  #snackbar {
+    display: none !important;
+  }
+  .main-content-wrapper {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
