@@ -314,7 +314,7 @@ foreach ( $auto_works as $auto_work ) {
                  data-post-url="<?php echo esc_url( get_permalink( $latest_track['post'] ) ); ?>"
                  data-media-template-id="wawahz-desk-media-<?php echo esc_attr( $latest_track['post']->ID ); ?>"
                  aria-label="<?php echo esc_attr( get_the_title( $latest_track['post'] ) ); ?> を再生">
-                <span class="home-music-cover"><img class="home-feature-artwork" src="<?php echo esc_url( $latest_track_thumb ); ?>" alt="" loading="lazy" width="80" height="80"></span>
+                <span class="home-music-cover"><img class="home-feature-artwork" src="<?php echo esc_url( $latest_track_thumb ); ?>" alt="" loading="lazy" decoding="async" width="80" height="80"></span>
                 <div class="dhome-inner-card-texts">
                   <span class="home-music-eyebrow"><?php esc_html_e( 'LATEST TRACK', 'wawahz' ); ?></span>
                   <h3 class="dhome-inner-card-title" id="desk-music-title"><?php echo esc_html( get_the_title( $latest_track['post'] ) ); ?></h3>
@@ -424,7 +424,7 @@ foreach ( $auto_works as $auto_work ) {
                    style="cursor: pointer; --card-bg-img: url('<?php echo esc_url( $wp_thumb ); ?>');"
                    title="<?php esc_attr_e( '作品詳細を開く', 'wawahz' ); ?>"
                    aria-label="<?php echo esc_attr( get_the_title( $wp_post ) ); ?>">
-                  <img class="home-gallery-artwork" src="<?php echo esc_url( $wp_thumb ); ?>" alt="" loading="lazy" width="160" height="64">
+                  <img class="home-gallery-artwork" src="<?php echo esc_url( $wp_thumb ); ?>" alt="" loading="lazy" decoding="async" width="160" height="64">
                   <h3 class="dhome-inner-card-title" id="desk-sub-title-<?php echo esc_attr( $k + 1 ); ?>"><?php echo esc_html( get_the_title( $wp_post ) ); ?></h3>
                   <p class="dhome-inner-card-desc" id="desk-sub-desc-<?php echo esc_attr( $k + 1 ); ?>"><?php echo esc_html( $wp_cat_name . ' • ' . $wp_year ); ?></p>
                 </a>

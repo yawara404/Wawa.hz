@@ -254,7 +254,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 24px 16px 104px;
+  padding: 24px 16px calc(104px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--md-sys-color-outline-variant);
   margin-top: auto;
   width: 100%;
@@ -297,7 +297,7 @@
   .main-content-wrapper:has(> .site-main > #screen-post),
   .main-content-wrapper:has(> .site-main > #screen-gallery),
   .main-content-wrapper:has(> .site-main > #screen-search) {
-    padding-bottom: 104px;
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -657,6 +657,23 @@ body.admin-bar .m3-slide-drawer {
   font-size: 13px;
   line-height: 1.6;
   color: var(--md-sys-color-on-surface-variant);
+}
+
+/* 未ログイン時の案内 (誰にでもボタンを表示するため、権限が必要なことを明示する) */
+.nowplaying-add-track-login-note {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+}
+
+.nowplaying-add-track-login-note a {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
 }
 
 .nowplaying-add-track-form {

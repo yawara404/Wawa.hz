@@ -110,12 +110,13 @@ body.admin-bar .m3-navigation-rail {
 
 /* ナビゲーションバー (モバイル用ボトムバー) */
 .m3-navigation-bar {
-  height: 80px;
+  /* iOS Safari のホームバー領域 (safe-area-inset-bottom) を確保する */
+  height: calc(80px + env(safe-area-inset-bottom, 0px));
   background-color: var(--md-sys-color-surface-container);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 8px;
+  padding: 0 8px env(safe-area-inset-bottom, 0px);
   position: sticky;
   bottom: 0;
   left: 0;

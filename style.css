@@ -25,7 +25,7 @@ Text Domain: wawahz
 @import url('css/components.css?v=20260928_16');
 
 /* 4. ナビゲーション (トップアプリバー、ナビゲーションレール、ボトムナビバー、テーマ切替) */
-@import url('css/navigation.css?v=20260928_47');
+@import url('css/navigation.css?v=20260929_01');
 
 /* 5. ホーム画面 (モバイルPickupカルーセル、Lately、デスクトップ2カラムレイアウト) */
 @import url('css/home.css?v=20260928_13');
@@ -40,7 +40,7 @@ Text Domain: wawahz
 @import url('css/single-page.css?v=20260928_04');
 
 /* 9. サイトフッター & 情報ハブ (site-info-card、ソーシャルリンク、ライセンス) */
-@import url('css/footer.css?v=20260929_01');
+@import url('css/footer.css?v=20260929_02');
 
 /* 10. Gallery 画面2: ミニゲーム画面 (p5play 製 Falling Survivor の埋め込み) */
 @import url('css/mini-game.css?v=20260929_03');

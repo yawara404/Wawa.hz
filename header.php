@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('wawahz_theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}try{var d='';try{d=sessionStorage.getItem('wawahz_slide_dir')||'';}catch(e){}var n=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null;if(n&&n.type==='back_forward')d='back';if(d)document.documentElement.dataset.slideDir=d;}catch(e){}</script>
   <?php wp_head(); ?>
 </head>

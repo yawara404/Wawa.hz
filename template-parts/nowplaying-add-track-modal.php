@@ -22,6 +22,21 @@ $default_category_id = $default_category ? (int) $default_category->term_id : 0;
       <?php esc_html_e('YouTube のURLを登録すると、ギャラリーの先頭にカードが追加されます。カードをタップすると公式プレイヤーで再生できます。アーティスト名・アルバム・ムード・紹介文は任意です。', 'wawahz'); ?>
     </p>
 
+    <?php if (!is_user_logged_in()) : ?>
+      <p class="nowplaying-add-track-login-note" role="note">
+        <?php
+        printf(
+          wp_kses(
+            /* translators: %s: ログイン画面のURL */
+            __('楽曲を追加するには<a href="%s">管理者・投稿者としてログイン</a>してください。', 'wawahz'),
+            array('a' => array('href' => array()))
+          ),
+          esc_url(wp_login_url(wawahz_view_url('nowplaying')))
+        );
+        ?>
+      </p>
+    <?php endif; ?>
+
     <form id="nowplaying-add-track-form" class="nowplaying-add-track-form" method="post" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
       <input type="hidden" name="action" value="wawahz_add_track">
       <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce('wawahz_add_track')); ?>">

@@ -387,6 +387,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (playerVideoContainer) playerVideoContainer.classList.remove('has-inline-media');
   }
 
+  /** ページ内 (モーダル外) で再生中の audio / video を停止する */
+  function pausePageMedia() {
+    document.querySelectorAll('audio, video').forEach(el => {
+      if (playerModal && playerModal.contains(el)) return;
+      try {
+        if (!el.paused) el.pause();
+      } catch (e) {}
+    });
+  }
+
   /** YouTube 公式プレイヤーで再生。API が使えない環境では公式埋め込み iframe にフォールバック */
   function playYouTube(ytId) {
     clearPlayerMedia();
@@ -478,6 +488,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!ytId && !template) return;
 
     clearPlayerMedia();
+    // ページ内で再生中の音声・動画があれば止める (二重再生・音の重なり防止)
+    pausePageMedia();
     playerTitle.textContent = data.title || 'Now Playing';
     applyMarquee(playerTitle);
     playerArtist.textContent = data.artist || '';
@@ -609,6 +621,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const workPermalink = document.getElementById('work-detail-permalink');
   const workCloseBtn = document.getElementById('work-detail-close-btn');
 
+  /** HTML エスケープ (モーダル本文を安全に組み立てるため) */
+  function escapeWorkHtml(text) {
+    return String(text || '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+  }
+
+  /** 本文中の http(s) URL を安全なリンクへ変換する */
+  function linkifyWorkText(text) {
+    return escapeWorkHtml(text).replace(/(https?:\/\/[^\s<]+)/g, (match) => {
+      const trailing = match.match(/[.,;:!?)\]}、。]+$/);
+      const tail = trailing ? trailing[0] : '';
+      const url = tail ? match.slice(0, -tail.length) : match;
+      if (!url) return match;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${tail}`;
+    });
+  }
+
+  let workModalReturnFocus = null;
+
   function openWorkDetail(card) {
     if (!workModal) return;
     const d = card.dataset;
@@ -617,22 +649,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (workCatTag) workCatTag.textContent = d.category || 'Work';
     if (workYearTag) workYearTag.textContent = d.year || '2026';
     if (workTitle) workTitle.textContent = d.title || '';
-    if (workDesc) workDesc.textContent = d.description || d.summary || '';
+    // 長文は個別記事に任せ、モーダルは抜粋 (Summary) のみ。URL はリンク化する。
+    if (workDesc) workDesc.innerHTML = linkifyWorkText(d.summary || d.description || '');
     if (workPermalink && d.permalink) workPermalink.href = d.permalink;
 
     if (workTagsWrap) {
       const tags = (d.tags || '').split(',').filter(Boolean);
-      workTagsWrap.innerHTML = tags.map(t => `<span class="work-tag" style="background:var(--md-sys-color-surface-container-high); padding:3px 8px; border-radius:8px; font-size:11px;">#${t.trim()}</span>`).join('');
+      workTagsWrap.innerHTML = tags.map(t => `<span class="work-tag" style="background:var(--md-sys-color-surface-container-high); padding:3px 8px; border-radius:8px; font-size:11px;">#${escapeWorkHtml(t.trim())}</span>`).join('');
     }
 
+    workModalReturnFocus = card;
     workModal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    const focusTarget = workCloseBtn || workModal.querySelector('a[href], button, [tabindex]');
+    if (focusTarget && typeof focusTarget.focus === 'function') focusTarget.focus();
   }
 
   function closeWorkDetail() {
     if (!workModal) return;
+    const wasOpen = workModal.classList.contains('active');
     workModal.classList.remove('active');
     document.body.style.overflow = '';
+    // 閉じたら開いたカードへフォーカスを戻す (キーボード操作の連続性)
+    if (wasOpen && workModalReturnFocus && typeof workModalReturnFocus.focus === 'function') {
+      workModalReturnFocus.focus();
+    }
+    workModalReturnFocus = null;
   }
 
   if (workCloseBtn) workCloseBtn.addEventListener('click', closeWorkDetail);
@@ -648,6 +691,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (card && !card.classList.contains('is-coming-soon') && !e.target.closest('a')) {
       e.preventDefault();
       openWorkDetail(card);
+    }
+  });
+
+  // カード自体にフォーカスがあるときの Enter / Space でも開けるようにする
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    const card = e.target instanceof Element ? e.target.closest('.work-card') : null;
+    if (!card || card !== e.target || card.classList.contains('is-coming-soon')) return;
+    e.preventDefault();
+    openWorkDetail(card);
+  });
+
+  // 作品詳細モーダル内で Tab フォーカスを循環させる (フォーカストラップ)
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || !workModal || !workModal.classList.contains('active')) return;
+    const focusables = Array.from(workModal.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      .filter(el => el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   });
 

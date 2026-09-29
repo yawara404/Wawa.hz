@@ -365,3 +365,65 @@ function wawahz_filter_query($works = false)
 add_filter('template_include', function ($template) {
   return wawahz_view() ? get_template_directory() . '/view.php' : $template;
 });
+
+/**
+ * ?view=... の画面ごとのメタ情報 (タイトル / 説明 / canonical URL)。
+ * 固定ページを作成していない状態でも、各画面が
+ * 「トップページと同じタイトル・canonical・OGP」になる問題を補正する。
+ *
+ * @return array|null
+ */
+function wawahz_view_seo()
+{
+  $view = wawahz_view();
+  if (!$view) {
+    return null;
+  }
+  $map = array(
+    'gallery'    => array('Works & Creations', '自作キーボード、Web Audio、モノクロ写真、UIシステム。思索と触感を形にした制作物アーカイブ。'),
+    'game'       => array('Mini Game', '制作の合間にどうぞ。授業の最終課題でつくったちいさな1作です。'),
+    'nowplaying' => array('Now Playing Gallery', '最近聴いている音楽とアンビエント和音スケッチ。'),
+    'post'       => array('Posts', 'ブログ記事の一覧。'),
+    'category'   => array('Category', 'カテゴリーから記事を探す。'),
+    'info'       => array('Site Info', 'サイト情報・運営者情報。'),
+  );
+  if (!isset($map[$view])) {
+    return null;
+  }
+  return array(
+    'title'       => $map[$view][0],
+    'description' => $map[$view][1],
+    'url'         => wawahz_view_url($view),
+  );
+}
+
+/**
+ * SEO SIMPLE PACK が有効なとき、?view=... の画面ごとに
+ * タイトル・説明・canonical・OGP を上書きする (プラグインが無ければ何もしない)。
+ */
+function wawahz_view_seo_value($key, $fallback)
+{
+  $meta = wawahz_view_seo();
+  if (!$meta || !isset($meta[$key])) {
+    return $fallback;
+  }
+  if ($key === 'title') {
+    $blogname = get_bloginfo('name');
+    return $blogname ? $meta['title'] . ' | ' . $blogname : $meta['title'];
+  }
+  return $meta[$key];
+}
+
+foreach (array('title', 'description', 'canonical', 'og_title', 'og_description', 'og_url') as $wawahz_seo_key) {
+  add_filter('ssp_output_' . $wawahz_seo_key, function ($value) use ($wawahz_seo_key) {
+    $map = array(
+      'title'          => 'title',
+      'description'    => 'description',
+      'canonical'      => 'url',
+      'og_title'       => 'title',
+      'og_description' => 'description',
+      'og_url'         => 'url',
+    );
+    return wawahz_view_seo_value($map[$wawahz_seo_key], $value);
+  });
+}
