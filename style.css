@@ -19,7 +19,7 @@ Text Domain: wawahz
 @import url('css/variables.css?v=20260928_47');
 
 /* 2. 基本リセット、タイポグラフィ、メインコンテナ (wawa-container) & アクセシビリティ */
-@import url('css/base.css?v=20260928_09');
+@import url('css/base.css?v=20260929_01');
 
 /* 3. M3 Expressive コンポーネント (ボタン、カード、ドロップダウン、モーダル、ドロワー) */
 @import url('css/components.css?v=20260928_16');

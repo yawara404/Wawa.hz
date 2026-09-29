@@ -5,7 +5,9 @@
 /* ==========================================================================
    2. 基本リセット & タイポグラフィ
    ========================================================================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -22,17 +24,21 @@ a {
   scrollbar-width: thin;
   scrollbar-color: var(--md-sys-color-outline-variant) transparent;
 }
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--md-sys-color-outline-variant);
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--md-sys-color-outline);
 }
@@ -57,7 +63,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   transition: background-color var(--md-sys-motion-duration-medium) var(--md-sys-motion-standard-easing),
-              color var(--md-sys-motion-duration-medium) var(--md-sys-motion-standard-easing);
+    color var(--md-sys-motion-duration-medium) var(--md-sys-motion-standard-easing);
 }
 
 /* Material Symbols Rounded アイコン設定 */
@@ -81,12 +87,42 @@ body {
 .icon-filled {
   font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
 }
-.headline-medium { font-size: 28px; line-height: 36px; font-weight: 400; }
-.title-large { font-size: 22px; line-height: 28px; font-weight: 500; }
-.title-medium { font-size: 16px; line-height: 24px; font-weight: 500; }
-.body-medium { font-size: 14px; line-height: 20px; font-weight: 400; }
-.label-large { font-size: 14px; line-height: 20px; font-weight: 500; }
-.label-medium { font-size: 12px; line-height: 16px; font-weight: 500; }
+
+.headline-medium {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+
+.title-large {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.title-medium {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.body-medium {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.label-large {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.label-medium {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
 
 /* ==========================================================================
    3. アプリ全体のコンテナ & プレビューフレーム
@@ -160,6 +196,7 @@ body {
   flex: 1;
   opacity: 0;
   box-sizing: border-box;
+  justify-content: center;
 }
 
 .screen-view.active {
@@ -173,9 +210,11 @@ body {
     opacity: 0;
     transform: translateY(12px) scale(0.995);
   }
+
   60% {
     opacity: 0.92;
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -186,6 +225,7 @@ body {
 .screen-view.slide-enter-from-right {
   animation: screenFadeThrough 280ms cubic-bezier(0.2, 0.0, 0, 1.0);
 }
+
 .screen-view.slide-enter-active {
   animation: screenFadeThrough 280ms cubic-bezier(0.2, 0.0, 0, 1.0);
 }
@@ -207,7 +247,7 @@ body {
   box-shadow: var(--md-sys-elevation-1);
   box-sizing: border-box;
   transition: transform var(--md-sys-motion-duration-short),
-              box-shadow var(--md-sys-motion-duration-short);
+    box-shadow var(--md-sys-motion-duration-short);
 }
 
 .post-article-card:hover {
@@ -274,16 +314,20 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
   }
+
   :root:not([data-theme="light"]) .post-article-card:hover .card-scrim-white {
     background: rgba(13, 21, 21, 0.76);
   }
+
   :root:not([data-theme="light"]) .post-article-card .card-scrim-white .card-badge {
     color: #56D8E0;
   }
+
   :root:not([data-theme="light"]) .post-article-card .card-scrim-white .card-title {
     color: #FDFFFF;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
+
   :root:not([data-theme="light"]) .post-article-card .card-scrim-white .card-desc {
     color: #DCE4E4;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -295,16 +339,20 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
 }
+
 :root[data-theme="dark"] .post-article-card:hover .card-scrim-white {
   background: rgba(13, 21, 21, 0.76);
 }
+
 :root[data-theme="dark"] .post-article-card .card-scrim-white .card-badge {
   color: #56D8E0;
 }
+
 :root[data-theme="dark"] .post-article-card .card-scrim-white .card-title {
   color: #FDFFFF;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
+
 :root[data-theme="dark"] .post-article-card .card-scrim-white .card-desc {
   color: #DCE4E4;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -317,13 +365,16 @@ body {
   border: 1px solid var(--md-sys-color-outline-variant);
   box-shadow: none;
 }
+
 .post-article-card.is-empty-slot:hover {
   transform: none;
   box-shadow: none;
 }
+
 .post-article-card.is-empty-slot .card-scrim-white {
   background: rgba(255, 255, 255, 0.74);
 }
+
 .post-article-card.is-empty-slot .card-scrim-white .card-title {
   color: var(--md-sys-color-on-surface-variant);
 }
@@ -377,26 +428,58 @@ body {
      非対応ブラウザでは入場スライドのアニメーションで代替する
    ========================================================================== */
 @keyframes wawahzSlideInRight {
-  from { transform: translateX(12%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(12%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
+
 @keyframes wawahzSlideInLeft {
-  from { transform: translateX(-12%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-12%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
+
 @keyframes wawahzSlideOutLeft {
-  from { transform: translateX(0); opacity: 1; }
-  to { transform: translateX(-12%); opacity: 0; }
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-12%);
+    opacity: 0;
+  }
 }
+
 @keyframes wawahzSlideOutRight {
-  from { transform: translateX(0); opacity: 1; }
-  to { transform: translateX(12%); opacity: 0; }
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(12%);
+    opacity: 0;
+  }
 }
 
 /* 同一ページ内での画面切り替え (.screen-view) も横スライドにする */
 .screen-view.active {
   animation: wawahzSlideInRight 280ms cubic-bezier(0.2, 0.0, 0, 1.0);
 }
+
 html[data-slide-dir="back"] .screen-view.active {
   animation-name: wawahzSlideInLeft;
 }
@@ -409,12 +492,15 @@ html[data-slide-dir="back"] .screen-view.active {
 html[data-slide-dir="forward"]::view-transition-old(root) {
   animation: wawahzSlideOutLeft 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
+
 html[data-slide-dir="forward"]::view-transition-new(root) {
   animation: wawahzSlideInRight 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
+
 html[data-slide-dir="back"]::view-transition-old(root) {
   animation: wawahzSlideOutRight 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
+
 html[data-slide-dir="back"]::view-transition-new(root) {
   animation: wawahzSlideInLeft 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
@@ -424,6 +510,7 @@ html[data-slide-dir="back"]::view-transition-new(root) {
   html[data-slide-dir="forward"] #app-container {
     animation: wawahzSlideInRight 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
   }
+
   html[data-slide-dir="back"] #app-container {
     animation: wawahzSlideInLeft 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
   }
@@ -434,6 +521,7 @@ html[data-slide-dir="back"]::view-transition-new(root) {
 #app-container.wawahz-restore-forward {
   animation: wawahzSlideInRight 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
+
 #app-container.wawahz-restore-back {
   animation: wawahzSlideInLeft 280ms cubic-bezier(0.2, 0.0, 0, 1.0) both;
 }
@@ -503,12 +591,15 @@ html[data-slide-dir="back"]::view-transition-new(root) {
 .force-desktop .mobile-only {
   display: none !important;
 }
+
 .force-desktop .desktop-only {
   display: flex !important;
 }
+
 .force-desktop #app-container {
   flex-direction: row !important;
 }
+
 .force-desktop .main-content-wrapper {
   flex: 1 !important;
   display: flex !important;
@@ -526,12 +617,15 @@ html[data-slide-dir="back"]::view-transition-new(root) {
 .force-mobile .mobile-only {
   display: flex !important;
 }
+
 .force-mobile .desktop-only {
   display: none !important;
 }
+
 .force-mobile #app-container {
   flex-direction: column !important;
 }
+
 .force-mobile .main-content-wrapper {
   flex: 1 !important;
   display: flex !important;
@@ -589,6 +683,7 @@ html[data-slide-dir="back"]::view-transition-new(root) {
 
 /* モーション軽減 (prefers-reduced-motion) 対応 */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -624,6 +719,13 @@ body,
   width: 100%;
 }
 
+/* .screen-view を持つ画面 (Category / Post / Nowplaying / Info / Gallery / ミニゲーム) は
+   内容を画面の上下中央に配置する。ホームは .screen-view を持たないため対象外
+   （.site-main 全体を grid にするとモバイルのホームが崩れるため、ここで限定する）。 */
+.site-main:has(> .screen-view) {
+  display: grid;
+}
+
 @media (min-width: 600px) {
   .wawa-container {
     padding: 32px 24px 40px;
@@ -657,4 +759,7 @@ body,
   z-index: 9999;
   transition: top 0.1s ease;
 }
-.skip-link:focus { top: 0; }
+
+.skip-link:focus {
+  top: 0;
+}
