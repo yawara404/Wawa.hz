@@ -5,7 +5,7 @@
  * ?view=profile (view.php) と page-profile.php で共用する。
  */
 $wawahz_show_content = !empty($args['show_content']);
-$wawahz_avatar = get_template_directory_uri() . '/images/icon-512.png';
+$wawahz_avatar = get_template_directory_uri() . '/images/profile.jpg';
 $wawahz_name = 'Wawa404';
 $wawahz_bio = "trident computer / 07\n興味絵とボカリス寄り。メンタル餅。\n自称ガジェットと web 系音楽愛好家。\nAT1選 : snowmilk (aqu3ra)\nhigma / Adomiori / 筧川真生";
 $wawahz_socials = array(
