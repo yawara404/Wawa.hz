@@ -35,7 +35,7 @@ $next_url = $current_page < $max_pages ? add_query_arg(array('view' => 'category
     <!-- カテゴリ選択ドロップダウン & 並び替えメニュー -->
     <div style="width: 100%; max-width: 380px; margin: 0 auto; display: flex; gap: 8px; align-items: center; position: relative;">
       <div style="flex: 1; position: relative;">
-        <div class="m3-dropdown-field" id="mobile-cat-dropdown-field" tabindex="0" role="combobox" aria-label="<?php esc_attr_e('カテゴリ選択', 'wawahz'); ?>" style="height: 48px;">
+        <div class="m3-dropdown-field" id="mobile-cat-dropdown-field" tabindex="0" role="combobox" aria-label="<?php esc_attr_e('カテゴリ選択', 'wawahz'); ?>" style="height: 48px; flex: 1 1 auto; min-width: 0;">
           <span class="dropdown-label" id="mobile-cat-dropdown-label">Select</span>
           <span id="mobile-cat-dropdown-selected" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo esc_html($selected_name); ?></span>
           <span class="material-symbols-rounded" aria-hidden="true">arrow_drop_down</span>

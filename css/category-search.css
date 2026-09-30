@@ -89,18 +89,21 @@
   :root:not(.force-mobile) .search-controls-row .m3-sort-dropdown-wrapper,
   .force-desktop .search-controls-row .m3-sort-dropdown-wrapper {
     flex-shrink: 0;
-    width: 140px;
+    width: auto;
+    min-width: 140px;
     height: 44px;
     padding: 0 12px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
 
   :root:not(.force-mobile) .search-controls-row .m3-sort-select,
   .force-desktop .search-controls-row .m3-sort-select {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
     text-align: center;
     text-align-last: center;
     width: auto;
@@ -343,16 +346,19 @@
 }
 .search-controls-row .m3-sort-dropdown-wrapper {
   flex: 0 0 auto;
-  width: 130px;
+  width: auto;
+  min-width: 130px;
   height: 48px;
   padding: 0 12px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 .search-controls-row .m3-sort-dropdown-wrapper .m3-sort-select {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   text-align: center;
   text-align-last: center;
   width: auto;

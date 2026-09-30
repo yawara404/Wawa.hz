@@ -31,7 +31,7 @@ Text Domain: wawahz
 @import url('css/home.css?v=20260929_01');
 
 /* 6. カテゴリー & 検索画面 (記事カード裏コンテナ、検索バー、クリアボタン、ページネーション) */
-@import url('css/category-search.css?v=20260930_01');
+@import url('css/category-search.css?v=20260930_02');
 
 /* 7. Now Playing & Works (音楽ギャラリー、YouTubeプレイヤーモーダル、楽曲追加) */
 @import url('css/nowplaying.css?v=20260929_02');

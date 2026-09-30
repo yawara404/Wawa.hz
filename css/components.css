@@ -164,6 +164,20 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/* 子要素は幅いっぱいに収め、長い値は省略記号で切る（はみ出し防止） */
+.m3-dropdown-field > * {
+  min-width: 0;
+}
+
+.m3-dropdown-field [id$="-selected"],
+.m3-dropdown-field [id$="dropdown-selected"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .m3-dropdown-menu {
   position: absolute;
   top: calc(100% + 4px);
@@ -352,6 +366,17 @@
   .slide-next-btn { right: 12px; }
   .slide-prev-btn { left: 12px; }
 }
+
+/* 画面幅プレビューで強制モバイルにした場合も同じサイズにする */
+:root.force-mobile .slide-next-btn,
+:root.force-mobile .slide-prev-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+}
+
+:root.force-mobile .slide-next-btn { right: 12px; }
+:root.force-mobile .slide-prev-btn { left: 12px; }
 
 /* ボタンの下に出す「次の画面 / 前の画面」の英字ガイド (例: category) */
 .slide-dest-label {
