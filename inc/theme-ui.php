@@ -125,11 +125,11 @@ function wawahz_slide_next_label()
 {
   switch (wawahz_slide_screen()) {
     case 'home':
-      return 'category';
+      return 'Category';
     case 'category':
-      return 'info';
+      return 'Info';
     case 'gallery':
-      return 'minigame';
+      return 'Mini Game';
   }
   return '';
 }
@@ -138,11 +138,11 @@ function wawahz_slide_prev_label()
 {
   switch (wawahz_slide_screen()) {
     case 'category':
-      return 'home';
+      return 'Home';
     case 'info':
-      return 'category';
+      return 'Category';
     case 'game':
-      return 'works';
+      return 'Gallery';
   }
   return '';
 }

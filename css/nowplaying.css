@@ -464,9 +464,10 @@
 }
 
 /* モバイル: 詳細情報が潰れない1カラムカード。 */
-@media (max-width: 600px) {
+@media (max-width: 899px) {
   #screen-gallery .works-gallery-container {
     gap: 18px;
+    padding-bottom: calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   #screen-gallery .works-grid {
@@ -498,6 +499,10 @@
 }
 
 /* プレビュー切り替えで強制モバイルにした場合も同じレイアウトを使う。 */
+.force-mobile #screen-gallery .works-gallery-container {
+  padding-bottom: calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
 .force-mobile #screen-gallery .works-grid {
   grid-template-columns: minmax(0, 1fr) !important;
   gap: 14px;

@@ -19,20 +19,25 @@
       <?php /* 3画面（画面1 ホーム ⇄ 画面2 カテゴリー ⇄ 画面3 情報欄）のページ送り。
                画面1=右のみ / 画面2=左右 / 画面3=左のみ の構成で、
                画面の左右中央に固定して横スライドで移動する。 */ ?>
+      <?php $wawahz_slide_screen = wawahz_slide_screen(); ?>
       <?php $wawahz_slide_prev = wawahz_slide_prev_url(); ?>
       <?php $wawahz_slide_next = wawahz_slide_next_url(); ?>
       <?php if ($wawahz_slide_prev) : $wawahz_slide_prev_label = wawahz_slide_prev_label(); ?>
-        <a class="slide-prev-btn" href="<?php echo esc_url($wawahz_slide_prev); ?>" data-slide-dir="back"
+        <a class="slide-prev-btn slide-screen-<?php echo esc_attr($wawahz_slide_screen); ?>" href="<?php echo esc_url($wawahz_slide_prev); ?>" data-slide-dir="back" data-slide-screen="<?php echo esc_attr($wawahz_slide_screen); ?>"
            title="<?php esc_attr_e('前の画面へ', 'wawahz'); ?>" aria-label="<?php esc_attr_e('前の画面へ（横スライド）', 'wawahz'); ?>">
           <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
-          <?php if ($wawahz_slide_prev_label) : ?><span class="slide-dest-label"><?php echo esc_html($wawahz_slide_prev_label); ?></span><?php endif; ?>
+          <?php if ($wawahz_slide_prev_label) : ?>
+            <span class="slide-dest-label"><?php echo esc_html($wawahz_slide_prev_label); ?></span>
+          <?php endif; ?>
         </a>
       <?php endif; ?>
       <?php if ($wawahz_slide_next) : $wawahz_slide_next_label = wawahz_slide_next_label(); ?>
-        <a class="slide-next-btn" href="<?php echo esc_url($wawahz_slide_next); ?>" data-slide-dir="forward"
+        <a class="slide-next-btn slide-screen-<?php echo esc_attr($wawahz_slide_screen); ?>" href="<?php echo esc_url($wawahz_slide_next); ?>" data-slide-dir="forward" data-slide-screen="<?php echo esc_attr($wawahz_slide_screen); ?>"
            title="<?php esc_attr_e('次の画面へ', 'wawahz'); ?>" aria-label="<?php esc_attr_e('次の画面へ（横スライド）', 'wawahz'); ?>">
           <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
-          <?php if ($wawahz_slide_next_label) : ?><span class="slide-dest-label"><?php echo esc_html($wawahz_slide_next_label); ?></span><?php endif; ?>
+          <?php if ($wawahz_slide_next_label) : ?>
+            <span class="slide-dest-label"><?php echo esc_html($wawahz_slide_next_label); ?></span>
+          <?php endif; ?>
         </a>
       <?php endif; ?>
     </div><!-- /.main-content-wrapper -->
@@ -103,32 +108,32 @@
       
       <a class="drawer-nav-item <?php echo (is_front_page() || is_home()) && !wawahz_view() ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/')); ?>" data-drawer-nav="home">
         <span class="material-symbols-rounded" aria-hidden="true">home</span>
-        <span>Home (ホーム / dホーム)</span>
+        <span>ホーム (Home)</span>
       </a>
 
       <a class="drawer-nav-item <?php echo wawahz_view() === 'gallery' ? 'active' : ''; ?>" href="<?php echo esc_url(wawahz_view_url('gallery')); ?>" data-drawer-nav="gallery">
         <span class="material-symbols-rounded" aria-hidden="true">palette</span>
-        <span>Works Gallery (作品記事画面)</span>
+        <span>作品ギャラリー (Works Gallery)</span>
       </a>
 
       <a class="drawer-nav-item <?php echo wawahz_view() === 'category' ? 'active' : ''; ?>" href="<?php echo esc_url(wawahz_view_url('category')); ?>" data-drawer-nav="category">
         <span class="material-symbols-rounded" aria-hidden="true">category</span>
-        <span>Category Search (画面2)</span>
+        <span>カテゴリー (Category)</span>
       </a>
 
       <a class="drawer-nav-item <?php echo wawahz_view() === 'post' ? 'active' : ''; ?>" href="<?php echo esc_url(wawahz_view_url('post')); ?>" data-drawer-nav="post">
         <span class="material-symbols-rounded" aria-hidden="true">send</span>
-        <span>Post Archive (画面p)</span>
+        <span>記事一覧 (Posts)</span>
       </a>
 
       <a class="drawer-nav-item <?php echo is_search() ? 'active' : ''; ?>" href="<?php echo esc_url(add_query_arg('s', '', home_url('/'))); ?>" data-drawer-nav="search">
         <span class="material-symbols-rounded" aria-hidden="true">search</span>
-        <span>Search &amp; Voice Query (画面s)</span>
+        <span>検索 (Search)</span>
       </a>
 
       <a class="drawer-nav-item <?php echo wawahz_view() === 'nowplaying' ? 'active' : ''; ?>" href="<?php echo esc_url(wawahz_view_url('nowplaying')); ?>" data-drawer-nav="nowplaying">
         <span class="material-symbols-rounded" aria-hidden="true">headphones</span>
-        <span>Now Playing Gallery (音楽)</span>
+        <span>Now Playing (音楽ギャラリー)</span>
       </a>
 
       <div class="drawer-divider"></div>
@@ -136,25 +141,25 @@
 
       <a class="drawer-nav-item" href="<?php echo esc_url(wawahz_view_url('info')); ?>" id="drawer-link-info">
         <span class="material-symbols-rounded" aria-hidden="true">info</span>
-        <span>About <?php echo esc_html(get_bloginfo('name')); ?></span>
+        <span>サイト情報 (About)</span>
       </a>
       <button type="button" class="drawer-nav-item" id="drawer-link-sitemap" data-open-dialog="sitemap-dialog">
         <span class="material-symbols-rounded" aria-hidden="true">map</span>
-        <span>SiteMap (<?php esc_html_e('サイトマップ', 'wawahz'); ?>)</span>
+        <span>サイトマップ (SiteMap)</span>
       </button>
       <button type="button" class="drawer-nav-item" id="drawer-link-contact" data-open-dialog="form-dialog">
         <span class="material-symbols-rounded" aria-hidden="true">mail</span>
-        <span>Contact Form (<?php esc_html_e('お問い合わせ', 'wawahz'); ?>)</span>
+        <span>お問い合わせ (Contact)</span>
       </button>
       <?php if (get_privacy_policy_url()) : ?>
         <a class="drawer-nav-item" id="drawer-link-policy" href="<?php echo esc_url(get_privacy_policy_url()); ?>">
           <span class="material-symbols-rounded" aria-hidden="true">policy</span>
-          <span>Privacy Policy (<?php esc_html_e('プライバシーポリシー', 'wawahz'); ?>)</span>
+          <span>プライバシーポリシー (Privacy Policy)</span>
         </a>
       <?php else : ?>
         <button type="button" class="drawer-nav-item" id="drawer-link-policy" data-open-dialog="policy-dialog">
           <span class="material-symbols-rounded" aria-hidden="true">policy</span>
-          <span>Privacy Policy (<?php esc_html_e('プライバシーポリシー', 'wawahz'); ?>)</span>
+          <span>プライバシーポリシー (Privacy Policy)</span>
         </button>
       <?php endif; ?>
     </div>
@@ -264,11 +269,11 @@
     <h2 class="m3-dialog-title" id="sitemap-dialog-title">SiteMap</h2>
     <div class="m3-dialog-body">
       <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
-        <li><a href="<?php echo esc_url(home_url('/')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">ホーム (Home &amp; Pickup)</a></li>
-        <li><a href="<?php echo esc_url(wawahz_view_url('gallery')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">Works Gallery (作品記事画面)</a></li>
-        <li><a href="<?php echo esc_url(wawahz_view_url('category')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">Category Search (カテゴリー一覧)</a></li>
-        <li><a href="<?php echo esc_url(wawahz_view_url('nowplaying')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">Now Playing Gallery (Ambient Tracks &amp; YouTube)</a></li>
-        <li><a href="<?php echo esc_url(wawahz_view_url('info')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">Site Information (サイト概要と仕様)</a></li>
+        <li><a href="<?php echo esc_url(home_url('/')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">ホーム (Home)</a></li>
+        <li><a href="<?php echo esc_url(wawahz_view_url('gallery')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">作品ギャラリー (Works Gallery)</a></li>
+        <li><a href="<?php echo esc_url(wawahz_view_url('category')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">カテゴリー (Category)</a></li>
+        <li><a href="<?php echo esc_url(wawahz_view_url('nowplaying')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">Now Playing (音楽ギャラリー)</a></li>
+        <li><a href="<?php echo esc_url(wawahz_view_url('info')); ?>" style="color: var(--md-sys-color-primary); font-weight: 500;">サイト情報 (About)</a></li>
       </ul>
     </div>
     <div class="m3-dialog-actions">

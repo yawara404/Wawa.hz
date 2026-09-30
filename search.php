@@ -20,7 +20,7 @@ get_header();
     <!-- ==============================================
          1. モバイル版レイアウト (412 / 380×320 ボックス)
          ============================================== -->
-    <div class="mobile-only" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+    <div class="mobile-only" style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center;">
       <div class="search-screen-container">
         <?php get_template_part('template-parts/search-screen-body', null, array('variant' => 'mobile')); ?>
       </div>

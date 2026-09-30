@@ -13,6 +13,7 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="skip-link screen-reader-text" href="#main-content"><?php esc_html_e('本文へスキップ', 'wawahz'); ?></a>
+
 <div id="app-viewport">
   <div id="app-container">
     <!-- デスクトップ用 Navigation Rail -->

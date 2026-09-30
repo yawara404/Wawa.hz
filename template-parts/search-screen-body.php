@@ -63,7 +63,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
             <?php echo $query_str === '' ? 'style="display:none;"' : ''; ?>>
       <span class="material-symbols-rounded" aria-hidden="true">close</span>
     </button>
-    <button type="submit" class="icon-btn-48 search-submit-btn" style="width: 36px; height: 36px;" title="<?php esc_attr_e('検索を実行', 'wawahz'); ?>" aria-label="<?php esc_attr_e('検索を実行', 'wawahz'); ?>">
+    <button type="submit" class="icon-btn-48 search-submit-btn" title="<?php esc_attr_e('検索を実行', 'wawahz'); ?>" aria-label="<?php esc_attr_e('検索を実行', 'wawahz'); ?>">
       <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
     </button>
   </div>

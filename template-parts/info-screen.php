@@ -92,7 +92,7 @@ $selected_post_url = $selected_post ? get_permalink($selected_post) : '';
 
       <!-- クイックアクション (プレイヤーモーダル起動 / ギャラリーへ移動) -->
       <div class="np-hub-actions">
-        <button type="button" class="m3-btn m3-btn-filled" id="info-open-player-btn" style="flex: 1; height: 42px; font-size: 13px;"
+        <button type="button" class="m3-btn m3-btn-filled" id="info-open-player-btn"
           data-open-player
           data-youtube-id="<?php echo esc_attr($selected_yt_id); ?>"
           data-title="<?php echo esc_attr($selected_title); ?>"
@@ -106,7 +106,7 @@ $selected_post_url = $selected_post ? get_permalink($selected_post) : '';
           <span class="material-symbols-rounded" aria-hidden="true">play_circle</span>
           <span><?php esc_html_e('モーダルで再生', 'wawahz'); ?></span>
         </button>
-        <a href="<?php echo esc_url(wawahz_view_url('nowplaying')); ?>" class="m3-btn m3-btn-tonal" id="info-goto-gallery-btn" style="flex: 1; height: 42px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+        <a href="<?php echo esc_url(wawahz_view_url('nowplaying')); ?>" class="m3-btn m3-btn-tonal" id="info-goto-gallery-btn">
           <span class="material-symbols-rounded" aria-hidden="true">grid_view</span>
           <span><?php esc_html_e('ギャラリーを開く', 'wawahz'); ?></span>
         </a>

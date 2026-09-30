@@ -523,7 +523,7 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  padding: 0 0 16px;
+  padding: 0 0 calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ---------- Pickup 見出し & カルーセル (モバイル) ---------- */
@@ -969,7 +969,7 @@
 @media (max-width: 600px) {
   .mobile-home-wrapper {
     gap: 22px;
-    padding: 0 0 calc(80px + env(safe-area-inset-bottom));
+    padding: 0 0 calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-pickup-section {
@@ -1016,7 +1016,7 @@
 
 .force-mobile .mobile-home-wrapper {
   gap: 22px;
-  padding: 0 0 calc(80px + env(safe-area-inset-bottom));
+  padding: 0 0 calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px));
 }
 
 .force-mobile .mobile-pickup-heading h2,

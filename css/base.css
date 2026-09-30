@@ -551,11 +551,13 @@ html[data-slide-dir="back"]::view-transition-new(root) {
   box-sizing: border-box;
 }
 
-/* モバイルではページ全体をスクロールさせ、トップバーの sticky を有効にする。 */
+/* モバイルではページ全体をスクロールさせ、トップバーの sticky を有効にする。
+   ボトムバー分の不要な余白を作らないよう padding-bottom: 0 を徹底する。 */
 @media (max-width: 899px) {
   :root:not(.force-desktop) .main-content-wrapper {
     overflow-y: visible;
     overflow-x: clip;
+    padding-bottom: 0 !important;
   }
 }
 

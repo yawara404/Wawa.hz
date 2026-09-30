@@ -196,6 +196,59 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* =====================================================================
+     2-3. モバイル版画面移動ボタンの無操作時自動フェードアウト (初期画面では表示)
+     ・初期画面表示時: ボタンを表示
+     ・無操作時 (3.2秒間スクロールやタッチがないとき): スムーズにフェードアウト
+     ・操作時 (スクロール / タッチ / ホイール / クリック): 即座に再表示しタイマー再開
+     ===================================================================== */
+  const slideNavButtons = document.querySelectorAll('.slide-next-btn, .slide-prev-btn');
+  if (slideNavButtons.length > 0) {
+    let idleTimer = null;
+    const IDLE_TIMEOUT_MS = 3200; // 3.2秒無操作で自動フェードアウト
+
+    const showSlideButtons = () => {
+      slideNavButtons.forEach((btn) => btn.classList.remove('is-idle-hidden'));
+    };
+
+    const hideSlideButtons = () => {
+      if (document.body.classList.contains('drawer-open') || document.querySelector('.m3-dialog-backdrop.active')) {
+        return;
+      }
+      slideNavButtons.forEach((btn) => btn.classList.add('is-idle-hidden'));
+    };
+
+    const resetIdleTimer = () => {
+      showSlideButtons();
+      if (idleTimer) {
+        clearTimeout(idleTimer);
+      }
+      idleTimer = setTimeout(hideSlideButtons, IDLE_TIMEOUT_MS);
+    };
+
+    // 初期画面では表示したまま、3.2秒後に無操作なら自動フェードアウト
+    idleTimer = setTimeout(hideSlideButtons, IDLE_TIMEOUT_MS);
+
+    // スクロール・タッチ等のユーザー操作で再表示
+    const activityEvents = ['scroll', 'touchstart', 'touchmove', 'wheel', 'pointerdown'];
+    activityEvents.forEach((ev) => {
+      window.addEventListener(ev, resetIdleTimer, { passive: true });
+    });
+
+    // ボタンに触れている/ホバー中は消えないようにする
+    slideNavButtons.forEach((btn) => {
+      btn.addEventListener('mouseenter', () => {
+        if (idleTimer) clearTimeout(idleTimer);
+        showSlideButtons();
+      });
+      btn.addEventListener('mouseleave', resetIdleTimer);
+      btn.addEventListener('touchstart', () => {
+        if (idleTimer) clearTimeout(idleTimer);
+        showSlideButtons();
+      }, { passive: true });
+    });
+  }
+
+  /* =====================================================================
      3. M3 スライドドロワー (Navigation Drawer)
      ===================================================================== */
   const drawerBackdrop = document.getElementById('slide-drawer-backdrop');

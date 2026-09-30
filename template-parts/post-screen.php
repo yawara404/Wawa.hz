@@ -76,8 +76,8 @@ $fallback_images = array(
        1. モバイル版レイアウト (412 / 380×320 ボックス)
        カテゴリー画面と同じ「スクロールする記事リスト」構成
        ============================================== */ ?>
-  <div class="mobile-only" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
-    <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 380px; margin: 0 auto;">
+  <div class="mobile-only" style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center;">
+    <div class="search-screen-container">
 
       <div class="post-screen-action-bar">
         <h2 class="post-screen-title">

@@ -242,12 +242,11 @@
 }
 
 /* ==========================================================================
-   モバイル: 固定ボトムナビゲーションバー(80px)に本文が隠れないよう下余白を確保
-   （画面隅の固定 ↑/↓ ボタンは廃止し、右中央の「次の画面」ボタンに統一）
+   モバイル: info 画面は下部ナビに隠れないよう適度な下余白(24px)を確保。
+   カテゴリー画面・検索画面は画面中央（上下左右）に配置するため、余分な padding-bottom は付与しない。
    ========================================================================== */
-#screen-category > .mobile-only,
 #screen-info .site-info-footer-container {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  padding-bottom: 24px;
 }
 
 /* ==========================================================================
@@ -325,6 +324,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 /* Cat scroll list & article cards unified styles */
 .cat-scroll-articles-list::-webkit-scrollbar { width: 6px; }
@@ -333,16 +336,345 @@
   border-radius: 3px;
 }
 
-/* ---------- Search 画面 (screen-search) スタイル ----------
-   モバイル（〜899px）はカテゴリー画面（ホーム画面2）と同じ
-   「380px 幅の1カラム + 182×48 の見出し」で表示する。
-   デスクトップ用の値（616px 幅 / 380×56 の見出し / 1行コントロール）は
-   ファイル上部の `@media (min-width: 900px)` ブロックで定義している。
-   ※ 以前はここにデスクトップ用の値が無条件で書かれており、
-     上部のモバイル指定を常に上書きしてしまっていた（＝非レスポンシブの原因）。 */
-.search-screen-view {
+/* ---------- Search, Category, Post 画面 上下左右中央配置 ----------
+   デスクトップ・モバイルともに画面中央に配置し、レイアウト崩れを防ぐ */
+.search-screen-view,
+.category-screen-view,
+.post-screen-view,
+#screen-search.screen-view,
+#screen-category.screen-view,
+#screen-post.screen-view {
   width: 100%;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 899px) {
+  /* Search, Category, Post 画面: トップバー(64px)とボトムナビ(80px)の間の可視領域に上下左右中央配置 */
+  .site-main:has(> #screen-search),
+  .site-main:has(> #screen-category),
+  .site-main:has(> #screen-post),
+  .site-main:has(> .search-screen-view) {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 16px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .search-screen-view,
+  .category-screen-view,
+  .post-screen-view,
+  #screen-search.screen-view,
+  #screen-category.screen-view,
+  #screen-post.screen-view {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  #screen-category > .mobile-only,
+  #screen-post > .mobile-only,
+  #screen-search .mobile-only {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+
+  .search-screen-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 1. 見出し（Category, Search, Posts）をモバイル向けにコンパクト化 */
+  .search-screen-title,
+  #screen-category #mobile-category-header-btn {
+    width: 160px !important;
+    height: 38px !important;
+    padding: 0 16px !important;
+    font-size: 13.5px !important;
+    border-radius: 9999px !important;
+    gap: 6px !important;
+  }
+
+  .post-screen-action-bar {
+    width: 100% !important;
+    max-width: 360px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .post-screen-title {
+    font-size: 16px !important;
+    gap: 6px !important;
+  }
+
+  .post-screen-title .material-symbols-rounded {
+    font-size: 20px !important;
+  }
+
+  /* 2. コントロール（検索バー・ドロップダウン・並び替え）を1行にまとめてコンパクト化 */
+  .category-controls-row,
+  .search-controls-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .category-controls-row .m3-dropdown-field,
+  #screen-category #mobile-cat-dropdown-field {
+    height: 40px !important;
+    padding: 0 10px 0 12px !important;
+    font-size: 12px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  /* 検索画面: 検索バーをコンパクトにして行の左側(flex: 1)に配置 */
+  .search-controls-row .m3-search-bar {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 40px !important;
+    border-radius: 20px !important;
+    padding: 0 4px 0 10px !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .search-controls-row .m3-search-bar input {
+    font-size: 13px !important;
+    min-width: 0 !important;
+    height: 100% !important;
+  }
+
+  .search-controls-row .m3-search-bar .search-input-icon {
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .search-controls-row .m3-search-bar .search-clear-btn {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+  }
+
+  .search-controls-row .m3-search-bar .search-clear-btn .material-symbols-rounded {
+    font-size: 16px !important;
+  }
+
+  .search-controls-row .m3-search-bar .search-submit-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    background: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+    border-radius: 15px !important;
+  }
+
+  .search-controls-row .m3-search-bar .search-submit-btn .material-symbols-rounded {
+    font-size: 18px !important;
+  }
+
+  /* 検索画面 & カテゴリ画面: ドロップダウンをコンパクトにして行の右側に配置 */
+  .category-controls-row .m3-sort-dropdown-wrapper,
+  .search-controls-row .m3-sort-dropdown-wrapper,
+  .search-controls-row .search-category-dropdown,
+  .post-screen-action-bar .m3-sort-dropdown-wrapper,
+  #screen-category .m3-sort-dropdown-wrapper {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 86px !important;
+    max-width: 115px !important;
+    height: 40px !important;
+    border-radius: 20px !important;
+    padding: 0 6px 0 10px !important;
+    box-sizing: border-box !important;
+    gap: 4px !important;
+  }
+
+  .search-controls-row .m3-sort-dropdown-wrapper .sort-icon {
+    font-size: 16px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .search-controls-row .m3-sort-dropdown-wrapper .m3-sort-select {
+    font-size: 11.5px !important;
+    max-width: 60px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    padding: 0 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+
+  .search-controls-row .m3-sort-dropdown-wrapper .sort-arrow {
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 検索メタ情報 (件数表示) をモバイル幅に最適化 */
+  .search-meta-row {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    padding: 0 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+  }
+
+  .search-meta-row .results-count {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
+    margin: 0 !important;
+    letter-spacing: 0.01em !important;
+  }
+
+  /* 3. 記事ボックス: 320pxからモバイル最適高さ (260px〜270px) へ */
+  .box-surface-high-380-320,
+  #mobile-cat-articles-box,
+  #mobile-post-articles-box,
+  #search-results-box-mobile {
+    width: 100% !important;
+    max-width: 360px !important;
+    height: clamp(230px, 34vh, 270px) !important;
+    max-height: 270px !important;
+    box-sizing: border-box !important;
+    padding: 8px !important;
+    border-radius: 20px !important;
+  }
+
+  .cat-scroll-articles-list {
+    padding: 4px !important;
+    gap: 6px !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 4. 記事カード: モバイル向けにスリム化 (padding: 8px 10px, 枠の角丸12px) */
+  .cat-article-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
+    gap: 6px !important;
+  }
+
+  .cat-article-info {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    gap: 2px !important;
+  }
+
+  .cat-article-meta {
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .cat-article-badge {
+    font-size: 8.5px !important;
+    padding: 1px 5px !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  .cat-article-date {
+    font-size: 10px !important;
+    opacity: 0.7 !important;
+  }
+
+  .cat-article-title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+  }
+
+  .cat-article-summary {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    opacity: 0.75 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+  }
+
+  .cat-article-chevron {
+    flex-shrink: 0 !important;
+    min-width: 16px !important;
+    margin-left: 2px !important;
+    font-size: 16px !important;
+  }
+
+  /* 5. ページネーション: 連結ボタンのコンパクト化 */
+  .dcat-pagination-row {
+    margin-top: 2px !important;
+  }
+
+  .dcat-pagination-row .connected-button-group .m3-btn {
+    height: 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    padding: 0 !important;
+  }
+
+  .dcat-pagination-row .page-indicator {
+    font-size: 12px !important;
+    padding: 0 10px !important;
+  }
 }
 .search-controls-row .m3-sort-dropdown-wrapper {
   flex: 0 0 auto;
@@ -680,6 +1012,11 @@
   flex: 1;
 }
 
+#screen-category > .dcat-desktop-container > .search-screen-container {
+  flex: 1;
+  min-height: 0;
+}
+
 #screen-category #desk-cat-articles-box {
   flex: 1 0 320px;
   height: auto;
@@ -873,14 +1210,59 @@
 #screen-search > .mobile-only .search-initial-card,
 #screen-search > .mobile-only .search-empty-card {
   width: 100%;
-  max-width: 380px;
-  height: 320px;
-  max-height: 320px;
+  max-width: 360px;
+  height: clamp(230px, 34vh, 270px);
+  max-height: 270px;
   margin: 0 auto;
-  padding: 16px 12px;
-  gap: 8px;
+  padding: 12px 10px;
+  gap: 6px;
   justify-content: center;
+  border-radius: 20px;
+  box-sizing: border-box;
   overflow-y: auto;
+}
+
+#screen-search > .mobile-only .search-initial-icon-wrap,
+#screen-search > .mobile-only .search-empty-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 19px;
+  flex-shrink: 0;
+}
+
+#screen-search > .mobile-only .search-initial-icon-wrap .material-symbols-rounded,
+#screen-search > .mobile-only .search-empty-icon-wrap .material-symbols-rounded {
+  font-size: 20px;
+}
+
+#screen-search > .mobile-only .search-initial-title,
+#screen-search > .mobile-only .search-empty-title {
+  font-size: 13.5px;
+  margin: 0;
+}
+
+#screen-search > .mobile-only .search-initial-desc,
+#screen-search > .mobile-only .search-empty-desc {
+  font-size: 11.5px;
+  line-height: 1.4;
+  margin: 0;
+  max-width: 290px;
+}
+
+#screen-search > .mobile-only .search-initial-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 4px;
+  max-width: 310px;
+}
+
+#screen-search > .mobile-only .search-category-tile {
+  padding: 3px 8px;
+  font-size: 11px;
+  border-radius: 10px;
+  gap: 4px;
 }
 
 #screen-search > .desktop-only .search-initial-card,
