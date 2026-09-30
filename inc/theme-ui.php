@@ -481,6 +481,21 @@ add_action('pre_get_posts', function ($query) {
   $query->set('category__not_in', array_values(array_unique($exclude)));
 });
 
+// 検索画面のカテゴリフィルタ (?cat=<slug>): 検索結果をカテゴリで絞り込む。
+add_action('pre_get_posts', function ($query) {
+  if (is_admin() || !$query->is_main_query() || !$query->is_search()) {
+    return;
+  }
+  $slug = wawahz_request_value('cat');
+  if ($slug === '') {
+    return;
+  }
+  $term = get_category_by_slug($slug);
+  if ($term && !is_wp_error($term)) {
+    $query->set('cat', (int) $term->term_id);
+  }
+});
+
 /** サイト既定の OGP 画像 (ロゴマーク)。SEO SIMPLE PACK が画像未設定のときに使う。 */
 function wawahz_default_og_image_url()
 {

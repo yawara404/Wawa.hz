@@ -531,13 +531,53 @@ function wawahz_home_work_candidates()
 }
 
 /**
+ * ホーム Pickup カードの固定枠 (home-settings の wawahz_home_pickup_1..N)。
+ * 公開済みの投稿のみを、指定順で返す。
+ */
+function wawahz_home_pickup_ids($slots = 4)
+{
+  $settings_id = wawahz_home_settings_page_id();
+  if (!$settings_id) {
+    return array();
+  }
+  $ids = array();
+  for ($i = 1; $i <= $slots; $i++) {
+    $id = (int) get_post_meta($settings_id, 'wawahz_home_pickup_' . $i, true);
+    if ($id && get_post_status($id) === 'publish' && !in_array($id, $ids, true)) {
+      $ids[] = $id;
+    }
+  }
+  return $ids;
+}
+
+/**
+ * ホーム Pickup カードの候補 (通常記事・最新50件)。
+ */
+function wawahz_home_pickup_candidates()
+{
+  $music_id = function_exists('wawahz_music_category_id') ? wawahz_music_category_id() : 0;
+  $args = array(
+    'post_type'      => 'post',
+    'post_status'    => 'publish',
+    'has_password'   => false,
+    'posts_per_page' => 50,
+    'orderby'        => array('date' => 'DESC', 'ID' => 'DESC'),
+  );
+  // 楽曲は Now Playing 側なので Pickup 候補からは除外する。
+  if ($music_id) {
+    $args['category__not_in'] = array($music_id);
+  }
+  return get_posts($args);
+}
+
+/**
  * 固定ページにホーム画面カード設定メタボックスを追加
  */
 function wawahz_add_home_cards_metabox()
 {
   add_meta_box(
     'wawahz_home_cards_metabox',
-    '🏠 ホーム画面カード設定（NowPlaying / Gallery）',
+    '🏠 ホーム画面カード設定（NowPlaying / Gallery / Pickup）',
     'wawahz_render_home_cards_metabox',
     'page',
     'normal',
@@ -559,8 +599,9 @@ function wawahz_render_home_cards_metabox($post)
   $work_2  = (int) get_post_meta($post->ID, 'wawahz_home_work_2', true);
   $is_active = ($settings_id === (int) $post->ID);
 
-  $music_posts = wawahz_home_music_candidates();
-  $work_posts  = wawahz_home_work_candidates();
+  $music_posts  = wawahz_home_music_candidates();
+  $work_posts   = wawahz_home_work_candidates();
+  $pickup_posts = wawahz_home_pickup_candidates();
   ?>
   <div style="display: grid; gap: 14px; padding: 6px 0;">
     <?php if ($is_active) : ?>
@@ -615,6 +656,25 @@ function wawahz_render_home_cards_metabox($post)
       </select>
       <p style="margin: 4px 0 0; color: #666; font-size: 12px;">空き枠は最新の作品で自動補完されます。作品が無い場合は「作品を準備中」と表示されます。</p>
     </div>
+
+    <div>
+      <label for="wawahz_home_pickup_1" style="display: block; font-weight: 600; margin-bottom: 4px;">
+        4. Pickup カードに固定する記事（任意・最大4件）
+      </label>
+      <?php for ($i = 1; $i <= 4; $i++) :
+        $pickup_id = (int) get_post_meta($post->ID, 'wawahz_home_pickup_' . $i, true);
+      ?>
+        <select id="wawahz_home_pickup_<?php echo esc_attr($i); ?>" name="wawahz_home_pickup_<?php echo esc_attr($i); ?>" style="width: 100%; max-width: 600px; padding: 8px 12px; margin-bottom: 6px;">
+          <option value="0" <?php selected($pickup_id, 0); ?>><?php echo esc_html(sprintf(__('%d枠目: 自動', 'wawahz'), $i)); ?></option>
+          <?php foreach ($pickup_posts as $pp) : ?>
+            <option value="<?php echo esc_attr($pp->ID); ?>" <?php selected($pickup_id, $pp->ID); ?>>
+              <?php echo esc_html(get_the_title($pp) . '（' . get_the_date('Y-m-d', $pp) . '）'); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      <?php endfor; ?>
+      <p style="margin: 4px 0 0; color: #666; font-size: 12px;">固定した記事が先頭に並び、残りはスティッキー / 最新記事で自動補完されます。カスタムフィールド <code>wawahz_home_pickup_1</code>〜<code>4</code> に投稿IDを入れても同じです。</p>
+    </div>
   </div>
   <?php
 }
@@ -656,6 +716,19 @@ function wawahz_save_home_cards_metabox($post_id)
       }
     }
     update_post_meta($post_id, $field, $work_id);
+  }
+
+  // Pickup: 公開済みの投稿のみ有効。NG → 自動 (0)
+  for ($i = 1; $i <= 4; $i++) {
+    $field = 'wawahz_home_pickup_' . $i;
+    $pickup_id = isset($_POST[$field]) ? absint($_POST[$field]) : 0;
+    if ($pickup_id) {
+      $pickup_post = get_post($pickup_id);
+      if (!$pickup_post || $pickup_post->post_type !== 'post' || $pickup_post->post_status !== 'publish') {
+        $pickup_id = 0;
+      }
+    }
+    update_post_meta($post_id, $field, $pickup_id);
   }
 }
 /**

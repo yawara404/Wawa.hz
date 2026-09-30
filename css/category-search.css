@@ -459,6 +459,13 @@
   border-color: var(--md-sys-color-secondary);
   transform: translateY(-1px);
 }
+/* 選択中のカテゴリフィルタ */
+.search-tag-chip.is-active {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: var(--md-sys-color-secondary);
+  font-weight: 700;
+}
 
 /* 検索初期状態・空状態カード */
 .search-initial-card,

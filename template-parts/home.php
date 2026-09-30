@@ -11,26 +11,45 @@ $sticky_ids  = get_option( 'sticky_posts', array() );
 // 通常の記事枠 (Pickup / Lately) からは楽曲カテゴリ (music) を除外する (Now Playing と分離)。
 $wawahz_music_id = function_exists( 'wawahz_music_category_id' ) ? wawahz_music_category_id() : 0;
 $wawahz_exclude_music = $wawahz_music_id ? array( 'category__not_in' => array( $wawahz_music_id ) ) : array();
-$pickup_args = array(
-  'post_type'           => 'post',
-  'post_status'         => 'publish',
-  'has_password'        => false,
-  'posts_per_page'      => 5,
-  'ignore_sticky_posts' => true,
-);
-if ( $sticky_ids ) {
-  $pickup_args['post__in'] = $sticky_ids;
+// Pickup: 固定 (home-settings の wawahz_home_pickup_1..4) → スティッキー → 最新 の順に最大5件。
+$wawahz_pickup_ids = function_exists( 'wawahz_home_pickup_ids' ) ? wawahz_home_pickup_ids( 4 ) : array();
+$pickup_posts = array();
+$wawahz_pickup_seen = array();
+
+foreach ( $wawahz_pickup_ids as $wawahz_pid ) {
+  $wawahz_p = get_post( $wawahz_pid );
+  if ( $wawahz_p && $wawahz_p->post_status === 'publish' && ! isset( $wawahz_pickup_seen[ $wawahz_pid ] ) ) {
+    $pickup_posts[] = $wawahz_p;
+    $wawahz_pickup_seen[ $wawahz_pid ] = true;
+  }
 }
-$pickup_posts = get_posts( array_merge( $pickup_args, $wawahz_exclude_music ) );
-if ( ! $pickup_posts ) {
-  // フォールバック：スティッキーなし → 最新5件
-  $pickup_posts = get_posts( array_merge( array(
+
+foreach ( $sticky_ids as $wawahz_sid ) {
+  if ( count( $pickup_posts ) >= 5 ) break;
+  if ( isset( $wawahz_pickup_seen[ $wawahz_sid ] ) ) continue;
+  $wawahz_p = get_post( $wawahz_sid );
+  if ( ! $wawahz_p || $wawahz_p->post_status !== 'publish' ) continue;
+  if ( $wawahz_music_id && in_array( $wawahz_music_id, wp_get_post_categories( $wawahz_sid ), true ) ) continue;
+  $pickup_posts[] = $wawahz_p;
+  $wawahz_pickup_seen[ $wawahz_sid ] = true;
+}
+
+if ( count( $pickup_posts ) < 5 ) {
+  // 残りは最新記事で補完する。
+  $wawahz_latest = get_posts( array_merge( array(
     'post_type'           => 'post',
     'post_status'         => 'publish',
     'has_password'        => false,
     'posts_per_page'      => 5,
     'ignore_sticky_posts' => true,
+    'post__not_in'        => array_keys( $wawahz_pickup_seen ),
   ), $wawahz_exclude_music ) );
+  foreach ( $wawahz_latest as $wawahz_p ) {
+    if ( count( $pickup_posts ) >= 5 ) break;
+    if ( isset( $wawahz_pickup_seen[ $wawahz_p->ID ] ) ) continue;
+    $pickup_posts[] = $wawahz_p;
+    $wawahz_pickup_seen[ $wawahz_p->ID ] = true;
+  }
 }
 
 // Lately 用：最新6件

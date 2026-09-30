@@ -17,6 +17,12 @@ $box_class = $variant === 'desktop' ? 'box-surface-high-616-320' : 'box-surface-
 global $wp_query;
 $query_str        = get_search_query();
 $quick_categories = get_categories(array('hide_empty' => true, 'number' => 6));
+$category_slug    = wawahz_request_value('cat');
+$active_category  = $category_slug !== '' ? get_category_by_slug($category_slug) : null;
+$has_query        = ($query_str !== '' || $active_category);
+$result_label     = $query_str !== ''
+  ? sprintf(__('「%s」の検索結果', 'wawahz'), $query_str)
+  : sprintf(__('「%s」の記事', 'wawahz'), $active_category ? $active_category->name : '');
 $current_page     = max(1, get_query_var('paged'));
 $max_pages        = (int) $wp_query->max_num_pages;
 $found_posts      = (int) $wp_query->found_posts;
@@ -66,8 +72,13 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
   <div class="search-quick-tags" aria-label="<?php esc_attr_e('クイック検索タグ', 'wawahz'); ?>">
     <span class="search-quick-tags-label"><?php esc_html_e('トピック:', 'wawahz'); ?></span>
     <div class="search-quick-tags-list">
+      <a href="<?php echo esc_url(add_query_arg(array('s' => $query_str), home_url('/'))); ?>"
+         class="search-tag-chip<?php echo $active_category ? '' : ' is-active'; ?>">
+        <?php esc_html_e('すべて', 'wawahz'); ?>
+      </a>
       <?php foreach ($quick_categories as $cat) : ?>
-        <a href="<?php echo esc_url(add_query_arg(array('s' => $cat->name), home_url('/'))); ?>" class="search-tag-chip">
+        <a href="<?php echo esc_url(add_query_arg(array('s' => $query_str, 'cat' => $cat->slug), home_url('/'))); ?>"
+           class="search-tag-chip<?php echo ($active_category && (int) $active_category->term_id === (int) $cat->term_id) ? ' is-active' : ''; ?>">
           <?php echo esc_html($cat->name); ?>
         </a>
       <?php endforeach; ?>
@@ -75,7 +86,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
   </div>
 <?php endif; ?>
 
-<?php if ($query_str === '') : ?>
+<?php if (!$has_query) : ?>
   <!-- 初期状態（キーワード未入力時のウェルカム表示） -->
   <div class="search-initial-card">
     <div class="search-initial-icon-wrap">
@@ -100,7 +111,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
   <!-- 検索結果件数表示 -->
   <div class="search-meta-row">
     <p class="results-count" style="margin: 0; font-size: 13px; font-weight: 500; color: var(--md-sys-color-on-surface-variant);">
-      <?php echo esc_html(sprintf(__('「%s」の検索結果: %s 件', 'wawahz'), $query_str, number_format_i18n($found_posts))); ?>
+      <?php echo esc_html(sprintf(__('%s: %s 件', 'wawahz'), $result_label, number_format_i18n($found_posts))); ?>
     </p>
   </div>
 
@@ -167,7 +178,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
     <div class="search-empty-icon-wrap">
       <span class="material-symbols-rounded search-empty-icon" aria-hidden="true">search_off</span>
     </div>
-    <h3 class="search-empty-title"><?php echo esc_html(sprintf(__('「%s」に一致する記事は見つかりませんでした', 'wawahz'), $query_str)); ?></h3>
+    <h3 class="search-empty-title"><?php echo esc_html(sprintf(__('%s に一致する記事は見つかりませんでした', 'wawahz'), $result_label)); ?></h3>
     <p class="search-empty-desc"><?php esc_html_e('キーワードのスペルをご確認いただくか、別の言葉やカテゴリーから探してみてください。', 'wawahz'); ?></p>
     <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px;">
       <a href="<?php echo esc_url(wawahz_view_url('category')); ?>" class="m3-btn m3-btn-tonal" style="display: inline-flex; align-items: center; gap: 6px;">
