@@ -6,6 +6,7 @@ $parts = array(
   'gallery'    => 'works-gallery',
   'game'       => 'mini-game-screen',
   'nowplaying' => 'nowplaying-gallery',
+  'profile'    => 'profile-screen',
   'info'       => 'info-screen',
 );
 ?>

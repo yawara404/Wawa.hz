@@ -326,6 +326,10 @@
         <span class="material-symbols-rounded" aria-hidden="true">info</span>
         <span>About <?php echo esc_html(get_bloginfo('name')); ?></span>
       </a>
+      <a href="<?php echo esc_url(wawahz_view_url('profile')); ?>" class="m3-btn m3-btn-tonal" style="justify-content: flex-start; text-decoration: none; width: 100%;">
+        <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
+        <span><?php esc_html_e('プロフィール', 'wawahz'); ?></span>
+      </a>
       <?php if (current_user_can('edit_posts')) : ?>
         <a href="<?php echo esc_url(admin_url()); ?>" class="m3-btn m3-btn-tonal" style="justify-content: flex-start; text-decoration: none; width: 100%;">
           <span class="material-symbols-rounded" aria-hidden="true">admin_panel_settings</span>

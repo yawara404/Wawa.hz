@@ -45,5 +45,8 @@ Text Domain: wawahz
 /* 10. Gallery 画面2: ミニゲーム画面 (p5play 製 Falling Survivor の埋め込み) */
 @import url('css/mini-game.css?v=20260929_03');
 
-/* 11. レスポンシブ最終調整 (横はみ出し防止・タップ領域・中間ブレークポイント) */
+/* 11. プロフィール画面 (page-profile.php / ?view=profile) */
+@import url('css/profile.css?v=20260930_01');
+
+/* 12. レスポンシブ最終調整 (横はみ出し防止・タップ領域・中間ブレークポイント) */
 @import url('css/responsive.css?v=20260928_15');

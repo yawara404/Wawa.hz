@@ -8,7 +8,7 @@ function wawahz_request_value($key, $default = '')
 function wawahz_view()
 {
   $view = wawahz_request_value('view');
-  return (is_home() || is_front_page()) && in_array($view, array('category', 'post', 'gallery', 'game', 'nowplaying', 'info'), true) ? $view : '';
+  return (is_home() || is_front_page()) && in_array($view, array('category', 'post', 'gallery', 'game', 'nowplaying', 'profile', 'info'), true) ? $view : '';
 }
 
 /**
@@ -21,6 +21,7 @@ function wawahz_view_page($view)
     'gallery'    => array('page-gallery.php'),
     'game'       => array('page-game.php'),
     'nowplaying' => array('page-music.php', 'page-nowplaying.php'),
+    'profile'    => array('page-profile.php'),
   );
   if (!isset($templates[$view])) {
     return null;
@@ -413,6 +414,7 @@ function wawahz_view_seo()
     'gallery'    => array('Works & Creations', '自作キーボード、Web Audio、モノクロ写真、UIシステム。思索と触感を形にした制作物アーカイブ。'),
     'game'       => array('Mini Game', '制作の合間にどうぞ。授業の最終課題でつくったちいさな1作です。'),
     'nowplaying' => array('Now Playing Gallery', '最近聴いている音楽とアンビエント和音スケッチ。'),
+    'profile'    => array('Profile', 'プロフィール。制作と音楽の記録。'),
     'post'       => array('Posts', 'ブログ記事の一覧。'),
     'category'   => array('Category', 'カテゴリーから記事を探す。'),
     'info'       => array('Site Info', 'サイト情報・運営者情報。'),

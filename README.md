@@ -16,6 +16,7 @@
 | Works Gallery | 作品カードグリッド + 詳細モーダル（`page-gallery.php` / `?view=gallery`） |
 | Now Playing | 16:9 サムネ付きの楽曲カード + YouTube 公式 IFrame 再生モーダル（`page-music.php` / `page-nowplaying.php` / `?view=nowplaying`。固定ページ「Music」を優先） |
 | Site Info | ブランドカード・仕様グリッド・プライバシーポリシー・お問い合わせフォーム |
+| Profile | プロフィール（名前・紹介文・リンク）。`page-profile.php` / `?view=profile`。トップバーの三点メニューから開く |
 | Search | リアルタイム絞り込み検索（見出しインクリメンタル抽出） |
 | Mini Game | 授業で制作した 2D アクション「Falling Survivor」を独立画面（`page-game.php` / `?view=game`）で同梱表示（Gallery の左右中央ボタンで移動） |
 
@@ -39,7 +40,7 @@
 | カスタムブロック | `wawahz/nowplaying-gallery`（属性: `limit` / `showHeader`） |
 | ショートコード | `[nowplaying_gallery limit="6" show_header="true"]` |
 | テーマ設定 | `theme.json`（コンテンツ幅 760px / ワイド幅 1120px、カラーパレット、フォントサイズ） |
-| 画面ルーティング | `view.php` が `?view=category / post / gallery / game / nowplaying / info` を `template-parts/` に振り分け |
+| 画面ルーティング | `view.php` が `?view=category / post / gallery / game / nowplaying / profile / info` を `template-parts/` に振り分け |
 | 同梱ライブラリ | p5.js / planck.js / p5play（`games/falling-survivor/lib/`）— CDN 非依存で動作 |
 
 ---

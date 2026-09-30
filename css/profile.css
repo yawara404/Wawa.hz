@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Profile 画面 (page-profile.php / ?view=profile)
+   名前とプロフィール文は X (@ya_ya_moderate) を参考にする
+   ========================================================================== */
+.profile-container {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--md-sys-color-on-surface);
+}
+
+.profile-bio {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: pre-line;
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: filter var(--md-sys-motion-duration-short) ease,
+              transform var(--md-sys-motion-duration-short) ease;
+}
+
+.profile-link:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.profile-link .material-symbols-rounded {
+  font-size: 18px;
+}
+
+/* 固定ページ本文 (ある場合) */
+.profile-content {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--md-sys-color-on-surface);
+}
+
+.profile-content > *:first-child {
+  margin-top: 0;
+}
+
+.profile-content > *:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 600px) {
+  .profile-card {
+    padding: 32px;
+  }
+}
