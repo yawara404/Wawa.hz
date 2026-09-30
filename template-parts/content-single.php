@@ -15,7 +15,9 @@ if ($yt_url) {
 }
 // カバー (16:10 ヒーロー): YouTube サムネイル → アイキャッチの順に解決
 $cover = wawahz_cover_image($post_id);
-$show_cover = $cover && !post_password_required() && !$yt_id;
+// YouTube のサムネイルをカバーに使うときだけ、プレイヤーと重複するので隠す。
+// アイキャッチ画像がある通常記事は、YouTube 埋め込みがあってもカバーを表示する。
+$show_cover = $cover && !post_password_required() && !($cover['youtube'] && $yt_id);
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class('reading-card'); ?>>
   <?php if ($show_cover) : ?>
