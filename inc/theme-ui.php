@@ -118,6 +118,35 @@ function wawahz_slide_prev_url()
   return '';
 }
 
+/**
+ * ページ送りボタンの下に出す「次の画面 / 前の画面」の英字ガイド。
+ */
+function wawahz_slide_next_label()
+{
+  switch (wawahz_slide_screen()) {
+    case 'home':
+      return 'category';
+    case 'category':
+      return 'info';
+    case 'gallery':
+      return 'minigame';
+  }
+  return '';
+}
+
+function wawahz_slide_prev_label()
+{
+  switch (wawahz_slide_screen()) {
+    case 'category':
+      return 'home';
+    case 'info':
+      return 'category';
+    case 'game':
+      return 'works';
+  }
+  return '';
+}
+
 function wawahz_current_section()
 {
   $v = wawahz_view();

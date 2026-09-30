@@ -353,6 +353,22 @@
   .slide-prev-btn { left: 12px; }
 }
 
+/* ボタンの下に出す「次の画面 / 前の画面」の英字ガイド (例: category) */
+.slide-dest-label {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  pointer-events: none;
+  text-transform: lowercase;
+}
+
 /* dホーム (画面1 デスクトップ) の全体コンテナ (上下位置をd画面2と調和) */
 .dhome-desktop-container {
   display: none;
@@ -1130,7 +1146,7 @@
   font-size: 20px;
   color: var(--md-sys-color-on-surface-variant);
   pointer-events: none;
-  margin-left: -2px;
+  margin-left: 2px;
 }
 
 .m3-sort-select {

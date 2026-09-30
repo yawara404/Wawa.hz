@@ -21,16 +21,18 @@
                画面の左右中央に固定して横スライドで移動する。 */ ?>
       <?php $wawahz_slide_prev = wawahz_slide_prev_url(); ?>
       <?php $wawahz_slide_next = wawahz_slide_next_url(); ?>
-      <?php if ($wawahz_slide_prev) : ?>
+      <?php if ($wawahz_slide_prev) : $wawahz_slide_prev_label = wawahz_slide_prev_label(); ?>
         <a class="slide-prev-btn" href="<?php echo esc_url($wawahz_slide_prev); ?>" data-slide-dir="back"
            title="<?php esc_attr_e('前の画面へ', 'wawahz'); ?>" aria-label="<?php esc_attr_e('前の画面へ（横スライド）', 'wawahz'); ?>">
           <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
+          <?php if ($wawahz_slide_prev_label) : ?><span class="slide-dest-label"><?php echo esc_html($wawahz_slide_prev_label); ?></span><?php endif; ?>
         </a>
       <?php endif; ?>
-      <?php if ($wawahz_slide_next) : ?>
+      <?php if ($wawahz_slide_next) : $wawahz_slide_next_label = wawahz_slide_next_label(); ?>
         <a class="slide-next-btn" href="<?php echo esc_url($wawahz_slide_next); ?>" data-slide-dir="forward"
            title="<?php esc_attr_e('次の画面へ', 'wawahz'); ?>" aria-label="<?php esc_attr_e('次の画面へ（横スライド）', 'wawahz'); ?>">
           <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+          <?php if ($wawahz_slide_next_label) : ?><span class="slide-dest-label"><?php echo esc_html($wawahz_slide_next_label); ?></span><?php endif; ?>
         </a>
       <?php endif; ?>
     </div><!-- /.main-content-wrapper -->
