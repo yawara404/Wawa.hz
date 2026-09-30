@@ -8,7 +8,7 @@
 $wawahz_show_content = !empty($args['show_content']);
 $wawahz_avatar = get_template_directory_uri() . '/images/profile.jpg';
 $wawahz_name = 'Wawa404';
-$wawahz_bio = "trident computer / 07\n興味絵とボカリス寄り。メンタル餅。\n自称ガジェットと web 系音楽愛好家。\nAT1選 : snowmilk (aqu3ra)\nhigma / Adomiori / 笹川真生";
+$wawahz_bio = "trident computer / 07\n趣味絵とボカリス寄り。メンタル餅。\n自称ガジェットと web 系音楽愛好家。\nAT1選 : snowmilk (aqu3ra)\nhigma / Adomiori / 笹川真生";
 $wawahz_socials = array(
   array('icon' => 'code', 'label' => 'GitHub', 'url' => 'https://github.com/yawara404', 'external' => true),
   array('icon' => 'smart_display', 'label' => 'YouTube', 'url' => 'https://youtube.com', 'external' => true),
