@@ -80,6 +80,10 @@ np_check(current_theme_supports('align-wide') && current_theme_supports('editor-
 // Home Gallery の固定枠解決はメタを差し替えて検証する (DB は変更しない)。
 np_check(has_action('add_meta_boxes_post', 'wawahz_add_home_gallery_pin_metabox'), 'Gallery pin metabox registered for posts');
 np_check(has_action('save_post_post', 'wawahz_save_home_gallery_pin_metabox'), 'Gallery pin save handler registered for posts');
+np_check(has_action('add_meta_boxes_post', 'wawahz_add_home_nowplaying_pin_metabox'), 'NowPlaying pin metabox registered for posts');
+np_check(has_action('save_post_post', 'wawahz_save_home_nowplaying_pin_metabox'), 'NowPlaying pin save handler registered for posts');
+np_check(has_action('add_meta_boxes_post', 'wawahz_add_home_pickup_pin_metabox'), 'Pickup pin metabox registered for posts');
+np_check(has_action('save_post_post', 'wawahz_save_home_pickup_pin_metabox'), 'Pickup pin save handler registered for posts');
 if (wawahz_home_settings_page_id()) {
   $stub_home_work = function ($value, $object_id, $meta_key, $single) {
     if ($meta_key === 'wawahz_home_work_1') { return 111111; }

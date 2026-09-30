@@ -571,166 +571,98 @@ function wawahz_home_pickup_candidates()
 }
 
 /**
- * 固定ページにホーム画面カード設定メタボックスを追加
+ * ホーム画面 NowPlaying カード固定メタボックスを記事編集画面 (右サイドバー) に追加。
+ * 楽曲 (music) の記事、または既に固定済みの記事に表示する。
+ *
+ * ※ ホーム画面カード (NowPlaying / Gallery / Pickup) の固定は、
+ *   すべて「投稿の編集画面」から設定する (固定ページの一括設定は廃止)。
  */
-function wawahz_add_home_cards_metabox()
+function wawahz_add_home_nowplaying_pin_metabox($post)
 {
+  if (!$post instanceof WP_Post) {
+    return;
+  }
+  $music_id = function_exists('wawahz_music_category_id') ? wawahz_music_category_id() : 0;
+  $is_music = $music_id && has_category($music_id, $post);
+  if (!$is_music && !wawahz_home_nowplaying_pinned($post->ID)) {
+    return;
+  }
   add_meta_box(
-    'wawahz_home_cards_metabox',
-    '🏠 ホーム画面カード設定（NowPlaying / Gallery / Pickup）',
-    'wawahz_render_home_cards_metabox',
-    'page',
-    'normal',
-    'high'
+    'wawahz_home_nowplaying_pin',
+    '🏠 ホーム画面 NowPlaying カード固定',
+    'wawahz_render_home_nowplaying_pin_metabox',
+    'post',
+    'side',
+    'default'
   );
 }
-add_action('add_meta_boxes_page', 'wawahz_add_home_cards_metabox');
+add_action('add_meta_boxes_post', 'wawahz_add_home_nowplaying_pin_metabox');
 
-/**
- * ホーム画面カード設定メタボックスの描画
- */
-function wawahz_render_home_cards_metabox($post)
+/** この記事がホーム画面 NowPlaying カードに固定されているか。 */
+function wawahz_home_nowplaying_pinned($post_id)
 {
-  wp_nonce_field('wawahz_save_home_cards_meta', 'wawahz_home_cards_nonce');
-
   $settings_id = wawahz_home_settings_page_id();
-  $np_id   = (int) get_post_meta($post->ID, 'wawahz_home_nowplaying', true);
-  $work_1  = (int) get_post_meta($post->ID, 'wawahz_home_work_1', true);
-  $work_2  = (int) get_post_meta($post->ID, 'wawahz_home_work_2', true);
-  $is_active = ($settings_id === (int) $post->ID);
+  return $settings_id && (int) get_post_meta($settings_id, 'wawahz_home_nowplaying', true) === (int) $post_id;
+}
 
-  $music_posts  = wawahz_home_music_candidates();
-  $work_posts   = wawahz_home_work_candidates();
-  $pickup_posts = wawahz_home_pickup_candidates();
+/** ホーム画面 NowPlaying カード固定メタボックスの描画 */
+function wawahz_render_home_nowplaying_pin_metabox($post)
+{
+  wp_nonce_field('wawahz_save_home_nowplaying_pin', 'wawahz_home_nowplaying_pin_nonce');
+  $settings_id = wawahz_home_settings_page_id();
+  $pinned = wawahz_home_nowplaying_pinned($post->ID);
   ?>
-  <div style="display: grid; gap: 14px; padding: 6px 0;">
-    <?php if ($is_active) : ?>
-      <p style="margin: 0; padding: 8px 12px; background: #e7f6f0; border-left: 4px solid #2f7475; font-size: 13px;">
-        ✅ このページの設定がホーム画面に反映されています。
-      </p>
-    <?php else : ?>
-      <p style="margin: 0; padding: 8px 12px; background: #f6f6f6; border-left: 4px solid #ccc; font-size: 13px; color: #555;">
-        この設定は「フロントページに指定した固定ページ」またはスラッグ <code>home-settings</code> の固定ページでのみホーム画面に反映されます。「自動」を選んだ項目は最新記事から自動表示されます。
-      </p>
-    <?php endif; ?>
-
-    <div>
-      <label for="wawahz_home_nowplaying" style="display: block; font-weight: 600; margin-bottom: 4px;">
-        1. NowPlaying カードに表示する楽曲
-      </label>
-      <select id="wawahz_home_nowplaying" name="wawahz_home_nowplaying" style="width: 100%; max-width: 600px; padding: 8px 12px;">
-        <option value="0" <?php selected($np_id, 0); ?>>自動（最新の楽曲）</option>
-        <?php foreach ($music_posts as $mp) : ?>
-          <option value="<?php echo esc_attr($mp->ID); ?>" <?php selected($np_id, $mp->ID); ?>>
-            <?php echo esc_html(get_the_title($mp) . '（' . get_the_date('Y-m-d', $mp) . '）'); ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-
-    <div>
-      <label for="wawahz_home_work_1" style="display: block; font-weight: 600; margin-bottom: 4px;">
-        2. Gallery カード（左）に表示する作品
-      </label>
-      <select id="wawahz_home_work_1" name="wawahz_home_work_1" style="width: 100%; max-width: 600px; padding: 8px 12px;">
-        <option value="0" <?php selected($work_1, 0); ?>>自動（最新の作品）</option>
-        <?php foreach ($work_posts as $wp) : ?>
-          <option value="<?php echo esc_attr($wp->ID); ?>" <?php selected($work_1, $wp->ID); ?>>
-            <?php echo esc_html(get_the_title($wp) . '（' . get_the_date('Y-m-d', $wp) . '）'); ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-
-    <div>
-      <label for="wawahz_home_work_2" style="display: block; font-weight: 600; margin-bottom: 4px;">
-        3. Gallery カード（右）に表示する作品
-      </label>
-      <select id="wawahz_home_work_2" name="wawahz_home_work_2" style="width: 100%; max-width: 600px; padding: 8px 12px;">
-        <option value="0" <?php selected($work_2, 0); ?>>自動（最新の作品）</option>
-        <?php foreach ($work_posts as $wp) : ?>
-          <option value="<?php echo esc_attr($wp->ID); ?>" <?php selected($work_2, $wp->ID); ?>>
-            <?php echo esc_html(get_the_title($wp) . '（' . get_the_date('Y-m-d', $wp) . '）'); ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
-      <p style="margin: 4px 0 0; color: #666; font-size: 12px;">空き枠は最新の作品で自動補完されます。作品が無い場合は「作品を準備中」と表示されます。</p>
-    </div>
-
-    <div>
-      <label for="wawahz_home_pickup_1" style="display: block; font-weight: 600; margin-bottom: 4px;">
-        4. Pickup カードに固定する記事（任意・最大4件）
-      </label>
-      <?php for ($i = 1; $i <= 4; $i++) :
-        $pickup_id = (int) get_post_meta($post->ID, 'wawahz_home_pickup_' . $i, true);
-      ?>
-        <select id="wawahz_home_pickup_<?php echo esc_attr($i); ?>" name="wawahz_home_pickup_<?php echo esc_attr($i); ?>" style="width: 100%; max-width: 600px; padding: 8px 12px; margin-bottom: 6px;">
-          <option value="0" <?php selected($pickup_id, 0); ?>><?php echo esc_html(sprintf(__('%d枠目: 自動', 'wawahz'), $i)); ?></option>
-          <?php foreach ($pickup_posts as $pp) : ?>
-            <option value="<?php echo esc_attr($pp->ID); ?>" <?php selected($pickup_id, $pp->ID); ?>>
-              <?php echo esc_html(get_the_title($pp) . '（' . get_the_date('Y-m-d', $pp) . '）'); ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-      <?php endfor; ?>
-      <p style="margin: 4px 0 0; color: #666; font-size: 12px;">固定した記事が先頭に並び、残りはスティッキー / 最新記事で自動補完されます。カスタムフィールド <code>wawahz_home_pickup_1</code>〜<code>4</code> に投稿IDを入れても同じです。</p>
-    </div>
-  </div>
+  <p style="margin: 0 0 8px; font-size: 12px; color: #555;">
+    ホーム画面の <strong>NowPlaying カード</strong>に固定表示できます。選び直すと即時反映されます。
+  </p>
+  <select name="wawahz_home_nowplaying_pin" id="wawahz_home_nowplaying_pin" style="width: 100%;">
+    <option value="0" <?php selected($pinned, false); ?>>固定しない（最新の楽曲）</option>
+    <option value="1" <?php selected($pinned, true); ?>>この曲を固定する</option>
+  </select>
+  <?php if ($post->post_status !== 'publish') : ?>
+    <p style="margin: 8px 0 0; font-size: 12px; color: #8a6d3b;">下書きのため、公開するとホーム画面に表示されます。</p>
+  <?php endif; ?>
+  <?php if (!$settings_id) : ?>
+    <p style="margin: 8px 0 0; font-size: 12px; color: #b3261e;">
+      反映先が見つかりません。スラッグ <code>home-settings</code> の固定ページを作成するか、「設定 → 表示設定」でフロントページに固定ページを指定してください。
+    </p>
+  <?php else : ?>
+    <p style="margin: 8px 0 0; font-size: 11px; color: #666;">反映先: <?php echo esc_html(get_the_title($settings_id)); ?></p>
+  <?php endif; ?>
   <?php
 }
 
-/**
- * ホーム画面カード設定の保存処理
- */
-function wawahz_save_home_cards_metabox($post_id)
+/** 記事側の NowPlaying 固定設定を保存する。 */
+function wawahz_save_home_nowplaying_pin_metabox($post_id)
 {
-  if (!isset($_POST['wawahz_home_cards_nonce']) || !wp_verify_nonce($_POST['wawahz_home_cards_nonce'], 'wawahz_save_home_cards_meta')) {
+  if (!isset($_POST['wawahz_home_nowplaying_pin_nonce']) || !wp_verify_nonce($_POST['wawahz_home_nowplaying_pin_nonce'], 'wawahz_save_home_nowplaying_pin')) {
     return;
   }
-
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
     return;
   }
-
-  if (!current_user_can('edit_page', $post_id)) {
+  if (!current_user_can('edit_post', $post_id)) {
     return;
   }
-
-  // NowPlaying: 公開済み・メディア付きの投稿のみ有効。NG → 自動 (0)
-  $np_id = isset($_POST['wawahz_home_nowplaying']) ? absint($_POST['wawahz_home_nowplaying']) : 0;
-  if ($np_id) {
-    $np_post = get_post($np_id);
-    if (!$np_post || $np_post->post_status !== 'publish' || !wawahz_post_media($np_post)) {
-      $np_id = 0;
+  $settings_id = wawahz_home_settings_page_id();
+  if (!$settings_id || (int) $settings_id === (int) $post_id) {
+    return;
+  }
+  $pin = isset($_POST['wawahz_home_nowplaying_pin']) ? absint($_POST['wawahz_home_nowplaying_pin']) : 0;
+  if ($pin) {
+    $pin_post = get_post($post_id);
+    if (!$pin_post || $pin_post->post_status !== 'publish' || !wawahz_post_media($pin_post)) {
+      $pin = 0;
     }
   }
-  update_post_meta($post_id, 'wawahz_home_nowplaying', $np_id);
-
-  // Gallery: 公開済みの投稿のみ有効。NG → 自動 (0)
-  foreach (array('wawahz_home_work_1', 'wawahz_home_work_2') as $field) {
-    $work_id = isset($_POST[$field]) ? absint($_POST[$field]) : 0;
-    if ($work_id) {
-      $work_post = get_post($work_id);
-      if (!$work_post || $work_post->post_type !== 'post' || $work_post->post_status !== 'publish') {
-        $work_id = 0;
-      }
-    }
-    update_post_meta($post_id, $field, $work_id);
-  }
-
-  // Pickup: 公開済みの投稿のみ有効。NG → 自動 (0)
-  for ($i = 1; $i <= 4; $i++) {
-    $field = 'wawahz_home_pickup_' . $i;
-    $pickup_id = isset($_POST[$field]) ? absint($_POST[$field]) : 0;
-    if ($pickup_id) {
-      $pickup_post = get_post($pickup_id);
-      if (!$pickup_post || $pickup_post->post_type !== 'post' || $pickup_post->post_status !== 'publish') {
-        $pickup_id = 0;
-      }
-    }
-    update_post_meta($post_id, $field, $pickup_id);
+  if ($pin) {
+    update_post_meta($settings_id, 'wawahz_home_nowplaying', (int) $post_id);
+  } elseif (wawahz_home_nowplaying_pinned($post_id)) {
+    update_post_meta($settings_id, 'wawahz_home_nowplaying', 0);
   }
 }
+add_action('save_post_post', 'wawahz_save_home_nowplaying_pin_metabox');
+
 /**
  * ホーム画面 Gallery カード固定メタボックスを作品記事にも追加。
  *
@@ -840,4 +772,112 @@ function wawahz_save_home_gallery_pin_metabox($post_id)
   }
 }
 add_action('save_post_post', 'wawahz_save_home_gallery_pin_metabox');
+
+/**
+ * ホーム画面 Pickup カード固定メタボックスを記事編集画面 (右サイドバー) に追加。
+ * 公開済みの通常記事 (music 以外) と、既に固定済みの記事に表示する。
+ */
+function wawahz_add_home_pickup_pin_metabox($post)
+{
+  if (!$post instanceof WP_Post) {
+    return;
+  }
+  $music_id = function_exists('wawahz_music_category_id') ? wawahz_music_category_id() : 0;
+  $is_music = $music_id && has_category($music_id, $post);
+  if ($is_music && !wawahz_home_pickup_slot($post->ID)) {
+    return;
+  }
+  add_meta_box(
+    'wawahz_home_pickup_pin',
+    '🏠 ホーム画面 Pickup カード固定',
+    'wawahz_render_home_pickup_pin_metabox',
+    'post',
+    'side',
+    'default'
+  );
+}
+add_action('add_meta_boxes_post', 'wawahz_add_home_pickup_pin_metabox');
+
+/**
+ * 記事がホーム画面 Pickup の何枠目に固定されているかを返す。(0 = 未固定)
+ */
+function wawahz_home_pickup_slot($post_id)
+{
+  $settings_id = wawahz_home_settings_page_id();
+  if (!$settings_id) {
+    return 0;
+  }
+  for ($i = 1; $i <= 4; $i++) {
+    if ((int) get_post_meta($settings_id, 'wawahz_home_pickup_' . $i, true) === (int) $post_id) {
+      return $i;
+    }
+  }
+  return 0;
+}
+
+/** ホーム画面 Pickup カード固定メタボックスの描画 */
+function wawahz_render_home_pickup_pin_metabox($post)
+{
+  wp_nonce_field('wawahz_save_home_pickup_pin', 'wawahz_home_pickup_pin_nonce');
+  $settings_id = wawahz_home_settings_page_id();
+  $slot = wawahz_home_pickup_slot($post->ID);
+  ?>
+  <p style="margin: 0 0 8px; font-size: 12px; color: #555;">
+    ホーム画面の <strong>Pickup</strong> に固定表示できます。選び直すと即時反映されます。
+  </p>
+  <select name="wawahz_home_pickup_pin" id="wawahz_home_pickup_pin" style="width: 100%;">
+    <option value="0" <?php selected($slot, 0); ?>>固定しない（新着順で表示）</option>
+    <?php for ($i = 1; $i <= 4; $i++) : ?>
+      <option value="<?php echo esc_attr($i); ?>" <?php selected($slot, $i); ?>><?php echo esc_html(sprintf(__('%d枠目に固定', 'wawahz'), $i)); ?></option>
+    <?php endfor; ?>
+  </select>
+  <?php if ($post->post_status !== 'publish') : ?>
+    <p style="margin: 8px 0 0; font-size: 12px; color: #8a6d3b;">下書きのため、公開するとホーム画面に表示されます。</p>
+  <?php endif; ?>
+  <?php if (!$settings_id) : ?>
+    <p style="margin: 8px 0 0; font-size: 12px; color: #b3261e;">
+      反映先が見つかりません。スラッグ <code>home-settings</code> の固定ページを作成するか、「設定 → 表示設定」でフロントページに固定ページを指定してください。
+    </p>
+  <?php else : ?>
+    <p style="margin: 8px 0 0; font-size: 11px; color: #666;">反映先: <?php echo esc_html(get_the_title($settings_id)); ?></p>
+  <?php endif; ?>
+  <?php
+}
+
+/**
+ * 記事側の Pickup 固定設定を保存する。
+ * 空き枠はホーム画面側でスティッキー / 最新記事から自動補完されるため、解除時は 0 を書き込む。
+ */
+function wawahz_save_home_pickup_pin_metabox($post_id)
+{
+  if (!isset($_POST['wawahz_home_pickup_pin_nonce']) || !wp_verify_nonce($_POST['wawahz_home_pickup_pin_nonce'], 'wawahz_save_home_pickup_pin')) {
+    return;
+  }
+  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+    return;
+  }
+  if (!current_user_can('edit_post', $post_id)) {
+    return;
+  }
+  $settings_id = wawahz_home_settings_page_id();
+  if (!$settings_id || (int) $settings_id === (int) $post_id) {
+    return;
+  }
+  $slot = isset($_POST['wawahz_home_pickup_pin']) ? absint($_POST['wawahz_home_pickup_pin']) : 0;
+  if ($slot > 4) {
+    $slot = 0;
+  }
+  if ($slot && get_post_status($post_id) !== 'publish') {
+    $slot = 0;
+  }
+  for ($i = 1; $i <= 4; $i++) {
+    $field = 'wawahz_home_pickup_' . $i;
+    if ($slot === $i) {
+      update_post_meta($settings_id, $field, (int) $post_id);
+    } elseif ((int) get_post_meta($settings_id, $field, true) === (int) $post_id) {
+      update_post_meta($settings_id, $field, 0);
+    }
+  }
+}
+add_action('save_post_post', 'wawahz_save_home_pickup_pin_metabox');
 
