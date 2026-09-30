@@ -1,4 +1,5 @@
 <?php
+
 /**
  * template-parts/profile-screen.php
  * プロフィール画面。名前とプロフィール文は X (@ya_ya_moderate) を参考にする。
@@ -7,7 +8,7 @@
 $wawahz_show_content = !empty($args['show_content']);
 $wawahz_avatar = get_template_directory_uri() . '/images/profile.jpg';
 $wawahz_name = 'Wawa404';
-$wawahz_bio = "trident computer / 07\n興味絵とボカリス寄り。メンタル餅。\n自称ガジェットと web 系音楽愛好家。\nAT1選 : snowmilk (aqu3ra)\nhigma / Adomiori / 筧川真生";
+$wawahz_bio = "trident computer / 07\n興味絵とボカリス寄り。メンタル餅。\n自称ガジェットと web 系音楽愛好家。\nAT1選 : snowmilk (aqu3ra)\nhigma / Adomiori / 笹川真生";
 $wawahz_socials = array(
   array('icon' => 'code', 'label' => 'GitHub', 'url' => 'https://github.com/yawara404', 'external' => true),
   array('icon' => 'smart_display', 'label' => 'YouTube', 'url' => 'https://youtube.com', 'external' => true),
@@ -29,7 +30,7 @@ $wawahz_socials = array(
       <div class="profile-links">
         <?php foreach ($wawahz_socials as $wawahz_link) : ?>
           <a class="profile-link" href="<?php echo esc_url($wawahz_link['url']); ?>"
-             <?php echo $wawahz_link['external'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
+            <?php echo $wawahz_link['external'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
             <span class="material-symbols-rounded" aria-hidden="true"><?php echo esc_html($wawahz_link['icon']); ?></span>
             <span><?php echo esc_html($wawahz_link['label']); ?></span>
           </a>
