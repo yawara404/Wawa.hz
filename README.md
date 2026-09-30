@@ -56,6 +56,17 @@
 
 ---
 
+## OGP / ファビコン
+
+- **OGP 画像**: `images/ogp.png`（1200×630・ロゴマーク）
+  - SEO SIMPLE PACK の `ssp_output_og_image` フィルタで、**og:image が未設定のとき**に使用（記事はアイキャッチが優先）
+  - `twitter:card` は `summary_large_image`
+- **ファビコン（サイトアイコン）**: `images/icon-512.png` / `icon-192.png` / `icon-180.png`
+  - WordPress の「サイトアイコン」が**未設定のときだけ**テーマが `<link rel="icon">` / `apple-touch-icon` を出力
+  - 管理画面でサイトアイコンを設定すればそちらが優先されます
+
+---
+
 ## ライセンス
 
 - テーマ本体: GNU General Public License v2 or later（`style.css` のテーマヘッダー参照）

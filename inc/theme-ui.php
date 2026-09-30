@@ -478,3 +478,19 @@ add_action('pre_get_posts', function ($query) {
   $exclude[] = $music_id;
   $query->set('category__not_in', array_values(array_unique($exclude)));
 });
+
+/** サイト既定の OGP 画像 (ロゴマーク)。SEO SIMPLE PACK が画像未設定のときに使う。 */
+function wawahz_default_og_image_url()
+{
+  return get_template_directory_uri() . '/images/ogp.png';
+}
+
+// og:image が未設定ならロゴの OGP 画像 (1200x630) を使う。
+add_filter('ssp_output_og_image', function ($image) {
+  return $image ? $image : wawahz_default_og_image_url();
+});
+
+// 大きな画像カード (1200x630) を使う。
+add_filter('ssp_output_tw_card', function () {
+  return 'summary_large_image';
+});

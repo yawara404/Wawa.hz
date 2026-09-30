@@ -96,10 +96,21 @@ $show_cover = $cover && !post_password_required() && !$yt_id;
 </article>
 
 <?php if ($is_article) :
-  the_post_navigation(array(
+  // 前後の記事も Now Playing (music) と通常記事で分ける。
+  $wawahz_nav_music_id = function_exists('wawahz_music_category_id') ? wawahz_music_category_id() : 0;
+  $wawahz_nav_args = array(
     'prev_text' => '<span class="nav-caption">' . esc_html__('前の記事', 'wawahz') . '</span><span>%title</span>',
     'next_text' => '<span class="nav-caption">' . esc_html__('次の記事', 'wawahz') . '</span><span>%title</span>',
-  ));
+    'taxonomy'  => 'category',
+  );
+  if ($wawahz_nav_music_id && in_category($wawahz_nav_music_id)) {
+    // 楽曲記事: 同じ music カテゴリ内で前後をたどる
+    $wawahz_nav_args['in_same_term'] = true;
+  } elseif ($wawahz_nav_music_id) {
+    // 通常記事: music カテゴリを除外して前後をたどる
+    $wawahz_nav_args['excluded_terms'] = array($wawahz_nav_music_id);
+  }
+  the_post_navigation($wawahz_nav_args);
 endif; ?>
 <?php if (comments_open() || get_comments_number()) : comments_template(); endif; ?>
 

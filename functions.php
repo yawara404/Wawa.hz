@@ -70,6 +70,22 @@ function wawahz_setup()
 }
 add_action('after_setup_theme', 'wawahz_setup');
 
+/**
+ * ファビコン (サイトアイコン)。
+ * WordPress の「サイトアイコン」が未設定のときだけ、テーマ同梱のロゴアイコンを出力する。
+ */
+function wawahz_favicon_fallback()
+{
+  if (has_site_icon()) {
+    return; // サイトアイコンが設定済みなら WordPress に任せる
+  }
+  $dir = get_template_directory_uri() . '/images';
+  echo '<link rel="icon" href="' . esc_url($dir . '/icon-192.png') . '" sizes="192x192" type="image/png">' . "\n";
+  echo '<link rel="icon" href="' . esc_url($dir . '/icon-512.png') . '" sizes="512x512" type="image/png">' . "\n";
+  echo '<link rel="apple-touch-icon" href="' . esc_url($dir . '/icon-180.png') . '">' . "\n";
+}
+add_action('wp_head', 'wawahz_favicon_fallback', 5);
+
 // スタイル・スクリプトのエンキュー
 function wawahz_scripts()
 {
