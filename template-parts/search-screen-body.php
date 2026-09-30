@@ -17,6 +17,8 @@ $box_class = $variant === 'desktop' ? 'box-surface-high-616-320' : 'box-surface-
 global $wp_query;
 $query_str        = get_search_query();
 $quick_categories = get_categories(array('hide_empty' => true, 'number' => 6));
+// カテゴリフィルタ (ドロップダウン) は空でないカテゴリを全件出す。
+$filter_categories = get_categories(array('hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC'));
 $category_slug    = wawahz_request_value('cat');
 $active_category  = $category_slug !== '' ? get_category_by_slug($category_slug) : null;
 $has_query        = ($query_str !== '' || $active_category);
@@ -65,26 +67,23 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
       <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
     </button>
   </div>
-</form>
 
-<!-- おすすめ・クイックカテゴリータグ -->
-<?php if (!empty($quick_categories)) : ?>
-  <div class="search-quick-tags" aria-label="<?php esc_attr_e('クイック検索タグ', 'wawahz'); ?>">
-    <span class="search-quick-tags-label"><?php esc_html_e('トピック:', 'wawahz'); ?></span>
-    <div class="search-quick-tags-list">
-      <a href="<?php echo esc_url(add_query_arg(array('s' => $query_str), home_url('/'))); ?>"
-         class="search-tag-chip<?php echo $active_category ? '' : ' is-active'; ?>">
-        <?php esc_html_e('すべて', 'wawahz'); ?>
-      </a>
-      <?php foreach ($quick_categories as $cat) : ?>
-        <a href="<?php echo esc_url(add_query_arg(array('s' => $query_str, 'cat' => $cat->slug), home_url('/'))); ?>"
-           class="search-tag-chip<?php echo ($active_category && (int) $active_category->term_id === (int) $cat->term_id) ? ' is-active' : ''; ?>">
-          <?php echo esc_html($cat->name); ?>
-        </a>
-      <?php endforeach; ?>
+  <!-- カテゴリフィルタ (category 画面と同じドロップダウン) -->
+  <?php if (!empty($filter_categories)) : ?>
+    <div class="m3-sort-dropdown-wrapper search-category-dropdown">
+      <span class="material-symbols-rounded sort-icon" aria-hidden="true">filter_list</span>
+      <select class="m3-sort-select" id="search-category-select-<?php echo esc_attr($variant); ?>" aria-label="<?php esc_attr_e('カテゴリで絞り込む', 'wawahz'); ?>" onchange="location.href = this.value;">
+        <option value="<?php echo esc_url(add_query_arg(array('s' => $query_str), home_url('/'))); ?>" <?php selected((bool) $active_category, false); ?>>All</option>
+        <?php foreach ($filter_categories as $cat) : ?>
+          <option value="<?php echo esc_url(add_query_arg(array('s' => $query_str, 'cat' => $cat->slug), home_url('/'))); ?>" <?php selected($active_category && (int) $active_category->term_id === (int) $cat->term_id); ?>>
+            <?php echo esc_html($cat->name); ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <span class="material-symbols-rounded sort-arrow" aria-hidden="true">arrow_drop_down</span>
     </div>
-  </div>
-<?php endif; ?>
+  <?php endif; ?>
+</form>
 
 <?php if (!$has_query) : ?>
   <!-- 初期状態（キーワード未入力時のウェルカム表示） -->
@@ -94,7 +93,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
     </div>
     <h3 class="search-initial-title"><?php esc_html_e('気になる記事を検索', 'wawahz'); ?></h3>
     <p class="search-initial-desc">
-      <?php esc_html_e('キーワードを入力するか、上のトピックタグからカテゴリー別の記事を探せます。', 'wawahz'); ?>
+      <?php esc_html_e('キーワードを入力するか、カテゴリのドロップダウンから記事を探せます。', 'wawahz'); ?>
     </p>
     <div class="search-initial-categories">
       <?php foreach ($quick_categories as $cat) : ?>
