@@ -525,6 +525,20 @@
   height: 100%;
   border-radius: var(--md-sys-shape-corner-large);
 }
+/* プレイヤー (iframe) が入っていないときは 16:9 の黒い板を出さない。
+   autoembed に失敗した埋め込みが「真っ黒な枠」に見えないようにする最終防衛線。 */
+.entry-content .wp-block-embed__wrapper:not(:has(iframe)) {
+  padding: 12px 14px;
+  height: auto;
+  overflow: visible;
+  background-color: transparent;
+  border-style: dashed;
+  box-shadow: none;
+  word-break: break-all;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+}
 
 /* 記事内ページネーション */
 .page-links {

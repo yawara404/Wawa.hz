@@ -34,6 +34,7 @@ audio {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 .entry-content .wp-block-table table {
   margin: 0;
 }
@@ -54,19 +55,23 @@ audio {
   .entry-content .wp-block-columns {
     flex-wrap: wrap !important;
   }
+
   .entry-content .wp-block-column {
     flex-basis: 100% !important;
     flex-grow: 0 !important;
     min-width: 0;
     margin-left: 0;
   }
+
   .entry-content .wp-block-media-text {
     grid-template-columns: 1fr !important;
   }
+
   .entry-content .wp-block-media-text .wp-block-media-text__media {
     grid-column: 1;
     grid-row: 1;
   }
+
   .entry-content .wp-block-media-text .wp-block-media-text__content {
     grid-column: 1;
     grid-row: auto;
@@ -85,11 +90,12 @@ audio {
 /* ==========================================================================
    2. タップ領域 (44px) の確保 — タッチデバイス向け
    ========================================================================== */
-@media (pointer: coarse) {,
+@media (pointer: coarse) {
+
   .wawa-pagination .page-numbers a,
   .wawa-pagination .page-numbers span,
   .page-links a,
-  .page-links > span:not(:first-child) {
+  .page-links>span:not(:first-child) {
     min-width: 44px;
     min-height: 44px;
   }
@@ -118,6 +124,7 @@ audio {
   .post-grid {
     grid-template-columns: 1fr;
   }
+
   .works-grid {
     grid-template-columns: minmax(0, 1fr) !important;
   }
@@ -131,6 +138,7 @@ audio {
     padding-top: 12px;
     padding-bottom: 16px;
   }
+
   .top-app-bar {
     height: 56px;
     min-height: 56px;
@@ -145,6 +153,7 @@ audio {
     padding: 12px;
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
+
   .m3-dialog {
     max-width: 100%;
     max-height: calc(100dvh - 24px - env(safe-area-inset-bottom));
@@ -158,6 +167,7 @@ audio {
   min-width: 0;
   max-width: 100%;
 }
+
 .top-app-bar .app-title {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,12 +183,15 @@ audio {
     font-size: 16px;
     line-height: 1.85;
   }
+
   .entry-content h2 {
     font-size: 21px;
   }
+
   .entry-content h3 {
     font-size: 18px;
   }
+
   .entry-content h4 {
     font-size: 16px;
   }
@@ -204,16 +217,19 @@ audio {
   border: 1px solid var(--md-sys-color-outline-variant);
   box-shadow: none;
 }
+
 .dhome-article-card--empty:hover {
   transform: none;
   box-shadow: none;
 }
+
 .dhome-article-card--empty .card-scrim-white .card-title {
   color: var(--md-sys-color-on-surface-variant);
 }
 
 /* --- タブレット帯 (600〜899px): モバイルレイアウトの引き伸ばしを解消 --- */
 @media (min-width: 600px) and (max-width: 899px) {
+
   /* Pickup カルーセル: スライド幅を約55%に絞り、隣カードが覗く表示を維持 */
   .mobile-pickup-section {
     --mobile-pickup-slide: 55%;
@@ -226,6 +242,7 @@ audio {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
+
   .lately-item {
     min-height: 170px;
   }
@@ -239,6 +256,7 @@ audio {
 
 /* --- モバイル (<600px): カード高さを画面幅に応じて流動化 --- */
 @media (max-width: 599px) {
+
   .mobile-pickup-card,
   .lately-item {
     min-height: clamp(175px, 46vw, 200px);
@@ -256,12 +274,15 @@ audio {
     --home-preview-card-height: 104px;
     --home-panel-box-height: 104px;
   }
+
   :root:not(.force-mobile) .home-feature.dhome-bottom-box-wrapper {
     padding: 12px 16px 10px;
   }
+
   :root:not(.force-mobile) .home-feature--music .dhome-inner-card {
     min-height: 90px;
   }
+
   :root:not(.force-mobile) .home-feature--music .home-feature-artwork {
     width: 60px;
     height: 60px;
@@ -278,6 +299,7 @@ audio {
      左右で共有して下端の位置を揃える
    ========================================================================== */
 @media (min-width: 900px) {
+
   /* コンテナ幅の上限 (1200px) を解除し、画面幅いっぱいに拡大 */
   :root:not(.force-mobile) .dhome-desktop-container {
     max-width: none;
@@ -287,6 +309,7 @@ audio {
   :root:not(.force-mobile) .home-feature.dhome-bottom-box-wrapper {
     flex: 0 0 auto;
   }
+
   :root:not(.force-mobile) .home-feature .dhome-bottom-box {
     flex: 0 0 auto;
     height: var(--home-panel-box-height, 140px);
@@ -298,9 +321,11 @@ audio {
 .force-desktop .dhome-desktop-container {
   max-width: none;
 }
+
 .force-desktop .home-feature.dhome-bottom-box-wrapper {
   flex: 0 0 auto;
 }
+
 .force-desktop .home-feature .dhome-bottom-box {
   flex: 0 0 auto;
   height: var(--home-panel-box-height, 140px);
@@ -311,6 +336,7 @@ audio {
    11. 印刷時の余分な装飾・固定要素を除去
    ========================================================================== */
 @media print {
+
   .m3-navigation-rail,
   .m3-navigation-bar,
   .top-app-bar,
@@ -321,6 +347,7 @@ audio {
   #snackbar {
     display: none !important;
   }
+
   .main-content-wrapper {
     height: auto !important;
     overflow: visible !important;

@@ -93,27 +93,54 @@ function wawahz_playlist_cover_id($post = null)
 }
 
 /**
- * プレイリストの埋め込みブロックは oEmbed の取得結果に依存せず公式 iframe を直接描画する。
- * 単体動画のブロック (11文字の動画ID) は WordPress 標準の処理に任せる。
+ * 埋め込みブロックに <iframe> が無いとき、YouTube 公式埋め込みを直接描画する。
+ *
+ * WP の autoembed は do_blocks より前に「単独行に置かれた URL」だけを変換するため
+ * (Gutenberg の保存形態も URL を必ず単独行にする)、URL を同一行に組み込んだブロックは
+ * 本文に 16:9 の黒いプレーヤー枠だけが残ってしまう。単体動画・プレイリストの両方に対応し、
+ * oEmbed の取得成否やブロック名 (core/embed / 旧 core-embed/*) に依存しない。
  */
 function wawahz_render_playlist_embed($block_content, $block)
 {
-  if (($block['blockName'] ?? '') !== 'core/embed' || preg_match('/<iframe\b/i', $block_content)) {
+  $name = (string) ($block['blockName'] ?? '');
+  if ($name !== 'core/embed' && strpos($name, 'core-embed/') !== 0) {
     return $block_content;
   }
-  $url = $block['attrs']['url'] ?? '';
-  if (wawahz_youtube_id($url)) {
+  if (preg_match('/<iframe\b/i', $block_content)) {
     return $block_content;
   }
-  $playlist_id = wawahz_youtube_playlist_id($url);
-  if (!$playlist_id) {
+  $url = '';
+  if (isset($block['attrs']['url']) && is_string($block['attrs']['url'])) {
+    $url = $block['attrs']['url'];
+  }
+  // 属性が無い古い保存形式は、本文に出た最初の URL を対象にする。
+  if ($url === '' && preg_match('~https?://[^\s<>"\']+~', $block_content, $match)) {
+    $url = html_entity_decode($match[0], ENT_QUOTES, 'UTF-8');
+  }
+  $video_id = wawahz_youtube_id($url);
+  $playlist_id = $video_id ? '' : wawahz_youtube_playlist_id($url);
+  if (!$video_id && !$playlist_id) {
     return $block_content;
   }
-  $src = 'https://www.youtube.com/embed/videoseries?list=' . $playlist_id . '&playsinline=1&rel=0';
-  return '<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio">'
-    . '<div class="wp-block-embed__wrapper">'
-    . '<iframe src="' . esc_url($src) . '" title="' . esc_attr__('YouTube プレイリストプレイヤー', 'wawahz') . '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
-    . '</div></figure>';
+  if ($video_id) {
+    $src = 'https://www.youtube.com/embed/' . $video_id . '?playsinline=1&rel=0';
+    $title = __('YouTube 動画プレイヤー', 'wawahz');
+  } else {
+    $src = 'https://www.youtube.com/embed/videoseries?list=' . $playlist_id . '&playsinline=1&rel=0';
+    $title = __('YouTube プレイリストプレイヤー', 'wawahz');
+  }
+  $iframe = '<iframe src="' . esc_url($src) . '" title="' . esc_attr($title) . '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+  // ブロックの保存形態 (figure / wrapper) はそのまま保ち、中のフォールバックだけ差し替える。
+  $replaced = preg_replace_callback(
+    '~(<div class="wp-block-embed__wrapper">).*?(</div>)~s',
+    static function ($matches) use ($iframe) {
+      return $matches[1] . "\n" . $iframe . "\n" . $matches[2];
+    },
+    $block_content,
+    1,
+    $count
+  );
+  return $count === 1 ? $replaced : $block_content;
 }
 add_filter('render_block', 'wawahz_render_playlist_embed', 10, 2);
 
@@ -326,10 +353,13 @@ function wawahz_add_track_content($youtube_url, $commentary = '')
   if ($commentary !== '') {
     $content .= '<!-- wp:paragraph --><p>' . esc_html($commentary) . '</p><!-- /wp:paragraph -->';
   }
-  $content .= '<!-- wp:core-embed/youtube {"url":"' . $url . '","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->';
-  $content .= '<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio">'
-    . '<div class="wp-block-embed__wrapper">' . esc_html($url) . '</div></figure>';
-  $content .= '<!-- /wp:core-embed/youtube -->';
+  $content .= '<!-- wp:embed {"url":"' . $url . '","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->';
+  $content .= '<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">';
+  // URL は Gutenberg と同じく必ず単独行に置く。WP の autoembed は単独行の URL だけを
+  // 公式 iframe に変換するため、同一行に埋め込むと本文のプレーヤー枠が真っ黒のまま残る。
+  $content .= "\n" . esc_html($url) . "\n";
+  $content .= '</div></figure>';
+  $content .= '<!-- /wp:embed -->';
   return $content;
 }
 

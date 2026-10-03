@@ -84,6 +84,9 @@ np_check(substr_count($content, $youtube_url) === 2, 'Embed block keeps the URL 
 np_check(strpos($content, '"providerNameSlug":"youtube"') !== false, 'Embed block declares the YouTube provider');
 np_check(stripos($content, 'autoplay') === false && stripos($content, '<iframe') === false, 'No autoplay or hardcoded iframe');
 np_check(strpos(wawahz_add_track_content($youtube_url), '<p>') === false, 'Empty commentary adds no paragraph');
+// URL が単独行にないと WP の autoembed が公式 iframe に変換できず、本文が真っ黒な枠になる。
+np_check((bool) preg_match('#<div class="wp-block-embed__wrapper">\r?\nhttps://#', $content), 'Embed URL sits on its own line for autoembed');
+np_check(strpos($content, '<!-- wp:embed ') !== false, 'Modern embed block name is used');
 $media = wawahz_find_media_block(parse_blocks($content));
 np_check(is_array($media) && $media['type'] === 'youtube' && $media['youtube_id'] === $video_id, 'Gallery detects the created embed block');
 

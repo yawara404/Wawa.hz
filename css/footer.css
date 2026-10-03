@@ -620,7 +620,9 @@
 
   #screen-info .site-info-footer-container {
     gap: 14px !important;
-    padding: 0 0 24px 0 !important;
+    /* 他ホーム画面 (画面1 / 画面2) と同じく、モバイルでは画面移動ボタン分の下余白を確保。
+       ボタンは bottom: ボトムナビ(80px) + safe-area + 14px / 高さ44px ⇒ 下端から 80+72px+safe-area 空ける。 */
+    padding: 0 0 calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px)) !important;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
@@ -812,6 +814,11 @@
   #screen-info .info-action-buttons-grid {
     grid-template-columns: 1fr !important;
   }
+}
+
+/* Info 画面のデスクトッププレビューで強制モバイルにしたときも、モバイルと同じ下余白を確保する。 */
+.force-mobile #screen-info .site-info-footer-container {
+  padding-bottom: calc(var(--wawahz-bottom-nav-height, 80px) + 72px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 /* ==========================================================================
