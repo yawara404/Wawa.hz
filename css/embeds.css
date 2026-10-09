@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Wawa.hz 外部埋め込み (Wikipedia 系サマリーカード / ニコニコ動画プレイヤー)
+   - テーマの .entry-content 直下は flex + gap: 1em で余白が付くため本文内は margin:0
+   - .wp-block-embed__wrapper はテーマが 16:9 の黒い枠を強制しているため解除する
+   ========================================================================== */
+
+.wawahz-embed {
+  display: block;
+  max-width: 100%;
+  margin: 16px 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.entry-content .wawahz-embed {
+  margin: 0; /* フレックス gap が余白を担当する */
+}
+
+/* ---------- サマリーカード (Wikipedia 系) ---------- */
+.wawahz-embed__card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background-color: var(--md-sys-color-surface-container-low, #fff5ef);
+  border: 1px solid var(--md-sys-color-outline-variant, #decbc0);
+  border-radius: var(--md-sys-shape-corner-large, 20px);
+  box-shadow: var(--md-sys-elevation-1, 0 1px 3px rgba(0, 0, 0, 0.1));
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+  transition:
+    transform 0.2s var(--md-sys-motion-standard-easing, ease),
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.wawahz-embed__card:hover,
+.wawahz-embed__card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--md-sys-color-outline, #8b7569);
+  box-shadow: var(--md-sys-elevation-2, 0 4px 6px -1px rgba(0, 0, 0, 0.08));
+}
+/* .entry-content のリンク色・下線 (高指定度の上書き) */
+:root .entry-content .wawahz-embed__card,
+:root .entry-content .wawahz-embed__link {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+}
+:root .entry-content .wawahz-embed__link:hover,
+:root .entry-content .wawahz-embed__link:focus-visible {
+  color: var(--md-sys-color-primary, #e96424);
+}
+
+.wawahz-embed__thumb {
+  flex: 0 0 84px;
+  width: 84px;
+  height: 84px;
+  overflow: hidden;
+  background-color: var(--md-sys-color-surface-container, #f8e8dd);
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+}
+.wawahz-embed__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+.wawahz-embed--nothumb .wawahz-embed__card {
+  align-items: center;
+}
+
+.wawahz-embed__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.wawahz-embed__badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  padding: 1px 10px;
+  background-color: var(--md-sys-color-secondary-container, #d8eded);
+  border-radius: var(--md-sys-shape-corner-full, 9999px);
+  color: var(--md-sys-color-on-secondary-container, #123a3b);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+.wawahz-embed__title {
+  color: var(--md-sys-color-on-surface, #271e19);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.wawahz-embed__desc {
+  color: var(--md-sys-color-primary, #e96424);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.wawahz-embed__text {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface-variant, #5f4b40);
+  font-size: 13.5px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.wawahz-embed__host {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+  color: var(--md-sys-color-on-surface-variant, #5f4b40);
+  font-size: 11.5px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+.wawahz-embed__arrow {
+  flex: none;
+}
+
+/* ---------- ニコニコ動画 (iframe プレイヤー) ---------- */
+.wawahz-embed__head {
+  align-self: flex-start;
+  color: var(--md-sys-color-on-surface-variant, #5f4b40);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.wawahz-embed__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.wawahz-embed__link:hover,
+.wawahz-embed__link:focus-visible {
+  color: var(--md-sys-color-primary, #e96424);
+}
+.wawahz-embed__frame {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%; /* 16:9 */
+  background-color: #000;
+  border: 1px solid var(--md-sys-color-outline-variant, #decbc0);
+  border-radius: var(--md-sys-shape-corner-large, 20px);
+}
+.wawahz-embed__frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---------- テーマの 16:9 ブラックボード解除 ----------
+   .wp-block-embed__wrapper はカードの高さを 0 にして隠してしまうため、
+   このテーマの出力が入ったときは枠を作らない。 */
+.entry-content .wp-block-embed__wrapper.wawahz-embed-host,
+.entry-content .wp-block-embed__wrapper:has(.wawahz-embed) {
+  position: relative;
+  height: auto;
+  padding: 0;
+  overflow: visible;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  word-break: normal;
+}
+.entry-content .wp-block-embed__wrapper.wawahz-embed-host > .wawahz-embed,
+.entry-content .wp-block-embed__wrapper:has(.wawahz-embed) > .wawahz-embed {
+  margin: 0;
+}
+
+/* ---------- 狭い画面 ---------- */
+@media (max-width: 480px) {
+  .wawahz-embed__card {
+    gap: 12px;
+    padding: 12px 13px;
+  }
+  .wawahz-embed__thumb {
+    flex-basis: 66px;
+    width: 66px;
+    height: 66px;
+  }
+  .wawahz-embed__title {
+    font-size: 15px;
+  }
+  .wawahz-embed__text {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* ---------- 動きを減らす設定への配慮 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .wawahz-embed__card {
+    transition: none;
+  }
+  .wawahz-embed__card:hover,
+  .wawahz-embed__card:focus-visible {
+    transform: none;
+  }
+}

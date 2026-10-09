@@ -443,7 +443,7 @@
   .slide-prev-btn {
     position: fixed;
     top: auto;
-    bottom: calc(var(--wawahz-bottom-nav-height, 80px) + env(safe-area-inset-bottom, 0px) + 14px);
+    bottom: calc(var(--wawahz-bottom-nav-height) + var(--wawahz-bottom-safe-area) + 14px);
     translate: 0 0;
     z-index: 48;
     width: auto;
@@ -554,7 +554,7 @@
 :root.force-mobile .slide-prev-btn {
   position: fixed;
   top: auto;
-  bottom: calc(var(--wawahz-bottom-nav-height, 80px) + env(safe-area-inset-bottom, 0px) + 14px);
+  bottom: calc(var(--wawahz-bottom-nav-height) + var(--wawahz-bottom-safe-area) + 14px);
   translate: 0 0;
   z-index: 48;
   width: auto;

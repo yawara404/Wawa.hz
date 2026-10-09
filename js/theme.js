@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pickupLoop = pickupSlides.length > 1;
     const pickupMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     const pickupDotsList = [];
-    const initialIndex = pickupSlides.length >= 3 ? 2 : Math.max(0, pickupSlides.length - 1);
+    const initialIndex = Math.max(0, Math.floor((pickupSlides.length - 1) / 2));
     let pickupIndex = initialIndex;
     let pickupDragging = false;
     let pickupDragStartX = 0;
@@ -988,12 +988,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pickupLoop) {
       setPickupActive(initialIndex);
       const applyInitialScroll = () => {
+        setPickupActive(initialIndex);
         pickupTrack.scrollTo({ left: pickupOffsetOf(initialIndex), behavior: 'auto' });
       };
       applyInitialScroll();
       requestAnimationFrame(applyInitialScroll);
       setTimeout(applyInitialScroll, 50);
       window.addEventListener('load', applyInitialScroll, { once: true });
+      window.addEventListener('pageshow', applyInitialScroll);
     } else {
       setPickupActive(0);
     }

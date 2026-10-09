@@ -110,13 +110,18 @@ body.admin-bar .m3-navigation-rail {
 
 /* ナビゲーションバー (モバイル用ボトムバー) */
 .m3-navigation-bar {
-  /* iOS Safari のホームバー領域 (safe-area-inset-bottom) を確保する */
-  height: calc(80px + env(safe-area-inset-bottom, 0px));
+  /* バーをセーフエリアまで伸ばし、操作部分はその上に置く */
+  height: calc(var(--wawahz-bottom-nav-height) + var(--wawahz-bottom-safe-area));
+  min-height: calc(var(--wawahz-bottom-nav-height) + var(--wawahz-bottom-safe-area));
+  max-height: calc(var(--wawahz-bottom-nav-height) + var(--wawahz-bottom-safe-area));
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
   background-color: var(--md-sys-color-surface-container);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 8px env(safe-area-inset-bottom, 0px);
+  padding: 0 8px var(--wawahz-bottom-safe-area);
   position: sticky;
   bottom: 0;
   left: 0;
@@ -138,7 +143,9 @@ body.admin-bar .m3-navigation-rail {
   text-decoration: none;
   user-select: none;
   transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
-  min-width: 64px;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 48px;
 }
 
 .nav-item:active {
@@ -147,12 +154,23 @@ body.admin-bar .m3-navigation-rail {
 
 .nav-indicator {
   width: 64px;
-  height: 32px;
+  max-width: 100%;
+  height: 28px;
   border-radius: var(--md-sys-shape-corner-full);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-standard-easing);
+}
+
+@media (max-width: 899px) {
+  :root:not(.force-desktop) {
+    --top-app-bar-height: 56px;
+  }
+}
+
+:root.force-mobile {
+  --top-app-bar-height: 56px;
 }
 
 .nav-item.active .nav-indicator {

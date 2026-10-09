@@ -61,19 +61,8 @@ $lately_posts = get_posts( array_merge( array(
   'ignore_sticky_posts' => true,
 ), $wawahz_exclude_music ) );
 
-// モバイルの初期表示（3枚目）には最新記事を置く。Pickup に含まれる場合は重複させない。
+// モバイルでも Pickup の並び順をそのまま使う。
 $mobile_pickup_posts = $pickup_posts;
-if ( $lately_posts ) {
-  $newest_post = $lately_posts[0];
-  $mobile_pickup_posts = array_values( array_filter(
-    $mobile_pickup_posts,
-    static function ( $post ) use ( $newest_post ) {
-      return $post->ID !== $newest_post->ID;
-    }
-  ) );
-  array_splice( $mobile_pickup_posts, min( 2, count( $mobile_pickup_posts ) ), 0, array( $newest_post ) );
-  $mobile_pickup_posts = array_slice( $mobile_pickup_posts, 0, 5 );
-}
 
 // === ホーム画面カード設定 (固定ページ) ===
 $home_settings_id = function_exists( 'wawahz_home_settings_page_id' ) ? wawahz_home_settings_page_id() : 0;
@@ -166,7 +155,7 @@ foreach ( $auto_works as $auto_work ) {
         <ul class="mobile-pickup-track" id="mobile-pickup-track" role="list" tabindex="0" aria-label="<?php esc_attr_e( 'Pickup 記事', 'wawahz' ); ?>">
           <?php
           if ( $mobile_pickup_posts ) :
-            $initial_pickup_index = count( $mobile_pickup_posts ) >= 3 ? 2 : 0;
+            $initial_pickup_index = intdiv( count( $mobile_pickup_posts ) - 1, 2 );
             foreach ( $mobile_pickup_posts as $pickup_index => $pickup_post ) :
               $pickup_cats  = get_the_category( $pickup_post->ID );
               $pickup_thumb = get_the_post_thumbnail_url( $pickup_post, 'large' ) ?: get_template_directory_uri() . '/images/music_shimmer.svg?v=20250925_02';

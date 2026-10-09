@@ -45,11 +45,13 @@
 }
 
 @media (min-width: 900px) {
+
   :root:not(.force-mobile) .search-screen-container,
   .force-desktop .search-screen-container {
     max-width: 616px;
     width: 100%;
-    gap: 20px; /* ホーム画面2 (dcat-desktop-container) と完全に同一の gap: 20px */
+    gap: 20px;
+    /* ホーム画面2 (dcat-desktop-container) と完全に同一の gap: 20px */
     /* 下余白は付けない。カテゴリー画面 (dcat-desktop-container: padding 0) と
        記事枠の下端・ページネーションの位置を揃えるため。 */
     padding: 0;
@@ -112,10 +114,10 @@
 
   :root:not(.force-mobile) .search-results-panel,
   .force-desktop .search-results-panel {
-  background-color: var(--md-sys-color-secondary-container) !important;
-  box-shadow: var(--md-sys-elevation-1);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
+    background-color: var(--md-sys-color-secondary-container) !important;
+    box-shadow: var(--md-sys-elevation-1);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
 
   :root:not(.force-mobile) .search-results-panel .cat-scroll-articles-list,
   .force-desktop .search-results-panel .cat-scroll-articles-list {
@@ -126,18 +128,18 @@
 
   :root:not(.force-mobile) .search-results-panel .cat-article-item,
   .force-desktop .search-results-panel .cat-article-item {
-  background: var(--md-sys-color-surface) !important;
-  border-radius: 18px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  text-decoration: none;
-  color: var(--md-sys-color-on-surface);
-  box-shadow: var(--md-sys-elevation-1);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    background: var(--md-sys-color-surface) !important;
+    border-radius: 18px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+    box-shadow: var(--md-sys-elevation-1);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
   }
 }
 
@@ -252,7 +254,12 @@
 
 /* ==========================================================================
 /* ---------- wawa-pagination ---------- */
-.wawa-pagination { display: flex; justify-content: center; margin-top: 24px; }
+.wawa-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 .wawa-pagination .page-numbers {
   display: inline-flex;
   gap: 4px;
@@ -260,7 +267,11 @@
   margin: 0;
   padding: 0;
 }
-.wawa-pagination .page-numbers li { list-style: none; }
+
+.wawa-pagination .page-numbers li {
+  list-style: none;
+}
+
 .wawa-pagination .page-numbers a,
 .wawa-pagination .page-numbers span {
   display: inline-flex;
@@ -276,10 +287,12 @@
   text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease;
 }
+
 .wawa-pagination .page-numbers a:hover {
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
+
 .wawa-pagination .page-numbers .current {
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
@@ -318,6 +331,7 @@
   border-color: var(--md-sys-color-secondary);
   box-shadow: 0 4px 12px rgba(47, 116, 117, 0.18);
 }
+
 .cat-scroll-articles-list {
   height: 100%;
   overflow-y: auto;
@@ -330,8 +344,12 @@
   box-sizing: border-box;
   min-width: 0;
 }
+
 /* Cat scroll list & article cards unified styles */
-.cat-scroll-articles-list::-webkit-scrollbar { width: 6px; }
+.cat-scroll-articles-list::-webkit-scrollbar {
+  width: 6px;
+}
+
 .cat-scroll-articles-list::-webkit-scrollbar-thumb {
   background: var(--md-sys-color-outline-variant);
   border-radius: 3px;
@@ -356,7 +374,8 @@
 }
 
 @media (max-width: 899px) {
-  /* Search, Category, Post 画面: トップバー(64px)とボトムナビ(80px)の間の可視領域に上下左右中央配置 */
+
+  /* Search, Category, Post 画面: 上下のバーの間の可視領域に上下左右中央配置 */
   .site-main:has(> #screen-search),
   .site-main:has(> #screen-category),
   .site-main:has(> #screen-post),
@@ -365,9 +384,9 @@
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
-    min-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
-    max-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - 64px - 80px - env(safe-area-inset-bottom, 0px)) !important;
+    height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - var(--top-app-bar-height) - var(--wawahz-bottom-nav-height) - var(--wawahz-bottom-safe-area)) !important;
+    min-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - var(--top-app-bar-height) - var(--wawahz-bottom-nav-height) - var(--wawahz-bottom-safe-area)) !important;
+    max-height: calc(100dvh - var(--wawahz-admin-bar-height, 0px) - var(--top-app-bar-height) - var(--wawahz-bottom-nav-height) - var(--wawahz-bottom-safe-area)) !important;
     padding: 0 16px !important;
     margin: 0 auto !important;
     box-sizing: border-box !important;
@@ -392,8 +411,8 @@
     overflow: hidden !important;
   }
 
-  #screen-category > .mobile-only,
-  #screen-post > .mobile-only,
+  #screen-category>.mobile-only,
+  #screen-post>.mobile-only,
   #screen-search .mobile-only {
     display: flex !important;
     flex-direction: column !important;
@@ -677,6 +696,7 @@
     padding: 0 10px !important;
   }
 }
+
 .search-controls-row .m3-sort-dropdown-wrapper {
   flex: 0 0 auto;
   width: auto;
@@ -689,6 +709,7 @@
   justify-content: space-between;
   gap: 8px;
 }
+
 .search-controls-row .m3-sort-dropdown-wrapper .m3-sort-select {
   flex: 1 1 auto;
   min-width: 0;
@@ -697,6 +718,7 @@
   width: auto;
   padding: 0;
 }
+
 .search-controls-row .m3-search-bar {
   flex: 1 1 auto;
   min-width: 0;
@@ -704,6 +726,7 @@
   height: 48px;
   box-sizing: border-box;
 }
+
 .m3-search-bar {
   display: flex;
   align-items: center;
@@ -715,11 +738,13 @@
   border: 1.5px solid transparent;
   transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
+
 .m3-search-bar:focus-within {
   border-color: var(--md-sys-color-primary);
   background: var(--md-sys-color-surface);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
+
 .m3-search-bar input {
   flex: 1;
   min-width: 0;
@@ -730,6 +755,7 @@
   font-size: 14px;
   font-family: inherit;
 }
+
 .search-clear-btn {
   background: none;
   border: none;
@@ -743,13 +769,16 @@
   border-radius: 50%;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
+
 .search-clear-btn:hover {
   background-color: rgba(0, 0, 0, 0.08);
   color: var(--md-sys-color-on-surface);
 }
+
 :root[data-theme="dark"] .search-clear-btn:hover {
   background-color: rgba(255, 255, 255, 0.12);
 }
+
 .search-clear-btn .material-symbols-rounded {
   font-size: 18px;
 }
@@ -764,7 +793,11 @@
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
-.search-quick-tags::-webkit-scrollbar { display: none; }
+
+.search-quick-tags::-webkit-scrollbar {
+  display: none;
+}
+
 .search-quick-tags-label {
   font-size: 11px;
   font-weight: 700;
@@ -774,12 +807,14 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 .search-quick-tags-list {
   display: flex;
   gap: 6px;
   align-items: center;
   flex-wrap: nowrap;
 }
+
 .search-tag-chip {
   padding: 6px 14px;
   border-radius: 9999px;
@@ -792,12 +827,14 @@
   border: 1px solid var(--md-sys-color-outline-variant);
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
+
 .search-tag-chip:hover {
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-color: var(--md-sys-color-secondary);
   transform: translateY(-1px);
 }
+
 /* 選択中のカテゴリフィルタ */
 .search-tag-chip.is-active {
   background: var(--md-sys-color-secondary-container);
@@ -820,6 +857,7 @@
   gap: 12px;
   box-shadow: 0 8px 24px rgba(79, 51, 36, 0.07);
 }
+
 .search-initial-icon-wrap,
 .search-empty-icon-wrap {
   width: 56px;
@@ -832,14 +870,17 @@
   justify-content: center;
   box-shadow: 0 3px 10px rgba(47, 116, 117, 0.12);
 }
+
 .search-empty-icon-wrap {
   background: var(--md-sys-color-surface-container-highest);
   color: var(--md-sys-color-outline);
 }
+
 .search-initial-icon-wrap .material-symbols-rounded,
 .search-empty-icon-wrap .material-symbols-rounded {
   font-size: 28px;
 }
+
 .search-initial-title,
 .search-empty-title {
   font-size: 16px;
@@ -847,6 +888,7 @@
   margin: 0;
   color: var(--md-sys-color-on-surface);
 }
+
 .search-initial-desc,
 .search-empty-desc {
   font-size: 13px;
@@ -855,6 +897,7 @@
   margin: 0;
   line-height: 1.5;
 }
+
 .search-initial-categories {
   display: flex;
   flex-wrap: wrap;
@@ -863,6 +906,7 @@
   margin-top: 8px;
   width: 100%;
 }
+
 .search-category-tile {
   display: inline-flex;
   align-items: center;
@@ -878,15 +922,18 @@
   box-shadow: 0 2px 8px rgba(47, 116, 117, 0.08);
   transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
 }
+
 .search-category-tile:hover {
   transform: translateY(-2px);
   filter: brightness(0.95);
   box-shadow: var(--md-sys-elevation-2);
 }
+
 .search-category-tile .material-symbols-rounded {
   font-size: 18px;
   color: var(--md-sys-color-primary);
 }
+
 .search-cat-count {
   font-size: 11px;
   color: var(--md-sys-color-on-surface-variant);
@@ -895,10 +942,10 @@
 
 @media (max-width: 600px) {
   .search-results-panel {
-  background-color: var(--md-sys-color-secondary-container) !important;
-  box-shadow: var(--md-sys-elevation-1);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
+    background-color: var(--md-sys-color-secondary-container) !important;
+    box-shadow: var(--md-sys-elevation-1);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
 }
 
 /* ---------- アーカイブ: カテゴリーチップ行 ---------- */
@@ -910,7 +957,11 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-.category-chips::-webkit-scrollbar { display: none; }
+
+.category-chips::-webkit-scrollbar {
+  display: none;
+}
+
 .category-chips a {
   display: inline-flex;
   align-items: center;
@@ -925,32 +976,46 @@
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
+
 .category-chips a:hover {
   background-color: var(--md-sys-color-surface-container-high);
   border-color: var(--md-sys-color-outline);
 }
+
 .category-chips a[aria-current="page"] {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
   border-color: var(--md-sys-color-primary);
   font-weight: 600;
 }
+
 .archive-description {
   font-size: 13px;
   color: var(--md-sys-color-on-surface-variant);
   margin: 8px 0 0;
   line-height: 1.6;
 }
-.archive-description p { margin: 0; }
-.cat-article-empty { cursor: default; }
-.cat-article-empty:hover { transform: none; }
+
+.archive-description p {
+  margin: 0;
+}
+
+.cat-article-empty {
+  cursor: default;
+}
+
+.cat-article-empty:hover {
+  transform: none;
+}
 
 /* ==========================================================================
    Category 画面: テーマトークンで共通の配色整理
    ========================================================================== */
 #screen-category #mobile-category-header-btn,
 #screen-category #desk-category-header-btn,
-#screen-search #btn-search-header {
+/* 検索画面の見出しは variant ごとに id が btn-search-header-mobile / -desktop になる
+   ため、クラス指定でまとめる（カテゴリー画面の見出しと同一配色にする）。 */
+#screen-search .search-screen-title {
   background-color: var(--md-sys-color-secondary) !important;
   color: var(--md-sys-color-on-secondary) !important;
   border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 78%, var(--md-sys-color-on-secondary));
@@ -972,7 +1037,7 @@
 #screen-category .m3-sort-dropdown-wrapper:focus-within {
   border-color: var(--md-sys-color-secondary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent),
-              0 5px 16px rgba(47, 116, 117, 0.09);
+    0 5px 16px rgba(47, 116, 117, 0.09);
   outline: none;
 }
 
@@ -987,11 +1052,9 @@
 
 #screen-category #mobile-cat-articles-box,
 #screen-category #desk-cat-articles-box {
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
-  );
+  background: linear-gradient(145deg,
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface)));
   border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
   box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
 }
@@ -1009,11 +1072,11 @@
   flex-direction: column;
 }
 
-#screen-category > .dcat-desktop-container {
+#screen-category>.dcat-desktop-container {
   flex: 1;
 }
 
-#screen-category > .dcat-desktop-container > .search-screen-container {
+#screen-category>.dcat-desktop-container>.search-screen-container {
   flex: 1;
   min-height: 0;
 }
@@ -1070,7 +1133,7 @@
 #screen-search #main-search-bar:focus-within {
   border-color: var(--md-sys-color-secondary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent),
-              0 6px 18px rgba(47, 116, 117, 0.10);
+    0 6px 18px rgba(47, 116, 117, 0.10);
 }
 
 #screen-search .search-input-icon {
@@ -1103,11 +1166,9 @@
 #screen-search .search-initial-card,
 #screen-search .search-empty-card,
 #screen-search .search-results-panel {
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
-  ) !important;
+  background: linear-gradient(145deg,
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))) !important;
   border-color: color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
   box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
 }
@@ -1180,12 +1241,12 @@
   flex-direction: column;
 }
 
-#screen-search > .dcat-desktop-container {
+#screen-search>.dcat-desktop-container {
   flex: 1;
 }
 
 /* デスクトップ枠の中の 616px 枠も伸ばして、記事ボックスに残り高さを渡す */
-#screen-search > .dcat-desktop-container > .search-screen-container {
+#screen-search>.dcat-desktop-container>.search-screen-container {
   flex: 1;
   min-height: 0;
 }
@@ -1208,8 +1269,8 @@
    ・デスクトップ: 616 幅で画面の残り高さを吸収（カテゴリー画面 #desk-cat-articles-box
                   と同じく flex: 1 0 320px で縦に伸びる）
    どちらも中身が収まらないときは、枠の中だけがスクロールする。 */
-#screen-search > .mobile-only .search-initial-card,
-#screen-search > .mobile-only .search-empty-card {
+#screen-search>.mobile-only .search-initial-card,
+#screen-search>.mobile-only .search-empty-card {
   width: 100%;
   max-width: 360px;
   height: clamp(230px, 34vh, 270px);
@@ -1223,34 +1284,34 @@
   overflow-y: auto;
 }
 
-#screen-search > .mobile-only .search-initial-icon-wrap,
-#screen-search > .mobile-only .search-empty-icon-wrap {
+#screen-search>.mobile-only .search-initial-icon-wrap,
+#screen-search>.mobile-only .search-empty-icon-wrap {
   width: 38px;
   height: 38px;
   border-radius: 19px;
   flex-shrink: 0;
 }
 
-#screen-search > .mobile-only .search-initial-icon-wrap .material-symbols-rounded,
-#screen-search > .mobile-only .search-empty-icon-wrap .material-symbols-rounded {
+#screen-search>.mobile-only .search-initial-icon-wrap .material-symbols-rounded,
+#screen-search>.mobile-only .search-empty-icon-wrap .material-symbols-rounded {
   font-size: 20px;
 }
 
-#screen-search > .mobile-only .search-initial-title,
-#screen-search > .mobile-only .search-empty-title {
+#screen-search>.mobile-only .search-initial-title,
+#screen-search>.mobile-only .search-empty-title {
   font-size: 13.5px;
   margin: 0;
 }
 
-#screen-search > .mobile-only .search-initial-desc,
-#screen-search > .mobile-only .search-empty-desc {
+#screen-search>.mobile-only .search-initial-desc,
+#screen-search>.mobile-only .search-empty-desc {
   font-size: 11.5px;
   line-height: 1.4;
   margin: 0;
   max-width: 290px;
 }
 
-#screen-search > .mobile-only .search-initial-categories {
+#screen-search>.mobile-only .search-initial-categories {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1259,15 +1320,15 @@
   max-width: 310px;
 }
 
-#screen-search > .mobile-only .search-category-tile {
+#screen-search>.mobile-only .search-category-tile {
   padding: 3px 8px;
   font-size: 11px;
   border-radius: 10px;
   gap: 4px;
 }
 
-#screen-search > .desktop-only .search-initial-card,
-#screen-search > .desktop-only .search-empty-card {
+#screen-search>.desktop-only .search-initial-card,
+#screen-search>.desktop-only .search-empty-card {
   width: 100%;
   max-width: none;
   height: auto;
@@ -1278,17 +1339,16 @@
   padding: 32px 20px;
   gap: 12px;
   justify-content: center;
-  justify-content: safe center; /* 枠より中身が高いときは上寄せ（対応ブラウザのみ） */
+  justify-content: safe center;
+  /* 枠より中身が高いときは上寄せ（対応ブラウザのみ） */
   overflow-y: auto;
 }
 
 /* post 画面のモバイル記事ボックスも、カテゴリー画面と同じ見た目に揃える。 */
 #screen-post #mobile-post-articles-box {
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
-    color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface))
-  );
+  background: linear-gradient(145deg,
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 72%, var(--md-sys-color-surface)),
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 90%, var(--md-sys-color-surface)));
   border: 1px solid color-mix(in srgb, var(--md-sys-color-secondary) 19%, transparent);
   box-shadow: 0 8px 24px rgba(47, 116, 117, 0.10);
 }

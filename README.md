@@ -39,6 +39,7 @@
 | スクリプト | `js/theme.js`（画面 UI・検索・各モーダル）/ `js/block-nowplaying.js`（Gutenberg ブロック）/ `js/mini-game.js`（ゲーム起動制御） |
 | カスタムブロック | `wawahz/nowplaying-gallery`（属性: `limit` / `showHeader`） |
 | ショートコード | `[nowplaying_gallery limit="6" show_header="true"]` |
+| 外部埋め込み | `inc/embeds/`（Wikipedia 系はサマリーカード / ニコニコ動画は公式プレイヤー / oEmbed 提供元の追加登録）— autoembed ハンドラ + `render_block` で本文・ブロック・エディタのプレビューを共通処理 |
 | テーマ設定 | `theme.json`（コンテンツ幅 760px / ワイド幅 1120px、カラーパレット、フォントサイズ） |
 | 画面ルーティング | `view.php` が `?view=category / post / gallery / game / nowplaying / profile / info` を `template-parts/` に振り分け |
 | 同梱ライブラリ | p5.js / planck.js / p5play（`games/falling-survivor/lib/`）— CDN 非依存で動作 |

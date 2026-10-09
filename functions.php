@@ -8,6 +8,7 @@
 
 require_once get_template_directory() . '/inc/nowplaying.php';
 require_once get_template_directory() . '/inc/theme-ui.php';
+require_once get_template_directory() . '/inc/embeds.php';
 
 // テーマ初期設定
 function wawahz_setup()

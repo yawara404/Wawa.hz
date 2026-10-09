@@ -45,7 +45,7 @@
 </div><!-- /#app-viewport -->
 
 <!-- ====================================================================
-     下部ナビゲーションバー (モバイル用・高さ 80dp)
+     下部ナビゲーションバー (モバイル用・高さ 64dp + セーフエリア)
      ==================================================================== -->
 <nav class="m3-navigation-bar mobile-only" id="mobile-bottom-nav-bar" aria-label="<?php esc_attr_e('モバイルナビゲーション', 'wawahz'); ?>">
   <?php foreach (wawahz_navigation() as $key => $item) : if ($key === 'nowplaying') { continue; } $active = wawahz_current_section() === $key; ?>

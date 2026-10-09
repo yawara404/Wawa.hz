@@ -77,6 +77,8 @@
 
   /* トップバー & 再生バー共通寸法トークン */
   --top-app-bar-height: 64px;
+  --wawahz-bottom-nav-height: 64px;
+  --wawahz-bottom-safe-area: env(safe-area-inset-bottom, 0px);
 
   /* サイト背景パターン (電波・周波数アイコン散布パターン) */
   --site-bg-pattern: url('../images/radio_waves_pattern_light.svg?v=2');
