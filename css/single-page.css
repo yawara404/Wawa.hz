@@ -170,7 +170,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 16px 4px 0;
   box-sizing: border-box;
@@ -207,10 +207,14 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 12px 4px 0;
   box-sizing: border-box;
+}
+.single-post .reading-topbar,
+.single-post .reading-layout {
+  max-width: 600px;
 }
 .reading-layout.has-sidebar {
   max-width: 1000px;
@@ -322,10 +326,13 @@
   justify-content: center;
   width: calc(100% + 56px);
   margin: -28px -28px 0;
-  aspect-ratio: 19 / 10;
+  aspect-ratio: 16 / 10;
   border-radius: 28px 28px 0 0;
   overflow: hidden;
   background-color: var(--md-sys-color-surface-container-highest);
+}
+.single-post .entry-cover {
+  aspect-ratio: 19 / 10;
 }
 .entry-cover::before {
   content: '';
