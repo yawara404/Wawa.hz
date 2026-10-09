@@ -102,7 +102,7 @@ $fallback_images = array(
             <?php foreach ($posts as $post_item) :
               $cats = get_the_category($post_item->ID);
               $badge = $cats ? $cats[0]->name : 'ARTICLE';
-              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($post_item)), 20);
+              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($post_item)), 48);
             ?>
               <a class="cat-article-item" href="<?php echo esc_url(get_permalink($post_item)); ?>" aria-label="<?php echo esc_attr(get_the_title($post_item)); ?>">
                 <div class="cat-article-info">
@@ -213,7 +213,7 @@ $fallback_images = array(
                   $thumb = $pool[$idx % count($pool)];
                 }
 
-                $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($p)), 20);
+                $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($p)), 48);
             ?>
               <a class="m3-card m3-card-filled m3-card-scrim post-article-card" id="post-card-<?php echo esc_attr($slot_number); ?>" data-post-slot="<?php echo esc_attr($slot_number); ?>"
                 href="<?php echo esc_url(get_permalink($p)); ?>"

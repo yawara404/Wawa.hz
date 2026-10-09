@@ -120,7 +120,7 @@ $next_url         = $current_page < $max_pages ? get_next_posts_page_link() : nu
       <?php foreach ($result_posts as $result_post) :
         $cats = get_the_category($result_post->ID);
         $badge = $cats ? $cats[0]->name : 'ARTICLE';
-        $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($result_post)), 22);
+        $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt($result_post)), 48);
       ?>
         <a class="cat-article-item" href="<?php echo esc_url(get_permalink($result_post)); ?>" aria-label="<?php echo esc_attr(get_the_title($result_post)); ?>">
           <div class="cat-article-info">

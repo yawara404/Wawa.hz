@@ -168,7 +168,7 @@ foreach ( $auto_works as $auto_work ) {
                   <div class="mobile-pickup-scrim">
                     <?php if ( $pickup_cats ) : ?><span class="mobile-pickup-badge"><?php echo esc_html( $pickup_cats[0]->name ); ?></span><?php endif; ?>
                     <h3 class="mobile-pickup-title"><?php echo esc_html( get_the_title( $pickup_post ) ); ?></h3>
-                    <p class="mobile-pickup-summary"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $pickup_post ) ), 18 ) ); ?></p>
+                    <p class="mobile-pickup-summary"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $pickup_post ) ), 48 ) ); ?></p>
                   </div>
                 </a>
               </li>
@@ -218,7 +218,7 @@ foreach ( $auto_works as $auto_work ) {
         <div class="lately-item-content">
           <?php if ( $lbadge ) : ?><span class="lately-item-badge"><?php echo esc_html( strtoupper( $lbadge ) ); ?></span><?php endif; ?>
           <h3 class="lately-item-title"><?php echo esc_html( get_the_title( $lp ) ); ?></h3>
-          <p class="lately-item-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $lp ) ), 12 ) ); ?></p>
+          <p class="lately-item-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $lp ) ), 48 ) ); ?></p>
           <?php if ( $lmedia ) : ?>
             <?php /* 試聴チップ: [data-open-player] でモーダル再生 (カード内リンクの遷移はJS側で抑止) */ ?>
             <span class="lately-play-chip"
@@ -281,7 +281,7 @@ foreach ( $auto_works as $auto_work ) {
             <div class="card-scrim-white">
               <?php if ( $dc_cats ) : ?><span class="card-badge"><?php echo esc_html( strtoupper( $dc_cats[0]->name ) ); ?></span><?php endif; ?>
               <h3 class="card-title"><?php echo esc_html( get_the_title( $dc ) ); ?></h3>
-              <p class="card-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $dc ) ), 14 ) ); ?></p>
+              <p class="card-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $dc ) ), 48 ) ); ?></p>
             </div>
           </a>
         <?php else : ?>
@@ -404,7 +404,7 @@ foreach ( $auto_works as $auto_work ) {
             <div class="card-scrim-white">
               <?php if ( $lc_cats ) : ?><span class="card-badge"><?php echo esc_html( strtoupper( $lc_cats[0]->name ) ); ?></span><?php endif; ?>
               <h3 class="card-title"><?php echo esc_html( get_the_title( $lc ) ); ?></h3>
-              <p class="card-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $lc ) ), 14 ) ); ?></p>
+              <p class="card-desc"><?php echo esc_html( wp_trim_words( wp_strip_all_tags( get_the_excerpt( $lc ) ), 48 ) ); ?></p>
             </div>
           </a>
         <?php else : ?>

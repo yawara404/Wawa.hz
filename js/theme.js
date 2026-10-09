@@ -52,12 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* =====================================================================
-     0. タイトルマーキー
-     はみ出すタイトルを初期位置で少し止めてから左へ流し、シームレスにループ。
+     0. カードのタイトル・抜粋マーキー
+     はみ出す文字を初期位置で少し止めてから左へ流し、シームレスにループ。
      ===================================================================== */
   const MARQUEE_SELECTOR = [
     '.cat-article-title',
+    '.cat-article-summary',
     '.post-article-card .card-title',
+    '.post-article-card .card-desc',
+    '.dhome-article-card .card-desc',
+    '.post-card-content > p',
+    '.mobile-pickup-summary',
+    '.lately-item-desc',
     '.work-card-title',
     '.nowplaying-title',
     '#player-modal-title'
@@ -75,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const text = el.textContent;
     if (!text || !text.trim()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     // いったん1行表示にして、はみ出すかを測る
     el.textContent = '';
@@ -1165,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* =====================================================================
-     11. タイトルマーキーの初期セットアップ & 再計測
+     11. カード文字マーキーの初期セットアップ & 再計測
      ===================================================================== */
   setupMarquees(document);
 

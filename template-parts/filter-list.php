@@ -69,7 +69,7 @@ $next_url = $current_page < $max_pages ? add_query_arg(array('view' => 'category
             <?php while ($listing->have_posts()) : $listing->the_post();
               $post_cats = get_the_category();
               $cat_badge = $post_cats ? $post_cats[0]->name : 'ARTICLE';
-              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt()), 20);
+              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt()), 48);
             ?>
               <a class="cat-article-item" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
                 <div class="cat-article-info">
@@ -172,7 +172,7 @@ $next_url = $current_page < $max_pages ? add_query_arg(array('view' => 'category
             <?php while ($listing->have_posts()) : $listing->the_post();
               $post_cats = get_the_category();
               $cat_badge = $post_cats ? $post_cats[0]->name : 'ARTICLE';
-              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt()), 24);
+              $excerpt = wp_trim_words(wp_strip_all_tags(get_the_excerpt()), 48);
             ?>
               <a class="cat-article-item" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
                 <div class="cat-article-info">
