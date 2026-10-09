@@ -100,6 +100,14 @@ function wawahz_scripts()
     array(),
     null
   );
+  if (is_singular('post')) {
+    wp_enqueue_style(
+      'wawahz-single-title-font',
+      'https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap',
+      array(),
+      null
+    );
+  }
   wp_enqueue_style(
     'material-symbols-rounded',
     'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
@@ -881,4 +889,3 @@ function wawahz_save_home_pickup_pin_metabox($post_id)
   }
 }
 add_action('save_post_post', 'wawahz_save_home_pickup_pin_metabox');
-

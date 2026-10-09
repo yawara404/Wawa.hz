@@ -23,7 +23,9 @@ $show_cover = $cover && !post_password_required() && !($cover['youtube'] && $yt_
   <?php if ($show_cover) : ?>
     <?php /* 16:10 のヒーロー。YouTube のサムネイルは配信画像をそのまま使用 */ ?>
     <div class="entry-cover<?php echo $cover['youtube'] ? ' entry-cover--youtube' : ''; ?>" style="--cover-bg: url('<?php echo esc_url($cover['url']); ?>');">
+      <span class="entry-cover-side" aria-hidden="true"></span>
       <img src="<?php echo esc_url($cover['url']); ?>" width="<?php echo (int) $cover['width']; ?>" height="<?php echo (int) $cover['height']; ?>" alt="" loading="eager" decoding="async">
+      <span class="entry-cover-side" aria-hidden="true"></span>
     </div>
   <?php endif; ?>
   <header class="entry-header">
@@ -115,4 +117,3 @@ $show_cover = $cover && !post_password_required() && !($cover['youtube'] && $yt_
   the_post_navigation($wawahz_nav_args);
 endif; ?>
 <?php if (comments_open() || get_comments_number()) : comments_template(); endif; ?>
-

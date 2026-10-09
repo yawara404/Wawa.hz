@@ -166,6 +166,16 @@
 }
 
 /* ---------- パンくず ---------- */
+.single-post #main-content {
+  /* ホームのモバイル Pickup 見出しと同じ高さに揃える。 */
+  padding-top: 24px;
+}
+@media (min-width: 900px) {
+  .single-post #main-content {
+    /* ホームのデスクトップ Pickup 見出しと同じ高さに揃える。 */
+    padding-top: 40px;
+  }
+}
 .reading-topbar {
   display: flex;
   align-items: center;
@@ -214,7 +224,13 @@
 }
 .single-post .reading-topbar,
 .single-post .reading-layout {
-  max-width: 600px;
+  max-width: 660px;
+}
+.single-post .reading-topbar {
+  padding-top: 0;
+}
+.single-post .reading-layout {
+  padding-top: 8px;
 }
 .reading-layout.has-sidebar {
   max-width: 1000px;
@@ -314,11 +330,15 @@
   overflow-wrap: break-word;
   text-wrap: balance;
 }
+.single-post .entry-title {
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: clamp(27px, 4.2vw, 36px);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
 
-/* アイキャッチ (16:10 ヒーロー: カード上端までフルブリード)
-   ・16:10 の画像はフレーム全面に表示（フル表示）
-   ・それ以外の比率の画像は切り抜かず、16:10 のフレーム内に収める
-   ・余白部分は同じ画像をぼかして敷き、フレームとして見せる */
+/* アイキャッチ: 画像全体を 16:10 のキャンバス内に収める。
+   上下は緑の帯、左右の余白は半透明の面に分ける。 */
 .entry-cover {
   position: relative;
   display: flex;
@@ -327,16 +347,15 @@
   width: calc(100% + 56px);
   margin: -28px -28px 0;
   aspect-ratio: 16 / 10;
+  padding: 12px 0;
   border-radius: 28px 28px 0 0;
   overflow: hidden;
   background-color: var(--md-sys-color-surface-container-highest);
 }
-.single-post .entry-cover {
-  aspect-ratio: 19 / 10;
-}
 .entry-cover::before {
   content: '';
   position: absolute;
+  z-index: 0;
   inset: -8%;
   background-image: var(--cover-bg, none);
   background-size: cover;
@@ -345,28 +364,34 @@
   opacity: 0.72;
   pointer-events: none;
 }
-.entry-cover img {
+.entry-cover::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border-top: 12px solid var(--md-sys-color-secondary);
+  border-bottom: 12px solid var(--md-sys-color-secondary);
+  pointer-events: none;
+}
+.entry-cover-side {
   position: relative;
   z-index: 1;
+  align-self: stretch;
+  flex: 1 1 0;
+  min-width: 0;
+  background-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 55%, transparent);
+}
+.entry-cover img {
+  position: relative;
+  z-index: 2;
   display: block;
-  width: 100%;
+  flex: 0 1 auto;
+  width: auto;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   object-position: center;
-}
-/* YouTube のサムネイル (hqdefault 480×360) は 4:3 の中に 16:9 の映像が
-   焼き込まれ、その上下と左右に太い黒帯が付いた画像として配信される。
-   ヒーロー (16:10) では中央の映像部だけを切り出して全面に表示する。
-   実測: 映像部は x=36..444 / y=45..289 (約 408×244)。
-   object-fit:cover は横幅いっぱいに合わせるため高さ中央 83% (y=30..330) が
-   見え、上下の黒帯が 15px / 41px だけ残る。transform で 1.23 倍に拡大すると
-   可視域が 390×244 となり黒帯が消え、タイトルの両端切れも最小限になる。 */
-.entry-cover--youtube img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 41%;
-  transform: scale(1.23);
 }
 
 /* モバイルでのヒーローのはみ出し対策 (width/margin の上書き) は
@@ -381,6 +406,11 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
+}
+.single-post .entry-content {
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  gap: 1.15em;
 }
 .entry-content > *:first-child { margin-top: 0; }
 .entry-content > *:last-child { margin-bottom: 0; }
@@ -675,6 +705,11 @@
 /* ---------- モバイル ---------- */
 @media (max-width: 700px) {
   .reading-card { padding: 20px 16px; }
+  .single-post .entry-content {
+    font-size: 16px;
+    line-height: 1.8;
+    gap: 1.1em;
+  }
   /* フルブリードのヒーロー: カードの左右パディング (16px) に合わせてはみ出しを防ぐ */
   .entry-cover {
     width: calc(100% + 32px);
@@ -796,8 +831,166 @@
 }
 
 /* ---------- 404 ---------- */
-.back-home { margin: 20px 0 0; }
-.back-home .m3-btn { text-decoration: none; }
+.not-found-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.not-found-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  width: min(100%, 960px);
+  min-height: 440px;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 32px;
+  background: var(--md-sys-color-surface);
+  box-shadow: var(--md-sys-elevation-3);
+}
+.not-found-visual {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-width: 0;
+  background: var(--md-sys-color-secondary-container);
+}
+.not-found-visual::before,
+.not-found-visual::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+.not-found-visual::before {
+  width: 72px;
+  height: 72px;
+  top: 34px;
+  right: 40px;
+  background: var(--md-sys-color-primary-container);
+}
+.not-found-visual::after {
+  width: 24px;
+  height: 24px;
+  left: 48px;
+  bottom: 70px;
+  background: var(--md-sys-color-primary);
+}
+.not-found-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-secondary-container) 22%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.not-found-orbit--outer { width: 360px; height: 360px; }
+.not-found-orbit--inner { width: 270px; height: 270px; }
+.not-found-number {
+  position: relative;
+  z-index: 1;
+  color: var(--md-sys-color-on-secondary-container);
+  font-family: 'Inter', 'Roboto', sans-serif;
+  font-size: clamp(100px, 11vw, 152px);
+  font-weight: 700;
+  letter-spacing: -0.09em;
+  line-height: 1;
+  padding-right: 0.09em;
+}
+.not-found-signal {
+  position: absolute;
+  z-index: 1;
+  left: 28px;
+  bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.not-found-signal .material-symbols-rounded { font-size: 18px; }
+.not-found-content {
+  align-self: center;
+  min-width: 0;
+  padding: clamp(28px, 4vw, 52px);
+}
+.not-found-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  color: var(--md-sys-color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.not-found-eyebrow span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.not-found-content h1 {
+  max-width: 12em;
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.not-found-description {
+  margin: 16px 0 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.not-found-search {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+.not-found-search > p {
+  margin: 0 0 10px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 12px;
+  font-weight: 700;
+}
+.not-found-search .wawa-search-form {
+  margin: 0;
+  background: var(--md-sys-color-surface-container-low);
+  border-color: var(--md-sys-color-outline-variant);
+}
+.not-found-home {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 18px;
+  text-decoration: none;
+}
+@media (max-width: 700px) {
+  .not-found-main { padding-top: 20px; padding-bottom: calc(88px + var(--wawahz-bottom-safe-area)); }
+  .not-found-card { grid-template-columns: 1fr; min-height: 0; border-radius: 28px; }
+  .not-found-visual { height: 138px; }
+  .not-found-orbit--outer { width: 240px; height: 240px; }
+  .not-found-orbit--inner { width: 170px; height: 170px; }
+  .not-found-number { font-size: 88px; }
+  .not-found-visual::before { width: 46px; height: 46px; top: 16px; right: 42px; }
+  .not-found-visual::after { width: 16px; height: 16px; left: 30px; bottom: 34px; }
+  .not-found-signal { left: 16px; bottom: 12px; padding: 6px 10px; font-size: 9px; }
+  .not-found-signal .material-symbols-rounded { font-size: 15px; }
+  .not-found-content { padding: 24px; }
+  .not-found-content h1 { font-size: 27px; }
+  .not-found-description { font-size: 13px; margin-top: 12px; }
+  .not-found-search { margin-top: 20px; padding-top: 18px; }
+  .not-found-search .wawa-search-form { height: 52px; }
+  .not-found-home { margin-top: 16px; }
+}
 
 /* ==========================================================================
    タイトルマーキー: はみ出すタイトルを初期位置で少し止めてから左へ流す
