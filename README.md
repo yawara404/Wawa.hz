@@ -69,6 +69,24 @@
 
 ---
 
+## セキュリティ
+
+脆弱性の報告窓口・サポート範囲・テーマコードで実施している対策は [SECURITY.md](SECURITY.md) にまとめています。
+
+- 管理画面から保存する処理は `wp_verify_nonce()` で nonce を検証し、入力は
+  `sanitize_text_field()` / `wp_unslash()` / `absint()`、出力は
+  `esc_html()` / `esc_attr()` / `esc_url()` を通します
+- `view.php` の `?view=` は許可したキーの表から `template-parts/` の固定ファイル名へ対応させるため、
+  任意ファイルの読み込み（LFI）は成立しません
+- `.htaccess`（Apache）と `web.config`（IIS）で `.md` / `.json` / `.lock` / `.git*` への
+  HTTP 直接アクセスを拒否します
+- テーマは APIキー・DBパスワードを一切持ちません（`wp-config.php` は WordPress 本体側で管理し、
+  `.gitignore` で除外しています）
+- **PHP は 2026-10-21 に公表された RCE 2件（CVE-2026-109618 / CVE-2026-109619）の修正版
+  （8.5.12 / 8.4.27 / 8.3.36 / 8.2.35 以降）を使用してください**（詳細は [SECURITY.md](SECURITY.md)）
+
+---
+
 ## ライセンス
 
 - テーマ本体: GNU General Public License v2 or later（`style.css` のテーマヘッダー参照）
